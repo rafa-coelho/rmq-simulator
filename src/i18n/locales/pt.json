@@ -1,0 +1,1290 @@
+{
+  "app": {
+    "title": "Simulador RabbitMQ",
+    "subtitle": "Simulador visual interativo para aprender filas de mensagens",
+    "description": "Aprenda conceitos do RabbitMQ construindo e visualizando fluxos de mensagens em tempo real"
+  },
+  "nav": {
+    "simulator": "Simulador",
+    "learn": "Aprenda RabbitMQ",
+    "examples": "Exemplos"
+  },
+  "toolbar": {
+    "addProducer": "Adicionar Producer",
+    "addExchange": "Adicionar Exchange",
+    "addQueue": "Adicionar Queue",
+    "addConsumer": "Adicionar Consumer",
+    "clear": "Limpar Canvas",
+    "export": "Exportar",
+    "import": "Importar",
+    "examples": "Carregar Exemplo"
+  },
+  "nodes": {
+    "producer": {
+      "title": "Producer",
+      "description": "Envia mensagens para exchanges",
+      "placeholder": "Nome do Producer"
+    },
+    "exchange": {
+      "title": "Exchange",
+      "description": "Roteia mensagens para filas baseado em regras",
+      "placeholder": "Nome da Exchange",
+      "types": {
+        "direct": "Direct",
+        "fanout": "Fanout",
+        "topic": "Topic",
+        "headers": "Headers"
+      },
+      "typeDescriptions": {
+        "direct": "Roteia mensagens para filas com routing key correspondente",
+        "fanout": "Transmite mensagens para todas as filas vinculadas",
+        "topic": "Roteia mensagens usando padrões na routing key",
+        "headers": "Roteia mensagens baseado em atributos do header"
+      }
+    },
+    "queue": {
+      "title": "Queue",
+      "description": "Armazena mensagens até serem consumidas",
+      "placeholder": "Nome da Queue",
+      "messages": "mensagens",
+      "empty": "Vazia",
+      "durable": "Durável",
+      "autoDelete": "Auto Delete"
+    },
+    "consumer": {
+      "title": "Consumer",
+      "description": "Recebe e processa mensagens",
+      "placeholder": "Nome do Consumer",
+      "consumed": "consumidas",
+      "processing": "Processando...",
+      "idle": "Ocioso",
+      "autoAck": "Auto Ack",
+      "prefetch": "Prefetch"
+    }
+  },
+  "binding": {
+    "title": "Binding",
+    "routingKey": "Routing Key",
+    "routingKeyPlaceholder": "Digite a routing key",
+    "pattern": "Padrão",
+    "patternHelp": "Use * para uma palavra, # para zero ou mais palavras"
+  },
+  "messages": {
+    "title": "Mensagens",
+    "send": "Enviar Mensagem",
+    "content": "Conteúdo da Mensagem",
+    "contentPlaceholder": "Digite o conteúdo da mensagem...",
+    "routingKey": "Routing Key",
+    "routingKeyPlaceholder": "ex: order.created",
+    "headers": "Headers",
+    "addHeader": "Adicionar Header",
+    "history": "Histórico de Mensagens",
+    "noMessages": "Nenhuma mensagem enviada ainda",
+    "status": {
+      "sent": "Enviada",
+      "routed": "Roteada",
+      "queued": "Na Fila",
+      "consumed": "Consumida",
+      "rejected": "Rejeitada",
+      "unroutable": "Não Roteável"
+    }
+  },
+  "stats": {
+    "title": "Estatísticas",
+    "totalSent": "Total Enviadas",
+    "totalRouted": "Total Roteadas",
+    "totalConsumed": "Total Consumidas",
+    "totalRejected": "Total Rejeitadas",
+    "messagesInQueues": "Nas Filas",
+    "publishRate": "Taxa de Publicação",
+    "consumeRate": "Taxa de Consumo"
+  },
+  "properties": {
+    "title": "Propriedades",
+    "name": "Nome",
+    "type": "Tipo",
+    "delete": "Excluir",
+    "duplicate": "Duplicar",
+    "noSelection": "Selecione um nó para ver propriedades"
+  },
+  "examples": {
+    "simpleQueue": {
+      "title": "Fila Simples",
+      "description": "Fluxo básico producer → exchange → queue → consumer"
+    },
+    "workQueues": {
+      "title": "Work Queues",
+      "description": "Distribui tarefas entre múltiplos workers"
+    },
+    "pubSub": {
+      "title": "Publish/Subscribe",
+      "description": "Exchange fanout transmitindo para múltiplas filas"
+    },
+    "routing": {
+      "title": "Routing",
+      "description": "Exchange direct com routing keys"
+    },
+    "topics": {
+      "title": "Topics",
+      "description": "Exchange topic com correspondência de padrões"
+    }
+  },
+  "learn": {
+    "title": "Aprenda RabbitMQ",
+    "subtitle": "Guia completo e aprofundado sobre filas de mensagens com RabbitMQ",
+    "toc": "Índice",
+    "trySimulator": "Experimente no simulador!",
+    "sections": {
+      "introduction": {
+        "title": "Introdução ao RabbitMQ",
+        "subtitle": "O que é RabbitMQ e por que ele revolucionou a comunicação entre sistemas?",
+        "content": "RabbitMQ é um dos message brokers open-source mais utilizados no mundo, com milhões de instalações em produção. Criado em 2007 pela Rabbit Technologies (posteriormente adquirida pela VMware/Pivotal), ele implementa o Advanced Message Queuing Protocol (AMQP) e fornece uma plataforma extremamente robusta e confiável para construir sistemas distribuídos e arquiteturas de microsserviços. Empresas como Reddit, 9GAG, Bloomberg, e muitas outras confiam no RabbitMQ para processar bilhões de mensagens diariamente.",
+        "whatIs": {
+          "title": "O que é um Message Broker?",
+          "content": "Um message broker é um software intermediário que permite que aplicações, sistemas e serviços se comuniquem entre si de forma assíncrona e desacoplada. Imagine o seguinte cenário: em uma arquitetura tradicional, quando o Serviço A precisa se comunicar com o Serviço B, ele faz uma chamada direta (HTTP, por exemplo). Se o Serviço B estiver fora do ar ou sobrecarregado, a requisição falha. Com um message broker como o RabbitMQ, o Serviço A envia a mensagem para o broker, que a armazena de forma segura e garante que ela será entregue ao Serviço B quando ele estiver disponível. Pense nele como um correio para suas aplicações: ele recebe mensagens de remetentes (producers), armazena-as com segurança e as entrega aos destinatários corretos (consumers), mesmo que eles não estejam disponíveis no momento do envio.",
+          "analogy": "Analogia do mundo real: Imagine que você precisa entregar um documento importante para alguém. Em vez de esperar a pessoa estar disponível (comunicação síncrona), você deixa o documento em uma caixa de correio segura (message broker). A pessoa pode retirar quando estiver disponível, e você tem garantia de que o documento não será perdido. Além disso, se várias pessoas precisarem receber cópias do documento, o correio pode fazer isso automaticamente."
+        },
+        "whyUse": {
+          "title": "Por que usar RabbitMQ?",
+          "intro": "RabbitMQ resolve problemas fundamentais de sistemas distribuídos que seriam extremamente difíceis de resolver manualmente:",
+          "items": [
+            "Desacoplamento temporal e espacial: Producers e consumers não precisam estar rodando simultaneamente, nem conhecer a localização um do outro. Isso permite que equipes desenvolvam e implantem serviços independentemente.",
+            "Escalabilidade elástica: Adicione ou remova consumers dinamicamente baseado na demanda. Se a fila cresce, adicione mais workers; se diminui, remova-os. Sem alterações de código.",
+            "Confiabilidade garantida: Mensagens podem ser persistidas em disco, replicadas entre nós do cluster, e confirmadas tanto pelo broker quanto pelo consumer. Você escolhe o nível de garantia.",
+            "Flexibilidade de padrões: Suporta múltiplos padrões de mensageria (pub/sub, work queues, RPC, routing) usando os mesmos componentes básicos, apenas configurados de formas diferentes.",
+            "Agnóstico de linguagem: Bibliotecas cliente oficiais e da comunidade para Java, Python, .NET, Ruby, PHP, JavaScript/Node.js, Go, Rust, e praticamente qualquer linguagem moderna.",
+            "Alta disponibilidade: Suporte nativo a clustering, espelhamento de filas, e quorum queues para cenários onde downtime não é aceitável.",
+            "Observabilidade: Interface de gerenciamento web, métricas Prometheus, logs estruturados, e integrações com ferramentas de monitoramento."
+          ]
+        },
+        "useCases": {
+          "title": "Casos de Uso Comuns",
+          "intro": "RabbitMQ é versátil e pode ser aplicado em diversos cenários. Aqui estão os mais comuns com exemplos concretos:",
+          "items": [
+            "Filas de tarefas assíncronas: Processamento de imagens/vídeos, geração de relatórios PDF, envio de emails em massa, processamento de pagamentos. Exemplo: Quando um usuário faz upload de um vídeo, em vez de processá-lo sincronamente (deixando o usuário esperando), você enfileira a tarefa e responde imediatamente. Workers processam o vídeo em background.",
+            "Comunicação entre microsserviços: Em vez de chamadas HTTP diretas entre serviços, use mensagens. Se o serviço de inventário estiver fora do ar, o pedido não é perdido - fica na fila até ser processado.",
+            "Arquiteturas orientadas a eventos (Event-Driven): Quando um evento acontece (usuário criado, pedido pago, produto atualizado), publique um evento. Todos os serviços interessados recebem automaticamente.",
+            "Agregação e processamento de logs: Centralize logs de múltiplos serviços em uma fila, processe-os com Elasticsearch/Logstash, e nunca perca uma entrada mesmo sob alta carga.",
+            "Notificações em tempo real: Push notifications, emails transacionais, SMS, notificações in-app. Um serviço de notificações consome de uma fila e entrega pelos canais apropriados.",
+            "Processamento de pedidos em e-commerce: Validação de estoque, processamento de pagamento, geração de nota fiscal, atualização de inventário, envio de confirmação - cada etapa como um passo na fila.",
+            "IoT e telemetria: Milhares de dispositivos enviando dados. RabbitMQ absorve picos de tráfego e distribui para processamento."
+          ]
+        },
+        "history": {
+          "title": "Breve História",
+          "content": "RabbitMQ foi desenvolvido pela Rabbit Technologies Ltd, uma pequena empresa britânica fundada em 2007. O nome 'Rabbit' foi escolhido porque coelhos são conhecidos por se reproduzirem rapidamente - uma metáfora para mensagens se movendo rapidamente pelo sistema. Escrito em Erlang (linguagem criada pela Ericsson para sistemas de telecomunicações altamente disponíveis), RabbitMQ herda características como tolerância a falhas, hot code swapping, e excelente desempenho em I/O concorrente. Em 2010, a VMware adquiriu a Rabbit Technologies, e em 2013 o projeto passou para a Pivotal. Hoje é mantido pela VMware/Broadcom sob licença open-source Mozilla Public License."
+        }
+      },
+      "concepts": {
+        "title": "Conceitos Fundamentais",
+        "subtitle": "Entendendo os blocos de construção que formam o ecossistema RabbitMQ",
+        "overview": "RabbitMQ segue o modelo AMQP (Advanced Message Queuing Protocol) que define uma arquitetura elegante e poderosa: producers enviam mensagens para exchanges, que as roteiam para queues através de bindings, e consumers leem das queues. Esta separação de responsabilidades é o que torna o RabbitMQ tão flexível. Vamos explorar cada componente em profundidade.",
+        "producer": {
+          "title": "Producers (Produtores)",
+          "content": "Producers são aplicações ou serviços que criam e publicam mensagens no RabbitMQ. Um conceito fundamental: producers NUNCA enviam mensagens diretamente para filas. Eles sempre publicam em uma exchange, e é a exchange quem decide o destino. Isso pode parecer uma camada extra de complexidade, mas é exatamente o que permite o desacoplamento total entre quem envia e quem recebe.",
+          "details": [
+            "Conexão e Canal: Producers estabelecem uma conexão TCP com o RabbitMQ e criam um ou mais canais dentro dessa conexão. Canais são 'conexões virtuais' leves que permitem multiplexar operações em uma única conexão TCP, economizando recursos.",
+            "Routing Key: Ao publicar uma mensagem, o producer especifica uma routing key - uma string que a exchange usa para decidir o roteamento. O significado da routing key depende do tipo de exchange.",
+            "Propriedades da Mensagem: Além do corpo (payload), mensagens podem ter propriedades: content_type (ex: 'application/json'), delivery_mode (1=transiente, 2=persistente), priority, correlation_id, reply_to, expiration, message_id, timestamp, type, user_id, app_id, e headers customizados.",
+            "Publisher Confirms: Para garantia de entrega, producers podem ativar o modo de confirmação. O RabbitMQ envia um ack quando a mensagem foi processada com segurança (escrita em disco se persistente, entregue a filas).",
+            "Mandatory Flag: Se definido como true, o broker retornará a mensagem ao producer se ela não puder ser roteada para nenhuma fila (nenhum binding correspondente)."
+          ],
+          "example": "Exemplo prático: Uma aplicação de e-commerce publica mensagens quando eventos acontecem. Ao criar um pedido: exchange='orders', routing_key='order.created', body={'order_id': 123, 'total': 99.90, 'items': [...]}. Ao pagar: routing_key='order.paid'. Ao enviar: routing_key='order.shipped'. Cada evento pode ser consumido por diferentes serviços (estoque, financeiro, logística, notificações) sem o producer saber quantos ou quais são.",
+          "codeHint": "Dica de código: Em Python com pika, publicar é tão simples quanto: channel.basic_publish(exchange='orders', routing_key='order.created', body=json.dumps(order_data), properties=pika.BasicProperties(delivery_mode=2, content_type='application/json'))"
+        },
+        "exchange": {
+          "title": "Exchanges (Trocadores)",
+          "content": "Exchanges são o coração do sistema de roteamento do RabbitMQ. Pense nelas como roteadores de rede inteligentes: recebem mensagens e decidem para quais filas enviá-las baseado em regras (bindings) e no tipo de exchange. Uma exchange NUNCA armazena mensagens - ela apenas roteia. Se uma mensagem chega e não há nenhuma fila vinculada que corresponda às regras, a mensagem é descartada silenciosamente (a menos que o flag mandatory esteja ativo).",
+          "details": [
+            "Tipos de Exchange: Existem 4 tipos embutidos - Direct (correspondência exata de routing key), Fanout (broadcast para todas as filas), Topic (correspondência de padrões com wildcards), e Headers (roteamento por atributos de header). Cada tipo será explicado em detalhes na seção seguinte.",
+            "Exchange Padrão (Default): RabbitMQ possui uma exchange direct sem nome (string vazia) que tem um binding automático para toda fila criada usando o nome da fila como routing key. Isso permite publicar 'diretamente' para uma fila, mas por baixo dos panos ainda passa por uma exchange.",
+            "Durabilidade: Exchanges podem ser duráveis (sobrevivem a reinício do broker) ou transientes (são excluídas no reinício). Em produção, sempre use exchanges duráveis.",
+            "Auto-delete: Se configurada, a exchange é excluída quando a última fila se desvincula dela. Útil para exchanges temporárias.",
+            "Exchange-to-Exchange Binding: Uma feature avançada permite que exchanges roteiem para outras exchanges, criando topologias complexas de roteamento."
+          ],
+          "example": "Exemplo prático: Imagine um sistema de logs. Uma exchange topic chamada 'logs' recebe todas as mensagens de log. Mensagens são publicadas com routing keys como 'app.payment.error', 'app.auth.info', 'app.order.warning'. Uma fila 'all-errors' está vinculada com padrão '*.*.error'. Uma fila 'payment-all' está vinculada com 'app.payment.*'. Uma fila 'everything' está vinculada com '#'. Cada fila recebe apenas o que precisa.",
+          "antiPattern": "Anti-padrão comum: Criar uma exchange por serviço consumidor. Isso acopla fortemente o producer aos consumers. Melhor: criar exchanges por domínio/contexto (orders, users, payments) e deixar consumers se vincularem conforme necessário."
+        },
+        "queue": {
+          "title": "Queues (Filas)",
+          "content": "Queues são buffers ordenados (FIFO - First In, First Out) que armazenam mensagens até que sejam consumidas e confirmadas. São o 'destino final' das mensagens no RabbitMQ. Uma fila pode receber mensagens de múltiplas exchanges (através de múltiplos bindings) e pode ter múltiplos consumers lendo dela (para balanceamento de carga).",
+          "details": [
+            "Durabilidade: Filas duráveis sobrevivem a reinício do broker. IMPORTANTE: durabilidade da fila não significa que as mensagens persistem - você precisa também publicar mensagens como persistentes (delivery_mode=2). Ambos são necessários.",
+            "Exclusividade: Filas exclusivas são usadas apenas pela conexão que as criou e são excluídas quando a conexão fecha. Úteis para filas temporárias de resposta em padrões RPC.",
+            "Auto-delete: A fila é excluída quando o último consumer se desconecta. Útil para filas efêmeras.",
+            "TTL (Time-To-Live): Você pode definir um TTL para mensagens na fila (x-message-ttl) ou para a própria fila (x-expires). Mensagens expiradas podem ser descartadas ou enviadas para uma Dead Letter Exchange.",
+            "Limite de Tamanho: Filas podem ter limite máximo de mensagens (x-max-length) ou bytes (x-max-length-bytes). Ao atingir o limite, mensagens antigas são descartadas ou enviadas para DLX.",
+            "Lazy Queues: Filas 'lazy' armazenam mensagens em disco em vez de memória, permitindo milhões de mensagens sem estourar RAM. Há uma pequena penalidade de latência.",
+            "Quorum Queues: Tipo mais recente, usa consenso Raft para replicação. Mais seguro que filas espelhadas clássicas, com garantias mais fortes de durabilidade."
+          ],
+          "example": "Exemplo prático: Uma fila 'email-notifications' com as seguintes configurações: durable=true (sobrevive reinício), x-message-ttl=86400000 (mensagens expiram em 24h), x-max-length=100000 (máximo 100k mensagens), x-dead-letter-exchange='dlx.emails' (mensagens rejeitadas/expiradas vão para DLX para análise).",
+          "naming": "Convenção de nomenclatura sugerida: Use o padrão 'servico.proposito' ou 'dominio.acao'. Exemplos: 'email-service.send-notification', 'order-processor.validate', 'inventory.update-stock'. Isso torna óbvio quem consome e para quê."
+        },
+        "binding": {
+          "title": "Bindings (Vínculos)",
+          "content": "Bindings são as regras que conectam exchanges a filas (ou exchanges a outras exchanges). Sem um binding, mensagens publicadas em uma exchange simplesmente não chegam a lugar nenhum. Um binding diz: 'mensagens que chegam nesta exchange e que correspondem a esta regra devem ser copiadas para esta fila'.",
+          "details": [
+            "Binding Key: A 'regra' do binding. Para exchanges Direct, é uma string exata. Para Topic, é um padrão com wildcards. Para Fanout, é ignorada. Para Headers, são atributos de header.",
+            "Múltiplos Bindings: Uma fila pode ter vários bindings para a mesma exchange (com keys diferentes) ou para exchanges diferentes. Uma exchange pode ter bindings para múltiplas filas.",
+            "Binding Arguments: Para exchanges Headers, os argumentos definem quais headers devem corresponder. O argumento especial 'x-match' define se TODOS os headers devem corresponder ('all') ou QUALQUER um ('any').",
+            "Sem Binding = Sem Mensagens: Um erro comum é criar uma fila mas esquecer de vinculá-la. A fila existirá mas nunca receberá mensagens. Sempre verifique seus bindings!"
+          ],
+          "example": "Exemplo prático: Uma exchange 'orders' do tipo Topic. Criamos bindings: fila 'inventory-service' com binding key 'order.created' (precisa reservar estoque), fila 'notification-service' com binding key 'order.*' (envia notificação para qualquer evento de pedido), fila 'analytics-service' com binding key '#' (registra tudo para análise).",
+          "visualization": "Visualização: Exchange 'orders' ─┬─ [order.created] ──> fila 'inventory-service'\n                                              ├─ [order.*] ──────> fila 'notification-service'\n                                              └─ [#] ─────────────> fila 'analytics-service'"
+        },
+        "consumer": {
+          "title": "Consumers (Consumidores)",
+          "content": "Consumers são aplicações que se inscrevem em filas para receber e processar mensagens. Quando um consumer se conecta a uma fila, o RabbitMQ começa a enviar mensagens para ele (push model). Múltiplos consumers na mesma fila recebem mensagens em round-robin (distribuição circular), permitindo escalabilidade horizontal.",
+          "details": [
+            "Acknowledgments (ACKs): Após processar uma mensagem com sucesso, o consumer envia um ACK ao RabbitMQ. Só então a mensagem é removida da fila. Se o consumer morrer sem enviar ACK, a mensagem é reentregue a outro consumer.",
+            "Auto-ACK vs Manual ACK: Auto-ACK confirma a mensagem assim que é entregue (mais rápido, menos confiável). Manual ACK confirma após processamento (mais lento, mais confiável). Para mensagens importantes, SEMPRE use manual ACK.",
+            "NACK e Reject: Se o processamento falhar, você pode rejeitar (reject) ou negativamente confirmar (nack) a mensagem. Com requeue=true, ela volta para a fila. Com requeue=false, ela é descartada ou enviada para DLX.",
+            "Prefetch (QoS): Define quantas mensagens não-confirmadas um consumer pode ter simultaneamente. prefetch=1 garante distribuição justa mas reduz throughput. prefetch=10-50 é um bom equilíbrio para maioria dos casos.",
+            "Consumer Tags: Identificador único do consumer. Útil para monitoramento e para cancelar consumidores específicos.",
+            "Exclusive Consumer: Se marcado como exclusivo, apenas este consumer pode ler da fila. Útil para garantir processamento sequencial."
+          ],
+          "example": "Exemplo prático: Um worker de processamento de pagamentos. Conecta na fila 'payments.process', configura prefetch=1 (um pagamento por vez para evitar problemas), usa manual ACK. Ao receber mensagem: valida dados, processa pagamento na gateway, se sucesso: envia ACK, publica evento 'payment.completed'. Se falha: publica evento 'payment.failed', envia NACK com requeue=false (vai para DLX para análise).",
+          "scaling": "Escalando consumers: Precisa processar mais rápido? Simplesmente inicie mais instâncias do consumer. RabbitMQ distribui automaticamente. Em Kubernetes, isso é tão simples quanto aumentar o número de réplicas do deployment."
+        },
+        "messageFlow": {
+          "title": "Fluxo Completo de uma Mensagem",
+          "content": "Vamos traçar o caminho completo de uma mensagem no RabbitMQ:",
+          "steps": [
+            "1. Producer cria conexão TCP com o broker e abre um canal",
+            "2. Producer publica mensagem na exchange com routing key e propriedades",
+            "3. Exchange recebe a mensagem e avalia todos os seus bindings",
+            "4. Para cada binding que corresponde (baseado no tipo de exchange), a mensagem é COPIADA para a fila",
+            "5. A mensagem fica na fila até um consumer estar disponível",
+            "6. RabbitMQ envia (push) a mensagem para um consumer inscrito",
+            "7. Consumer processa a mensagem e envia ACK",
+            "8. RabbitMQ remove a mensagem da fila permanentemente"
+          ]
+        }
+      },
+      "exchangeTypes": {
+        "title": "Tipos de Exchange em Profundidade",
+        "subtitle": "Domine os quatro tipos de exchange e saiba quando usar cada um",
+        "overview": "RabbitMQ fornece quatro tipos de exchange embutidos, cada um com lógica de roteamento diferente. Escolher o tipo certo é crucial - uma escolha errada pode complicar sua arquitetura ou limitar flexibilidade futura. Vamos analisar cada tipo em detalhes.",
+        "direct": {
+          "title": "Exchange Direct",
+          "subtitle": "Correspondência exata de routing key",
+          "content": "A exchange Direct é a mais simples e intuitiva: ela entrega mensagens apenas para filas cuja binding key corresponde EXATAMENTE à routing key da mensagem. Se você publica com routing_key='pdf', apenas filas vinculadas com binding_key='pdf' recebem.",
+          "howItWorks": {
+            "title": "Como Funciona",
+            "steps": [
+              "1. Mensagem chega com routing_key='invoice.generate'",
+              "2. Exchange verifica todos os bindings",
+              "3. Fila 'invoice-processor' tem binding_key='invoice.generate' → RECEBE",
+              "4. Fila 'email-sender' tem binding_key='email.send' → NÃO recebe",
+              "5. Fila 'audit-log' tem binding_key='invoice.generate' → RECEBE (múltiplas filas podem ter a mesma key)"
+            ]
+          },
+          "multipleBindings": {
+            "title": "Múltiplos Bindings com Mesma Key",
+            "content": "Uma mesma fila pode ter múltiplos bindings para a mesma exchange com keys diferentes. Isso permite que uma fila receba mensagens de várias 'categorias'. Exemplo: fila 'critical-alerts' vinculada com 'error' E 'critical' E 'fatal'."
+          },
+          "useCases": [
+            "Work queues onde cada tipo de tarefa tem uma fila dedicada",
+            "Roteamento por categoria/tipo de mensagem",
+            "Quando você sabe exatamente quais categorias existem e não mudam frequentemente",
+            "Implementação da exchange padrão do RabbitMQ"
+          ],
+          "example": {
+            "title": "Exemplo Completo: Sistema de Notificações",
+            "scenario": "Uma aplicação precisa enviar notificações por diferentes canais.",
+            "setup": "Exchange 'notifications' (direct) com 3 filas: 'email-queue' (binding_key='email'), 'sms-queue' (binding_key='sms'), 'push-queue' (binding_key='push').",
+            "usage": "Ao publicar, especifique o canal: routing_key='email' para emails, routing_key='sms' para SMS. Cada serviço de notificação consome sua fila específica."
+          },
+          "when": {
+            "use": "Use Direct quando: você tem categorias bem definidas e estáveis, quer simplicidade, cada mensagem deve ir para um destino específico.",
+            "avoid": "Evite Direct quando: suas categorias são hierárquicas ou podem crescer muito, você precisa de padrões flexíveis, quer que consumers possam filtrar dinamicamente."
+          }
+        },
+        "fanout": {
+          "title": "Exchange Fanout",
+          "subtitle": "Broadcast para todas as filas",
+          "content": "A exchange Fanout é a mais simples em termos de lógica: ela IGNORA completamente a routing key e entrega uma cópia da mensagem para TODAS as filas vinculadas. Não há regras, não há filtros - tudo vai para todos. É também a mais rápida porque não precisa fazer nenhuma comparação.",
+          "howItWorks": {
+            "title": "Como Funciona",
+            "steps": [
+              "1. Mensagem chega (routing_key é ignorada, pode ser qualquer coisa ou vazia)",
+              "2. Exchange verifica quais filas estão vinculadas",
+              "3. Para CADA fila vinculada, uma cópia da mensagem é entregue",
+              "4. Se 5 filas estão vinculadas, 5 cópias são criadas"
+            ]
+          },
+          "characteristics": {
+            "title": "Características Importantes",
+            "items": [
+              "Routing key é completamente ignorada - você pode até passar string vazia",
+              "Binding key também é ignorada na criação do binding",
+              "Mensagens são COPIADAS, não compartilhadas - cada fila tem sua própria cópia",
+              "Se não há filas vinculadas, a mensagem é descartada silenciosamente",
+              "Adicionar uma nova fila é transparente para o producer"
+            ]
+          },
+          "useCases": [
+            "Eventos que todos os serviços precisam saber (user.deleted, config.updated)",
+            "Invalidação de cache distribuída (todos os nós precisam limpar cache)",
+            "Logs que devem ir para múltiplos destinos simultaneamente",
+            "Notificações em tempo real para todos os clientes conectados",
+            "Padrão Publish/Subscribe clássico"
+          ],
+          "example": {
+            "title": "Exemplo Completo: Invalidação de Cache",
+            "scenario": "Você tem 10 servidores de aplicação, cada um com cache local. Quando um produto é atualizado, todos precisam invalidar o cache.",
+            "setup": "Exchange 'cache-invalidation' (fanout). Cada servidor cria sua própria fila exclusiva e auto-delete (ex: 'cache-invalidation.server-1') e a vincula.",
+            "usage": "Ao atualizar produto: publica mensagem {entity: 'product', id: 123} na exchange. Todos os 10 servidores recebem e limpam o cache do produto 123."
+          },
+          "when": {
+            "use": "Use Fanout quando: todos os consumers precisam de todas as mensagens, você quer broadcast puro, simplicidade é mais importante que filtros.",
+            "avoid": "Evite Fanout quando: consumers precisam de apenas um subconjunto de mensagens (use Topic), volume de mensagens é muito alto e nem todos precisam de tudo."
+          }
+        },
+        "topic": {
+          "title": "Exchange Topic",
+          "subtitle": "Roteamento flexível com padrões wildcard",
+          "content": "A exchange Topic é a mais versátil e poderosa. Ela roteia mensagens usando correspondência de PADRÕES na routing key. A routing key deve ser uma lista de palavras separadas por pontos (ex: 'order.created.brazil'), e os bindings podem usar wildcards: * (uma palavra exata) e # (zero ou mais palavras). Isso permite filtros extremamente flexíveis.",
+          "howItWorks": {
+            "title": "Como Funciona",
+            "steps": [
+              "1. Mensagem chega com routing_key='order.created.brazil.premium'",
+              "2. Exchange verifica cada binding e aplica correspondência de padrão:",
+              "3. Binding 'order.created.*.*' → CORRESPONDE (4 palavras, * = uma palavra cada)",
+              "4. Binding 'order.created.#' → CORRESPONDE (# = 'brazil.premium')",
+              "5. Binding 'order.*.brazil.*' → CORRESPONDE (* = 'created', * = 'premium')",
+              "6. Binding '#.premium' → CORRESPONDE (# = 'order.created.brazil')",
+              "7. Binding 'order.shipped.*' → NÃO corresponde ('created' ≠ 'shipped')",
+              "8. Binding 'payment.#' → NÃO corresponde ('order' ≠ 'payment')"
+            ]
+          },
+          "patterns": {
+            "title": "Entendendo os Wildcards",
+            "star": {
+              "symbol": "* (asterisco)",
+              "meaning": "Corresponde a EXATAMENTE uma palavra",
+              "examples": [
+                "'order.*' corresponde a 'order.created', 'order.shipped', mas NÃO 'order' nem 'order.item.added'",
+                "'*.error' corresponde a 'payment.error', 'auth.error', mas NÃO 'error' nem 'payment.service.error'",
+                "'order.*.brazil' corresponde a 'order.created.brazil', mas NÃO 'order.brazil' nem 'order.item.added.brazil'"
+              ]
+            },
+            "hash": {
+              "symbol": "# (hash/cerquilha)",
+              "meaning": "Corresponde a ZERO ou mais palavras",
+              "examples": [
+                "'order.#' corresponde a 'order', 'order.created', 'order.created.brazil', 'order.item.added.brazil.premium'",
+                "'#.error' corresponde a 'error', 'payment.error', 'payment.gateway.error'",
+                "'#' sozinho corresponde a TUDO (equivale a fanout)"
+              ]
+            },
+            "combinations": {
+              "title": "Combinações Poderosas",
+              "examples": [
+                "'order.*.*.premium' - pedidos premium de qualquer tipo em qualquer região",
+                "'#.error.#' - qualquer mensagem que contenha 'error' em qualquer posição",
+                "'*.*.brazil' - qualquer entidade, qualquer ação, mas apenas do Brasil"
+              ]
+            }
+          },
+          "useCases": [
+            "Sistema de logs: 'app.level.service' permite filtrar por app, nível (error/warn/info), serviço",
+            "E-commerce multinacional: 'order.status.country.tier' permite filtrar por status, país, tier de cliente",
+            "IoT: 'device.type.location.metric' permite consumir métricas específicas de locais específicos",
+            "Eventos de domínio: 'domain.entity.action' permite que serviços se inscrevam em eventos específicos"
+          ],
+          "example": {
+            "title": "Exemplo Completo: Sistema de Logs Multi-tenant",
+            "scenario": "Uma plataforma SaaS com múltiplos clientes (tenants), múltiplos serviços, e diferentes níveis de log.",
+            "routingKey": "Routing key: '{tenant}.{service}.{level}' - ex: 'acme.payment.error', 'globex.auth.info'",
+            "bindings": [
+              "Fila 'acme-all-logs': binding '#.acme.#' ou 'acme.#' - todos os logs da ACME",
+              "Fila 'all-errors': binding '#.error' - todos os erros de todos os tenants",
+              "Fila 'payment-critical': binding '*.payment.error' - erros do serviço de pagamento de qualquer tenant",
+              "Fila 'globex-auth': binding 'globex.auth.*' - todos os níveis de log do auth da Globex"
+            ]
+          },
+          "when": {
+            "use": "Use Topic quando: você tem hierarquias ou taxonomias de mensagens, diferentes consumers precisam de diferentes subconjuntos, você quer flexibilidade para adicionar novos filtros sem mudar código.",
+            "avoid": "Evite Topic quando: você não precisa de filtros (use Fanout) ou só tem categorias simples sem hierarquia (use Direct)."
+          },
+          "performance": "Nota de performance: Topic exchanges são um pouco mais lentas que Direct/Fanout porque precisam avaliar padrões. Para maioria dos casos isso é irrelevante, mas em cenários de ultra-alta performance, considere Direct com múltiplos bindings."
+        },
+        "headers": {
+          "title": "Exchange Headers",
+          "subtitle": "Roteamento por atributos da mensagem",
+          "content": "A exchange Headers é a menos usada mas mais flexível em termos de critérios de roteamento. Em vez de usar a routing key (que é uma string simples), ela roteia baseado nos HEADERS da mensagem AMQP. Você pode definir múltiplos atributos e usar lógica AND ('all') ou OR ('any') para correspondência.",
+          "howItWorks": {
+            "title": "Como Funciona",
+            "steps": [
+              "1. Mensagem chega com headers: {format: 'pdf', department: 'sales', priority: 'high'}",
+              "2. Exchange verifica cada binding e seus argumentos:",
+              "3. Binding com args {format: 'pdf', x-match: 'all'} → verifica se format='pdf' está presente",
+              "4. Binding com args {department: 'sales', priority: 'high', x-match: 'all'} → verifica AMBOS",
+              "5. Binding com args {department: 'sales', priority: 'high', x-match: 'any'} → verifica QUALQUER UM"
+            ]
+          },
+          "xMatch": {
+            "title": "O Argumento x-match",
+            "all": "'x-match: all' (padrão) - TODOS os headers especificados no binding devem corresponder aos headers da mensagem. É uma lógica AND.",
+            "any": "'x-match: any' - QUALQUER header especificado no binding que corresponda é suficiente. É uma lógica OR."
+          },
+          "useCases": [
+            "Roteamento baseado em content-type (application/json, application/xml, text/plain)",
+            "Roteamento multi-dimensional que não se encaixa bem em routing key hierárquica",
+            "Quando você precisa de lógica OR entre critérios",
+            "Mensagens com metadados complexos que determinam o processamento"
+          ],
+          "example": {
+            "title": "Exemplo Completo: Processamento de Documentos",
+            "scenario": "Um sistema processa documentos com diferentes formatos e prioridades.",
+            "setup": [
+              "Fila 'pdf-high-priority': binding args {format: 'pdf', priority: 'high', x-match: 'all'}",
+              "Fila 'pdf-processor': binding args {format: 'pdf', x-match: 'all'}",
+              "Fila 'urgent-any-format': binding args {priority: 'urgent', x-match: 'all'}",
+              "Fila 'reports-or-invoices': binding args {type: 'report', type: 'invoice', x-match: 'any'}"
+            ],
+            "note": "Uma mensagem com {format: 'pdf', priority: 'high'} vai para 'pdf-high-priority' E 'pdf-processor' (ambos correspondem)."
+          },
+          "when": {
+            "use": "Use Headers quando: você precisa de roteamento multi-dimensional, quer lógica OR, routing keys hierárquicas não se encaixam no seu modelo, mensagens já têm headers significativos.",
+            "avoid": "Evite Headers quando: routing keys resolvem seu problema (é mais simples), você não precisa de lógica OR complexa, performance é crítica (headers é mais lento)."
+          },
+          "limitations": "Limitações: Headers exchange é a mais lenta porque precisa comparar múltiplos valores. Também é menos intuitiva e mais difícil de debugar. Use apenas quando as outras não atendem."
+        },
+        "comparison": {
+          "title": "Tabela Comparativa",
+          "headers": ["Tipo", "Routing Key", "Binding Key", "Lógica", "Performance", "Uso Principal"],
+          "rows": [
+            ["Direct", "Obrigatória", "Exata", "key = binding", "Rápida", "Categorias fixas"],
+            ["Fanout", "Ignorada", "Ignorada", "Todas as filas", "Muito rápida", "Broadcast"],
+            ["Topic", "Hierárquica", "Padrão (*/#)", "Correspondência de padrão", "Média", "Filtros flexíveis"],
+            ["Headers", "Ignorada", "N/A (args)", "Correspondência de headers", "Lenta", "Multi-dimensional"]
+          ]
+        }
+      },
+      "patterns": {
+        "title": "Padrões de Mensageria",
+        "subtitle": "Arquiteturas consagradas para resolver problemas reais",
+        "overview": "RabbitMQ não é apenas uma ferramenta - é uma plataforma que implementa padrões arquiteturais testados por décadas na indústria. Entender esses padrões é tão importante quanto entender a mecânica do RabbitMQ. Cada padrão resolve um problema específico, e conhecê-los te permite escolher a solução certa para cada situação.",
+        "workQueues": {
+          "title": "Work Queues (Filas de Trabalho)",
+          "subtitle": "Distribuindo tarefas pesadas entre múltiplos workers",
+          "content": "O padrão Work Queue (também chamado de Task Queue) é usado para distribuir tarefas demoradas entre múltiplos processos worker. A ideia principal é evitar fazer uma tarefa que consome muitos recursos imediatamente e ter que esperar ela completar. Em vez disso, enfileiramos a tarefa para ser feita depois, por um worker dedicado.",
+          "problem": {
+            "title": "O Problema que Resolve",
+            "content": "Imagine um endpoint de API que precisa gerar um relatório PDF complexo. Se você gera o PDF sincronamente, o usuário espera 30 segundos olhando para uma tela de loading. Se 100 usuários pedem relatórios ao mesmo tempo, seu servidor trava. Com work queues: você enfileira a tarefa, responde imediatamente 'Seu relatório está sendo gerado', e workers em background processam as tarefas em seu próprio ritmo."
+          },
+          "howItWorks": {
+            "title": "Como Funciona",
+            "steps": [
+              "1. Producer envia mensagem para uma fila (via exchange direct ou default)",
+              "2. Múltiplos workers (consumers) estão conectados na mesma fila",
+              "3. RabbitMQ distribui mensagens round-robin: worker1 recebe msg1, worker2 recebe msg2, worker1 recebe msg3...",
+              "4. IMPORTANTE: Cada mensagem vai para apenas UM worker (diferente de pub/sub)",
+              "5. Worker processa a tarefa e envia ACK",
+              "6. Se worker morre antes do ACK, mensagem é reentregue para outro worker"
+            ]
+          },
+          "fairDispatch": {
+            "title": "Distribuição Justa com Prefetch",
+            "content": "O round-robin básico tem um problema: ele não considera se um worker está ocupado. Worker1 pode estar processando uma tarefa pesada de 5 minutos enquanto Worker2 está ocioso. Solução: use prefetch_count=1. Isso diz ao RabbitMQ: 'não me envie uma nova mensagem até que eu confirme a anterior'. Assim, workers ocupados não recebem mais tarefas.",
+            "example": "channel.basic_qos(prefetch_count=1)  # Distribui de forma justa"
+          },
+          "acknowledgments": {
+            "title": "Garantindo que Tarefas não se Percam",
+            "content": "Por padrão, assim que RabbitMQ entrega uma mensagem, ela é marcada para deleção. Mas e se o worker morrer no meio do processamento? A tarefa é perdida! Solução: use manual acknowledgment. O worker só envia ACK após completar a tarefa com sucesso. Se ele morrer, RabbitMQ reentrega para outro worker.",
+            "warning": "CUIDADO: Um erro comum é esquecer de enviar o ACK. Mensagens se acumulam indefinidamente porque RabbitMQ acha que ainda estão sendo processadas. Monitore 'unacked' no management UI."
+          },
+          "durability": {
+            "title": "Sobrevivendo a Reinícios",
+            "content": "Para que tarefas não se percam se o RabbitMQ reiniciar, você precisa de: 1) Fila durável (durable=true), 2) Mensagens persistentes (delivery_mode=2). Ambos são necessários.",
+            "example": "channel.queue_declare(queue='task_queue', durable=True)\nchannel.basic_publish(properties=pika.BasicProperties(delivery_mode=2), ...)"
+          },
+          "benefits": [
+            "Processe 1000 tarefas com 10 workers em paralelo - 100x mais rápido que sequencial",
+            "Escale horizontalmente: precisa de mais capacidade? Inicie mais workers. Sem mudança de código.",
+            "Absorva picos: se chegam 10.000 tarefas de repente, a fila absorve e workers processam no seu ritmo",
+            "Tolerância a falhas: worker morreu? Tarefa é automaticamente reentregue. Nada se perde."
+          ],
+          "useCases": [
+            "Processamento de imagens/vídeos (resize, thumbnail, transcode)",
+            "Geração de relatórios PDF/Excel",
+            "Envio de emails em massa",
+            "Import/export de dados",
+            "Processamento de pagamentos",
+            "Qualquer tarefa que leva mais de alguns segundos"
+          ],
+          "example": {
+            "title": "Exemplo Completo: Processamento de Imagens",
+            "scenario": "Usuários fazem upload de fotos que precisam ser redimensionadas para 5 tamanhos diferentes.",
+            "setup": "Fila 'image-processing' (durable), 5 workers rodando em containers Docker, prefetch=1.",
+            "flow": "Upload → API enfileira {image_id: 123, sizes: ['thumb', 'small', 'medium', 'large', 'original']} → Responde 202 Accepted → Worker pega tarefa → Processa → Salva no S3 → ACK → Webhook notifica frontend",
+            "scaling": "Black Friday chegando? kubectl scale deployment image-worker --replicas=20"
+          }
+        },
+        "pubSub": {
+          "title": "Publish/Subscribe",
+          "subtitle": "Entregando mensagens para todos os interessados",
+          "content": "O padrão Publish/Subscribe (Pub/Sub) é fundamentalmente diferente de Work Queues. Em Work Queues, cada mensagem vai para apenas UM consumer. Em Pub/Sub, cada mensagem vai para TODOS os subscribers. É como a diferença entre uma carta (um destinatário) e um anúncio de jornal (todos os leitores).",
+          "problem": {
+            "title": "O Problema que Resolve",
+            "content": "Quando um usuário deleta sua conta, múltiplos sistemas precisam reagir: o serviço de busca precisa remover do índice, o serviço de email precisa cancelar newsletters, o serviço de billing precisa cancelar assinaturas, o analytics precisa registrar o evento. Se o serviço de usuários chamasse cada um diretamente, seria um pesadelo de acoplamento. Com Pub/Sub: publica 'user.deleted' e quem quiser escutar, escuta."
+          },
+          "howItWorks": {
+            "title": "Como Funciona",
+            "steps": [
+              "1. Producer publica mensagem em uma exchange FANOUT",
+              "2. Cada subscriber tem sua PRÓPRIA fila vinculada à exchange",
+              "3. Exchange COPIA a mensagem para TODAS as filas vinculadas",
+              "4. Cada subscriber/consumer recebe a mensagem independentemente",
+              "5. Se um subscriber está offline quando a mensagem chega, ela fica na fila dele esperando"
+            ]
+          },
+          "temporaryQueues": {
+            "title": "Filas Temporárias vs Permanentes",
+            "temporary": "Filas temporárias (exclusive, auto-delete): Para subscribers efêmeros como websockets. Quando o consumer desconecta, a fila é deletada. Mensagens antigas não se acumulam.",
+            "permanent": "Filas permanentes (durable): Para subscribers que precisam de todas as mensagens, mesmo se ficarem offline. A fila acumula mensagens até o subscriber voltar."
+          },
+          "benefits": [
+            "Desacoplamento total: producer não sabe (nem precisa saber) quem são os subscribers",
+            "Extensibilidade: adicionar novo subscriber é criar fila e binding, sem tocar no producer",
+            "Eventos de domínio: publique 'order.paid' e deixe os interessados reagirem",
+            "Real-time: notificações instantâneas para múltiplos clientes"
+          ],
+          "useCases": [
+            "Eventos de domínio em arquitetura de microsserviços",
+            "Invalidação de cache em múltiplos servidores",
+            "Notificações em tempo real (chat, feeds, dashboards)",
+            "Atualizações de configuração para múltiplas instâncias",
+            "Logs e auditoria (múltiplos destinos recebem os mesmos logs)"
+          ],
+          "example": {
+            "title": "Exemplo Completo: Sistema de Eventos de Domínio",
+            "scenario": "Plataforma de e-commerce onde um pedido pago dispara múltiplas ações.",
+            "setup": "Exchange 'domain-events' (fanout). Filas: 'inventory-service', 'notification-service', 'analytics-service', 'fulfillment-service'. Cada uma vinculada à exchange.",
+            "flow": "Pagamento confirmado → OrderService publica {event: 'order.paid', order_id: 123, items: [...]} → Todos os 4 serviços recebem: Inventory reserva estoque, Notification envia email, Analytics registra métrica, Fulfillment inicia separação."
+          },
+          "vsWorkQueues": {
+            "title": "Pub/Sub vs Work Queues",
+            "comparison": "Work Queues: N workers, 1 recebe cada mensagem. Para distribuir TRABALHO. / Pub/Sub: N subscribers, TODOS recebem cada mensagem. Para NOTIFICAR EVENTOS."
+          }
+        },
+        "routing": {
+          "title": "Routing (Roteamento Seletivo)",
+          "subtitle": "Subscribers escolhem o que querem receber",
+          "content": "O padrão Routing é uma evolução do Pub/Sub. Em Pub/Sub puro, todos recebem tudo. Com Routing, subscribers podem FILTRAR e receber apenas mensagens que lhes interessam. É como a diferença entre assinar um jornal inteiro vs apenas a seção de esportes.",
+          "problem": {
+            "title": "O Problema que Resolve",
+            "content": "Sistema de logs: você tem logs de INFO, WARNING, ERROR de múltiplos serviços. O time de desenvolvimento quer ver todos os logs. O time de operações quer apenas ERRORs. O dashboard quer ERROR e WARNING. Com Routing: cada subscriber se vincula apenas aos níveis que quer receber."
+          },
+          "howItWorks": {
+            "title": "Como Funciona",
+            "direct": {
+              "title": "Com Exchange Direct",
+              "content": "Filas se vinculam com routing keys específicas. Mensagem com routing_key='error' vai apenas para filas vinculadas com binding_key='error'."
+            },
+            "topic": {
+              "title": "Com Exchange Topic",
+              "content": "Mais poderoso: filas usam padrões. Binding '*.error' recebe 'payment.error', 'auth.error', etc."
+            }
+          },
+          "benefits": [
+            "Eficiência: subscribers não recebem mensagens que não precisam",
+            "Flexibilidade: fácil adicionar novos filtros sem mudar producers",
+            "Organização: clara separação de responsabilidades baseada em tipo de mensagem"
+          ],
+          "example": {
+            "title": "Exemplo Completo: Roteamento de Logs",
+            "setup": "Exchange 'logs' (topic). Routing key: '{service}.{level}'. Ex: 'payment.error', 'auth.info'.",
+            "bindings": [
+              "Fila 'all-logs': binding '#' (tudo)",
+              "Fila 'all-errors': binding '*.error' (todos os erros)",
+              "Fila 'payment-team': binding 'payment.*' (tudo do payment)",
+              "Fila 'critical-alerts': bindings '*.error' + '*.critical' (erros e críticos)"
+            ]
+          }
+        },
+        "rpc": {
+          "title": "RPC (Remote Procedure Call)",
+          "subtitle": "Request/Response sobre mensagens",
+          "content": "RPC sobre RabbitMQ permite que você faça chamadas de procedimento remoto usando mensagens. O cliente envia uma requisição e ESPERA uma resposta, mas de forma assíncrona e através do broker. É como HTTP, mas com as vantagens de mensageria: balanceamento de carga automático, bufferização, desacoplamento.",
+          "problem": {
+            "title": "O Problema que Resolve",
+            "content": "Você tem um serviço de cálculo pesado (ex: precificação dinâmica). Múltiplos clientes precisam chamar esse serviço. Com HTTP direto: você precisa de load balancer, service discovery, circuit breakers, retry logic. Com RPC sobre RabbitMQ: tudo isso vem 'de graça' - multiple workers consomem da fila, mensagens são bufferizadas se workers estão ocupados."
+          },
+          "howItWorks": {
+            "title": "Como Funciona",
+            "steps": [
+              "1. Cliente cria uma fila exclusiva de resposta (ex: 'amq.gen-Xa2...')",
+              "2. Cliente publica requisição com dois campos especiais:",
+              "   - reply_to: nome da fila de resposta",
+              "   - correlation_id: ID único para associar resposta à requisição",
+              "3. Servidor recebe requisição, processa, e publica resposta na fila reply_to com o mesmo correlation_id",
+              "4. Cliente recebe resposta e usa correlation_id para saber a qual requisição pertence"
+            ]
+          },
+          "correlationId": {
+            "title": "Por que correlation_id é Essencial",
+            "content": "Um cliente pode ter múltiplas requisições pendentes simultaneamente. Quando uma resposta chega, como saber a qual requisição ela pertence? O correlation_id é um identificador único (geralmente UUID) que o cliente gera para cada requisição. O servidor DEVE incluir o mesmo ID na resposta."
+          },
+          "benefits": [
+            "Balanceamento de carga automático: múltiplos servidores consomem da fila de requisições",
+            "Desacoplamento: cliente não precisa saber onde estão os servidores",
+            "Bufferização: se servidores estão ocupados, requisições ficam na fila",
+            "Retry automático: se servidor morre processando, mensagem é reentregue"
+          ],
+          "considerations": [
+            "Latência maior que chamadas diretas (duas viagens pela rede)",
+            "Implementar timeout é responsabilidade do cliente",
+            "Tratamento de erros precisa ser bem pensado (como comunicar erro ao cliente?)",
+            "Não abuse: se você precisa de RPC para tudo, talvez RabbitMQ não seja a solução"
+          ],
+          "example": {
+            "title": "Exemplo Completo: Serviço de Cálculo de Frete",
+            "scenario": "Checkout precisa calcular frete. Cálculo é complexo e demorado.",
+            "setup": "Fila 'rpc.freight.requests' com 5 workers de cálculo.",
+            "flow": "Checkout gera correlation_id='abc123' → Publica {items: [...], cep: '01310100'} com reply_to='amq.gen-Xyz' → Worker calcula → Worker publica resposta {price: 15.90, days: 3} na fila 'amq.gen-Xyz' com correlation_id='abc123' → Checkout recebe e associa pelo ID."
+          },
+          "alternatives": {
+            "title": "Quando NÃO usar RPC sobre RabbitMQ",
+            "items": [
+              "Se latência é crítica (<10ms) - use gRPC direto",
+              "Se já tem infraestrutura de service mesh madura",
+              "Se são chamadas simples que não precisam de bufferização",
+              "Se precisa de streaming bi-direcional"
+            ]
+          }
+        },
+        "deadLetter": {
+          "title": "Dead Letter (Mensagens Mortas)",
+          "subtitle": "O que fazer quando mensagens falham",
+          "content": "Dead Letter Exchange (DLX) é um mecanismo para lidar com mensagens que não podem ser processadas. Em vez de perder mensagens problemáticas, você as redireciona para uma fila especial onde podem ser analisadas, reprocessadas ou arquivadas.",
+          "whenTriggered": {
+            "title": "Quando uma Mensagem vira Dead Letter",
+            "triggers": [
+              "Consumer rejeita (nack/reject) com requeue=false",
+              "TTL da mensagem expira",
+              "Fila atinge limite máximo e mensagens antigas são descartadas"
+            ]
+          },
+          "setup": {
+            "title": "Como Configurar",
+            "steps": [
+              "1. Crie uma exchange para dead letters: 'dlx.main'",
+              "2. Crie uma fila para dead letters: 'dlq.main'",
+              "3. Vincule a fila à exchange",
+              "4. Nas suas filas principais, configure x-dead-letter-exchange='dlx.main'",
+              "5. Opcionalmente, configure x-dead-letter-routing-key para rotear por origem"
+            ]
+          },
+          "useCases": [
+            "Análise de mensagens que falharam repetidamente",
+            "Retry manual após correção de bugs",
+            "Auditoria de mensagens rejeitadas",
+            "Alertas quando taxa de dead letters aumenta"
+          ]
+        }
+      },
+      "reliability": {
+        "title": "Confiabilidade e Durabilidade",
+        "subtitle": "Garantindo entrega de mensagens em qualquer cenário",
+        "overview": "Em sistemas distribuídos, falhas são a norma, não exceção. Servidores reiniciam, redes caem, processos morrem. RabbitMQ foi projetado com isso em mente e oferece múltiplas camadas de proteção. A chave é entender que confiabilidade é um ESPECTRO - você escolhe o nível apropriado para cada caso de uso, balanceando com performance.",
+        "messageLifecycle": {
+          "title": "Ciclo de Vida da Mensagem e Pontos de Falha",
+          "content": "Para entender confiabilidade, primeiro entenda onde as coisas podem dar errado:",
+          "points": [
+            "1. Producer → Broker: Mensagem pode se perder na rede antes de chegar ao RabbitMQ",
+            "2. Broker (memória): Se RabbitMQ reinicia antes de persistir, mensagem é perdida",
+            "3. Broker → Consumer: Se consumer morre antes de processar, tarefa é perdida",
+            "4. Consumer: Se processamento falha silenciosamente, mensagem é 'perdida' logicamente"
+          ],
+          "solution": "RabbitMQ oferece mecanismos para proteger CADA ponto: Publisher Confirms (1), Durabilidade (2), Consumer ACKs (3), e boas práticas de código (4)."
+        },
+        "acks": {
+          "title": "Consumer Acknowledgments (ACKs)",
+          "subtitle": "Garantindo que mensagens sejam processadas",
+          "content": "Acknowledgments são sinais do consumer para o RabbitMQ informando o que aconteceu com a mensagem. Sem ACK explícito, RabbitMQ assume que a mensagem ainda está sendo processada e a mantém na fila (marcada como 'unacked').",
+          "types": {
+            "title": "Tipos de Confirmação",
+            "ack": {
+              "name": "ACK (Acknowledge)",
+              "description": "Processamento bem-sucedido. Mensagem é removida da fila permanentemente.",
+              "when": "Use quando: processamento completou com sucesso E qualquer efeito colateral (salvar no banco, chamar API) também completou."
+            },
+            "nack": {
+              "name": "NACK (Negative Acknowledge)",
+              "description": "Processamento falhou. Você decide se quer requeue (voltar pra fila) ou descartar (vai pra DLX se configurado).",
+              "when": "Use quando: erro recuperável (requeue=true) ou erro permanente (requeue=false, como JSON inválido)."
+            },
+            "reject": {
+              "name": "REJECT",
+              "description": "Similar ao NACK, mas para uma mensagem específica. NACK pode rejeitar múltiplas mensagens de uma vez.",
+              "when": "Use quando: quer rejeitar apenas esta mensagem específica."
+            }
+          },
+          "autoVsManual": {
+            "title": "Auto-ACK vs Manual-ACK",
+            "auto": {
+              "name": "auto_ack=True",
+              "description": "Mensagem é confirmada IMEDIATAMENTE quando entregue ao consumer, ANTES do processamento.",
+              "pros": "Mais rápido, código mais simples",
+              "cons": "Se consumer morrer no meio do processamento, mensagem é PERDIDA para sempre",
+              "when": "Aceitável apenas para mensagens não-críticas onde perder algumas é OK (métricas, logs de debug)"
+            },
+            "manual": {
+              "name": "auto_ack=False (Manual)",
+              "description": "Você decide quando confirmar. Mensagem só é removida quando você explicitamente chama ack().",
+              "pros": "Seguro: se consumer morrer, mensagem é reentregue. Controle total.",
+              "cons": "Código mais complexo, precisa lembrar de confirmar",
+              "when": "Use SEMPRE para mensagens importantes. É o padrão recomendado."
+            }
+          },
+          "commonMistakes": {
+            "title": "Erros Comuns",
+            "items": [
+              "Esquecer de enviar ACK: Mensagens ficam 'unacked' e não são reentregues até consumer desconectar. A fila parece vazia mas não está!",
+              "ACK antes de processar: Se der erro depois, mensagem foi perdida.",
+              "Não tratar exceções: Exceção não tratada = sem ACK = mensagem fica presa até timeout.",
+              "Usar requeue=true em loop infinito: Mensagem é rejeitada e reprocessada infinitamente. Use contador de tentativas ou DLX."
+            ]
+          }
+        },
+        "durability": {
+          "title": "Durabilidade e Persistência",
+          "subtitle": "Sobrevivendo a reinícios do broker",
+          "content": "Durabilidade garante que suas mensagens sobrevivam se o RabbitMQ reiniciar (seja por manutenção, crash, ou atualização). Isso requer três configurações SIMULTÂNEAS - faltar qualquer uma e você pode perder mensagens.",
+          "threeLegs": {
+            "title": "Os Três Pilares da Durabilidade",
+            "exchange": {
+              "name": "Exchange Durável",
+              "how": "exchange_declare(durable=True)",
+              "what": "Exchange sobrevive a reinício. Mas exchanges não armazenam mensagens, então só isso não basta."
+            },
+            "queue": {
+              "name": "Fila Durável",
+              "how": "queue_declare(durable=True)",
+              "what": "Fila sobrevive a reinício E suas mensagens (se persistentes) são restauradas."
+            },
+            "message": {
+              "name": "Mensagem Persistente",
+              "how": "properties=pika.BasicProperties(delivery_mode=2)",
+              "what": "Mensagem é escrita em disco, não apenas memória. delivery_mode=1 é transiente, 2 é persistente."
+            }
+          },
+          "important": {
+            "title": "Importante!",
+            "content": "Fila durável + mensagem transiente = mensagem PERDIDA no reinício. Todos os três são necessários para garantia completa."
+          },
+          "performance": {
+            "title": "Impacto na Performance",
+            "content": "Persistência tem custo: cada mensagem é escrita em disco (fsync). Em cenários de alta vazão, isso pode ser gargalo. Estratégias:",
+            "strategies": [
+              "Batching: Agrupe múltiplas mensagens antes de fsync",
+              "Lazy Queues: Mensagens vão direto pro disco em vez de memória primeiro",
+              "RAM disk: Se perda é aceitável mas quer performance + alguma durabilidade",
+              "Separação: Mensagens críticas (persistentes) vs métricas (transientes)"
+            ]
+          },
+          "lazyQueues": {
+            "title": "Lazy Queues",
+            "content": "Filas tradicionais mantêm mensagens em memória e fazem flush periódico para disco. Lazy queues fazem o oposto: mensagens vão direto para disco e são lidas sob demanda. Ideal para filas com milhões de mensagens ou quando memória é escassa. Tradeoff: latência ligeiramente maior.",
+            "how": "queue_declare(arguments={'x-queue-mode': 'lazy'})"
+          }
+        },
+        "prefetch": {
+          "title": "Prefetch (QoS)",
+          "subtitle": "Controlando fluxo e distribuição justa",
+          "content": "Prefetch (Quality of Service) limita quantas mensagens não-confirmadas um consumer pode ter simultaneamente. Sem prefetch, RabbitMQ envia mensagens o mais rápido possível, o que pode sobrecarregar consumers ou causar distribuição injusta.",
+          "howItWorks": {
+            "title": "Como Funciona",
+            "content": "basic_qos(prefetch_count=N) significa: 'RabbitMQ, me envie no máximo N mensagens por vez. Só me envie mais quando eu confirmar alguma.' Isso cria um buffer limitado no consumer."
+          },
+          "values": {
+            "title": "Escolhendo o Valor Certo",
+            "one": {
+              "value": "prefetch=1",
+              "description": "Distribuição mais justa possível. Worker só recebe nova mensagem quando termina a atual.",
+              "when": "Tarefas demoradas ou de duração muito variável. Cada worker processa no seu ritmo.",
+              "downside": "Menor throughput porque há latência entre terminar uma mensagem e receber a próxima."
+            },
+            "medium": {
+              "value": "prefetch=10-50",
+              "description": "Equilíbrio entre fairness e throughput. Workers têm buffer para processar continuamente.",
+              "when": "Maioria dos casos. Tarefas de duração moderada e similar entre si."
+            },
+            "high": {
+              "value": "prefetch=100+",
+              "description": "Máximo throughput. Cada worker tem grande buffer.",
+              "when": "Tarefas muito rápidas (<1ms). Latência de rede é o gargalo.",
+              "downside": "Se um worker é mais lento, ele acumula mensagens enquanto outros ficam ociosos."
+            },
+            "unlimited": {
+              "value": "prefetch=0 (ilimitado)",
+              "description": "RabbitMQ envia tudo que pode o mais rápido possível.",
+              "when": "Quase nunca recomendado. Pode estourar memória do consumer.",
+              "downside": "Distribuição muito injusta. Um consumer pode receber milhares enquanto outros têm zero."
+            }
+          },
+          "global": {
+            "title": "Prefetch Global vs Per-Consumer",
+            "content": "basic_qos tem parâmetro 'global'. Se false (padrão): limite é por consumer no canal. Se true: limite é compartilhado entre todos consumers do canal."
+          }
+        },
+        "confirms": {
+          "title": "Publisher Confirms",
+          "subtitle": "Garantindo que mensagens chegaram ao broker",
+          "content": "ACKs do consumer garantem que mensagens foram processadas. Mas e se a mensagem nem chegou ao RabbitMQ? Publisher Confirms fecham essa lacuna: o broker confirma que recebeu a mensagem com segurança.",
+          "howItWorks": {
+            "title": "Como Funciona",
+            "steps": [
+              "1. Producer habilita modo de confirmação no canal: channel.confirm_delivery()",
+              "2. Producer publica mensagem normalmente",
+              "3. RabbitMQ processa a mensagem (roteia, persiste se necessário)",
+              "4. RabbitMQ envia ACK (sucesso) ou NACK (falha) de volta ao producer",
+              "5. Producer age conforme resultado: NACK = retry, erro, log, etc."
+            ]
+          },
+          "modes": {
+            "title": "Modos de Confirmação",
+            "sync": {
+              "name": "Síncrono (wait_for_confirms)",
+              "description": "Publica e espera confirmação. Simples mas lento.",
+              "when": "Mensagens críticas, volume baixo."
+            },
+            "async": {
+              "name": "Assíncrono (callbacks)",
+              "description": "Publica e registra callback para receber confirmação depois.",
+              "when": "Alto volume, não pode bloquear."
+            },
+            "batch": {
+              "name": "Batch",
+              "description": "Publica várias mensagens, depois espera confirmação de todas.",
+              "when": "Volume médio-alto, aceitável bloquear periodicamente."
+            }
+          },
+          "whatIsConfirmed": {
+            "title": "O que o ACK Significa",
+            "content": "Quando você recebe ACK do broker, significa:",
+            "items": [
+              "Mensagem foi recebida pelo broker",
+              "Se mensagem é persistente: foi escrita em disco",
+              "Se há filas vinculadas: foi enfileirada (ou entregue a quorum queue)",
+              "NÃO significa que consumer recebeu ou processou - apenas que o broker tem a mensagem segura"
+            ]
+          },
+          "mandatoryFlag": {
+            "title": "Flag Mandatory",
+            "content": "Publisher confirm diz se o broker recebeu. Mas e se não há fila para rotear? Por padrão, mensagem é silenciosamente descartada. Com mandatory=True, mensagem é retornada ao producer se não puder ser roteada. Útil para detectar erros de configuração."
+          }
+        },
+        "ha": {
+          "title": "Alta Disponibilidade",
+          "subtitle": "Clusters e replicação",
+          "content": "Para sistemas mission-critical, um único broker é single point of failure. RabbitMQ suporta clustering e replicação para alta disponibilidade.",
+          "options": {
+            "classic": {
+              "name": "Filas Clássicas com Mirroring (legado)",
+              "description": "Mensagens são replicadas para múltiplos nós. Se o master morre, um mirror assume.",
+              "status": "Funciona mas está sendo descontinuado em favor de Quorum Queues."
+            },
+            "quorum": {
+              "name": "Quorum Queues (recomendado)",
+              "description": "Usa algoritmo Raft para consenso. Mensagem só é confirmada quando maioria dos nós persistiu.",
+              "benefits": "Mais seguro, melhor em cenários de partição de rede, recuperação mais previsível."
+            },
+            "streams": {
+              "name": "Streams (novo)",
+              "description": "Log append-only replicado. Múltiplos consumers podem ler do mesmo offset.",
+              "when": "Cenários tipo Kafka: replay de eventos, múltiplos consumers independentes."
+            }
+          }
+        }
+      },
+      "bestPractices": {
+        "title": "Melhores Práticas",
+        "subtitle": "Lições aprendidas de sistemas em produção",
+        "intro": "Estas práticas vêm de anos de experiência operando RabbitMQ em produção. Seguí-las desde o início vai evitar muita dor de cabeça.",
+        "naming": {
+          "title": "Convenções de Nomenclatura",
+          "content": "Nomes bem escolhidos tornam seu sistema auto-documentado. Quando algo dá errado às 3h da manhã, você quer entender o sistema olhando apenas para os nomes no RabbitMQ Management.",
+          "exchanges": {
+            "title": "Exchanges",
+            "pattern": "Padrão sugerido: {domínio} ou {domínio}.{subddomínio}",
+            "examples": ["orders", "users", "payments.refunds", "notifications.email"],
+            "tips": [
+              "Use nomes de domínio de negócio, não nomes técnicos",
+              "Evite nomes genéricos como 'main', 'default', 'events'"
+            ]
+          },
+          "queues": {
+            "title": "Filas",
+            "pattern": "Padrão sugerido: {serviço-consumidor}.{propósito}",
+            "examples": ["inventory-service.reserve-stock", "email-worker.send-transactional", "analytics.track-events"],
+            "tips": [
+              "Inclua o nome do serviço que CONSOME (não o que produz)",
+              "O nome deve indicar O QUE é feito com as mensagens",
+              "Para DLQs: dlq.{fila-original}"
+            ]
+          },
+          "routingKeys": {
+            "title": "Routing Keys",
+            "pattern": "Padrão sugerido: {entidade}.{ação}.{qualificador}",
+            "examples": ["order.created", "order.paid.premium", "user.profile.updated.brazil"],
+            "tips": [
+              "Use hierarquia lógica do mais genérico para mais específico",
+              "Verbos no passado para eventos (created, updated, deleted)",
+              "Seja consistente: não misture 'user.create' com 'order.created'"
+            ]
+          }
+        },
+        "errorHandling": {
+          "title": "Tratamento de Erros",
+          "content": "Erros VÃO acontecer. A questão é: você está preparado?",
+          "retryStrategy": {
+            "title": "Estratégia de Retry",
+            "content": "Nem todo erro merece retry. Classifique:",
+            "transient": {
+              "name": "Erros Transientes (retry vale a pena)",
+              "examples": "Timeout de banco, serviço externo indisponível, rate limit",
+              "strategy": "Retry com backoff exponencial: 1s, 2s, 4s, 8s... máximo 3-5 tentativas"
+            },
+            "permanent": {
+              "name": "Erros Permanentes (retry não ajuda)",
+              "examples": "JSON malformado, validação falhou, recurso não existe",
+              "strategy": "Envie para DLQ imediatamente para análise manual"
+            }
+          },
+          "dlqSetup": {
+            "title": "Configurando Dead Letter Queues",
+            "steps": [
+              "1. Crie exchange: 'dlx' (direct)",
+              "2. Crie fila: 'dlq.{fila-original}' para cada fila principal",
+              "3. Vincule com routing_key={nome-fila-original}",
+              "4. Configure fila principal: x-dead-letter-exchange='dlx', x-dead-letter-routing-key='{nome-fila}'",
+              "5. Monitore tamanho das DLQs - crescimento indica problema"
+            ]
+          },
+          "headerForRetry": {
+            "title": "Rastreando Tentativas",
+            "content": "Adicione header 'x-retry-count' incrementando a cada retry. Quando atingir limite, envie para DLQ em vez de tentar novamente. Isso evita loops infinitos."
+          },
+          "monitoring": {
+            "title": "O que Monitorar",
+            "items": [
+              "Taxa de mensagens em DLQs (alerta se > threshold)",
+              "Profundidade de filas (alerta se crescendo continuamente)",
+              "Taxa de reject/nack (indica problemas no processamento)",
+              "Consumers 'unacked' alto (possível leak de mensagens)"
+            ]
+          }
+        },
+        "performance": {
+          "title": "Otimização de Performance",
+          "content": "RabbitMQ pode facilmente lidar com dezenas de milhares de mensagens por segundo com configuração adequada.",
+          "connections": {
+            "title": "Gerenciamento de Conexões",
+            "problems": "Problema comum: criar nova conexão para cada mensagem. Conexões TCP são caras!",
+            "solution": "Solução: use pool de conexões e reutilize canais. Uma conexão pode ter múltiplos canais.",
+            "rule": "Regra geral: 1 conexão por processo, 1 canal por thread."
+          },
+          "batching": {
+            "title": "Batching de Publicações",
+            "content": "Em vez de publicar e esperar confirm para cada mensagem, publique um lote e espere confirms de todas. Reduz drasticamente latência total.",
+            "example": "Exemplo: Em vez de 1000 publish+wait (1000 round trips), faça 1000 publishes, depois 1 wait (1 round trip)."
+          },
+          "queueSize": {
+            "title": "Tamanho de Filas",
+            "content": "Filas muito grandes (milhões de mensagens) degradam performance. Prefira:",
+            "strategies": [
+              "Múltiplas filas menores em vez de uma gigante",
+              "Lazy queues se precisa de fila grande (move para disco)",
+              "TTL para descartar mensagens antigas automaticamente",
+              "Alertas quando fila passa de threshold (processamento não está acompanhando)"
+            ]
+          },
+          "persistenceTradeoff": {
+            "title": "Tradeoff de Persistência",
+            "content": "Nem toda mensagem precisa ser durável. Métricas de monitoramento? Logs de debug? Se perder algumas não é catástrofe, use mensagens transientes (delivery_mode=1). Muito mais rápido."
+          }
+        },
+        "security": {
+          "title": "Segurança",
+          "content": "RabbitMQ frequentemente carrega dados sensíveis. Proteja adequadamente.",
+          "tls": {
+            "title": "TLS/SSL",
+            "content": "SEMPRE use TLS em produção. Mensagens trafegam em texto plano por padrão - qualquer um na rede pode ler.",
+            "tips": [
+              "Configure TLS no broker",
+              "Clientes devem validar certificado (não desabilite verificação!)",
+              "Considere mutual TLS para autenticação de clientes"
+            ]
+          },
+          "authentication": {
+            "title": "Autenticação",
+            "content": "Nunca use guest/guest em produção (funciona apenas localhost por padrão, mas ainda assim...).",
+            "tips": [
+              "Crie usuários específicos por aplicação/serviço",
+              "Use senhas fortes ou certificados de cliente",
+              "Integre com LDAP/AD para gerenciamento centralizado"
+            ]
+          },
+          "authorization": {
+            "title": "Autorização (Permissões)",
+            "content": "Princípio do menor privilégio: cada usuário/serviço deve ter apenas as permissões necessárias.",
+            "examples": [
+              "Producer de orders: write em exchange 'orders', nenhuma permissão em filas",
+              "Consumer de inventory: read na fila 'inventory-service.*', write para ACK",
+              "Admin: acesso total apenas para operações"
+            ]
+          },
+          "vhosts": {
+            "title": "Virtual Hosts",
+            "content": "VHosts são como bancos de dados diferentes no mesmo servidor. Use para isolar:",
+            "useCases": [
+              "Ambientes: /production, /staging, /development",
+              "Times/Produtos: /team-a, /product-x",
+              "Clientes (multi-tenant): /customer-123"
+            ]
+          }
+        },
+        "operations": {
+          "title": "Operações em Produção",
+          "intro": "Operar RabbitMQ em produção requer monitoramento, manutenção e preparação para incidentes. Estas práticas ajudam a garantir operação confiável.",
+          "backup": {
+            "title": "Backup e Recuperação",
+            "content": "RabbitMQ armazena definições (exchanges, filas, bindings, users) separado de mensagens.",
+            "definitions": "Definições: Exporte via management UI ou API. Guarde em version control.",
+            "messages": "Mensagens: Não há backup nativo. Para mensagens críticas, considere shovel para backup ou arquitetura de replicação."
+          },
+          "upgrades": {
+            "title": "Atualizações",
+            "tips": [
+              "Sempre leia release notes antes de atualizar",
+              "Teste em staging primeiro",
+              "Em clusters: atualize um nó por vez (rolling upgrade)",
+              "Tenha rollback plan"
+            ]
+          },
+          "monitoring": {
+            "title": "Monitoramento",
+            "metrics": [
+              "rabbitmq_queue_messages: total de mensagens em filas",
+              "rabbitmq_queue_messages_unacked: mensagens em processamento",
+              "rabbitmq_connections: conexões ativas",
+              "rabbitmq_channels: canais ativos",
+              "rabbitmq_node_mem_used: uso de memória",
+              "rabbitmq_node_disk_free: espaço em disco"
+            ],
+            "tools": "Ferramentas: Prometheus + Grafana (plugin oficial), Datadog, New Relic"
+          }
+        }
+      },
+      "antiPatterns": {
+        "title": "Anti-Patterns Comuns",
+        "subtitle": "O que NÃO fazer",
+        "items": [
+          {
+            "name": "Uma fila para tudo",
+            "problem": "Uma única fila 'messages' com milhões de mensagens de tipos diferentes",
+            "solution": "Separe por tipo/domínio. Cada consumer processa um tipo de mensagem."
+          },
+          {
+            "name": "Polling em vez de Subscribe",
+            "problem": "Consumer fazendo basic_get em loop (polling) em vez de basic_consume",
+            "solution": "Use basic_consume. RabbitMQ é otimizado para push, não pull."
+          },
+          {
+            "name": "Criar conexão por mensagem",
+            "problem": "Nova conexão TCP para cada publish ou consume",
+            "solution": "Reutilize conexões. Pool de conexões se necessário."
+          },
+          {
+            "name": "Ignorar mensagens não-roteáveis",
+            "problem": "Mensagens publicadas que não têm fila correspondente são silenciosamente descartadas",
+            "solution": "Use mandatory=true e/ou alternate-exchange para capturar mensagens órfãs."
+          },
+          {
+            "name": "Auto-ACK para tudo",
+            "problem": "Usar auto_ack=True para todas as filas, perdendo mensagens quando consumer falha",
+            "solution": "Manual ACK por padrão. Auto-ACK apenas para mensagens descartáveis."
+          }
+        ]
+      }
+    },
+    "glossary": {
+      "title": "Glossário Completo",
+      "subtitle": "Todos os termos que você precisa conhecer",
+      "terms": {
+        "amqp": {
+          "term": "AMQP",
+          "definition": "Advanced Message Queuing Protocol. Protocolo de camada de aplicação padronizado para middleware de mensagens. Define como mensagens são formatadas, roteadas e entregues. RabbitMQ implementa AMQP 0-9-1 (a versão mais comum)."
+        },
+        "broker": {
+          "term": "Broker / Message Broker",
+          "definition": "Software intermediário que recebe mensagens de producers, as armazena em filas, e as entrega a consumers. RabbitMQ é um broker. Outros exemplos: ActiveMQ, Redis (com Streams), Apache Kafka (embora seja arquiteturalmente diferente)."
+        },
+        "vhost": {
+          "term": "Virtual Host (vhost)",
+          "definition": "Partição lógica dentro de um broker RabbitMQ. Cada vhost tem suas próprias exchanges, filas, bindings e permissões - completamente isolados. Útil para separar ambientes (dev/staging/prod) ou multi-tenancy."
+        },
+        "connection": {
+          "term": "Connection",
+          "definition": "Conexão TCP entre uma aplicação cliente e o broker RabbitMQ. Estabelecer conexão envolve handshake, autenticação e negociação de parâmetros. Conexões são relativamente caras de criar."
+        },
+        "channel": {
+          "term": "Channel",
+          "definition": "Uma 'conexão virtual' leve dentro de uma Connection TCP. Multiplica operações em uma única conexão. A maioria das operações AMQP (publish, consume, declare) acontece em canais. Crie múltiplos canais em uma conexão, não múltiplas conexões."
+        },
+        "exchange": {
+          "term": "Exchange",
+          "definition": "Entidade que recebe mensagens de producers e as roteia para zero ou mais filas baseado em regras (bindings). Tipos: Direct, Fanout, Topic, Headers. Exchanges nunca armazenam mensagens."
+        },
+        "queue": {
+          "term": "Queue (Fila)",
+          "definition": "Buffer que armazena mensagens em ordem FIFO até serem consumidas e confirmadas. Filas podem ser duráveis (sobrevivem reinício), exclusivas (apenas uma conexão), ou auto-delete (deletadas quando último consumer sai)."
+        },
+        "binding": {
+          "term": "Binding",
+          "definition": "Regra que conecta uma exchange a uma fila (ou outra exchange). Define como mensagens são roteadas. Para exchanges Direct/Topic, inclui uma binding key. Para Fanout, a binding key é ignorada."
+        },
+        "routingKey": {
+          "term": "Routing Key",
+          "definition": "String enviada junto com a mensagem que a exchange usa para decidir o roteamento. Em exchanges Direct, deve corresponder exatamente à binding key. Em Topic, pode usar padrões com wildcards (* e #)."
+        },
+        "bindingKey": {
+          "term": "Binding Key",
+          "definition": "Routing key especificada no binding entre exchange e fila. É o 'filtro' que a fila usa para receber mensagens. Para exchanges Topic, pode conter wildcards."
+        },
+        "ack": {
+          "term": "Acknowledgment (ACK)",
+          "definition": "Sinal enviado pelo consumer ao broker indicando que a mensagem foi processada com sucesso. Após ACK, a mensagem é removida da fila permanentemente. Sem ACK, a mensagem é reentregue se o consumer desconectar."
+        },
+        "nack": {
+          "term": "Negative Acknowledgment (NACK)",
+          "definition": "Sinal enviado pelo consumer indicando falha no processamento. Com requeue=true, a mensagem volta para a fila. Com requeue=false, vai para Dead Letter Exchange (se configurada) ou é descartada."
+        },
+        "reject": {
+          "term": "Reject",
+          "definition": "Similar ao NACK, mas para uma única mensagem. NACK pode rejeitar múltiplas mensagens de uma vez (multiple=true). Na prática, são usados de forma intercambiável."
+        },
+        "prefetch": {
+          "term": "Prefetch Count / QoS",
+          "definition": "Limite de quantas mensagens não-confirmadas um consumer pode ter simultaneamente. Configurado via basic_qos(). Prefetch=1 garante distribuição mais justa. Valores maiores aumentam throughput."
+        },
+        "dlx": {
+          "term": "Dead Letter Exchange (DLX)",
+          "definition": "Exchange para onde mensagens são enviadas quando: são rejeitadas com requeue=false, expiram (TTL), ou a fila atinge limite máximo. Essencial para tratamento de erros. Configure com x-dead-letter-exchange na fila."
+        },
+        "dlq": {
+          "term": "Dead Letter Queue (DLQ)",
+          "definition": "Fila vinculada a uma DLX que armazena mensagens 'mortas'. Permite análise manual, retry, ou arquivamento de mensagens problemáticas."
+        },
+        "ttl": {
+          "term": "Time-To-Live (TTL)",
+          "definition": "Tempo máximo que uma mensagem pode ficar na fila antes de ser descartada ou enviada para DLX. Pode ser definido por mensagem (expiration property) ou por fila (x-message-ttl argument)."
+        },
+        "durable": {
+          "term": "Durable (Durável)",
+          "definition": "Propriedade de exchanges e filas que indica que sobrevivem a reinício do broker. Para mensagens sobreviverem, precisam também ser persistentes (delivery_mode=2). Durabilidade da fila sozinha não basta."
+        },
+        "persistent": {
+          "term": "Persistent Message",
+          "definition": "Mensagem com delivery_mode=2, que é escrita em disco. Sobrevive reinício do broker se a fila também for durável. Delivery_mode=1 é transiente (apenas memória, mais rápido, mas perdida no reinício)."
+        },
+        "publisherConfirm": {
+          "term": "Publisher Confirm",
+          "definition": "Mecanismo onde o broker confirma ao producer que a mensagem foi recebida com segurança. Fecha a lacuna de confiabilidade no lado da publicação. Habilitado via confirm_select() no canal."
+        },
+        "mandatory": {
+          "term": "Mandatory Flag",
+          "definition": "Flag na publicação que indica: se a mensagem não puder ser roteada para nenhuma fila, retorne-a ao producer. Por padrão (mandatory=false), mensagens não-roteáveis são silenciosamente descartadas."
+        },
+        "alternateExchange": {
+          "term": "Alternate Exchange",
+          "definition": "Exchange configurada para receber mensagens que não correspondem a nenhum binding da exchange original. Útil como 'catch-all' para mensagens órfãs. Configure com x-alternate-exchange argument."
+        },
+        "lazyQueue": {
+          "term": "Lazy Queue",
+          "definition": "Modo de fila que armazena mensagens diretamente em disco em vez de memória. Ideal para filas muito grandes (milhões de mensagens) ou quando memória é escassa. Tradeoff: latência ligeiramente maior."
+        },
+        "quorumQueue": {
+          "term": "Quorum Queue",
+          "definition": "Tipo de fila replicada usando algoritmo Raft para consenso. Mais segura que mirrored queues clássicas. Mensagem só é confirmada quando maioria dos nós persistiu. Recomendado para alta disponibilidade."
+        },
+        "stream": {
+          "term": "Stream",
+          "definition": "Estrutura de dados append-only introduzida no RabbitMQ 3.9. Similar a Kafka topics. Permite múltiplos consumers lerem do mesmo offset, replay de mensagens, e retenção baseada em tamanho/tempo."
+        },
+        "consumer": {
+          "term": "Consumer",
+          "definition": "Aplicação que se inscreve em uma ou mais filas para receber mensagens. Pode usar auto-ack (confirmação automática) ou manual-ack (confirmação explícita). Múltiplos consumers na mesma fila recebem mensagens round-robin."
+        },
+        "producer": {
+          "term": "Producer",
+          "definition": "Aplicação que publica mensagens em exchanges. Producers nunca publicam diretamente em filas - sempre passam por uma exchange (nem que seja a default exchange)."
+        },
+        "shovel": {
+          "term": "Shovel",
+          "definition": "Plugin que move mensagens de uma fila/exchange para outra, possivelmente em brokers diferentes. Útil para replicação, migração, ou integração entre clusters."
+        },
+        "federation": {
+          "term": "Federation",
+          "definition": "Plugin que permite que exchanges e filas em diferentes brokers sejam 'ligadas'. Mensagens publicadas em um broker podem aparecer no outro. Útil para arquiteturas geograficamente distribuídas."
+        }
+      }
+    }
+  },
+  "actions": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "connect": "Conectar",
+    "disconnect": "Desconectar",
+    "start": "Iniciar",
+    "stop": "Parar",
+    "reset": "Resetar"
+  },
+  "errors": {
+    "connectionFailed": "Falha na conexão",
+    "invalidRoutingKey": "Routing key inválida",
+    "queueFull": "Fila está cheia",
+    "consumerBusy": "Consumer está ocupado"
+  },
+  "footer": {
+    "madeWith": "Feito com",
+    "forLearning": "para aprender",
+    "openSource": "Código Aberto",
+    "by": "por",
+    "owner": "Rafael Coelho"
+  },
+  "shortcuts": {
+    "title": "Atalhos",
+    "keyboardShortcuts": "Atalhos de Teclado",
+    "general": "Geral",
+    "addNodes": "Adicionar Nós",
+    "canvas": "Canvas",
+    "undo": "Desfazer",
+    "redo": "Refazer",
+    "selectAll": "Selecionar tudo",
+    "duplicate": "Duplicar",
+    "delete": "Excluir selecionado",
+    "clearSelection": "Limpar seleção",
+    "addProducer": "Adicionar Producer",
+    "addExchange": "Adicionar Exchange",
+    "addQueue": "Adicionar Queue",
+    "addConsumer": "Adicionar Consumer",
+    "middleMouse": "Botão do Meio",
+    "pan": "Mover canvas",
+    "zoom": "Zoom in/out",
+    "clickDrag": "Clique + Arraste",
+    "boxSelect": "Seleção em caixa",
+    "addToSelection": "Adicionar à seleção"
+  },
+  "contextMenu": {
+    "edit": "Editar",
+    "duplicate": "Duplicar",
+    "delete": "Excluir"
+  }
+}

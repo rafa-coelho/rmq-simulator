@@ -1,0 +1,1162 @@
+{
+  "app": {
+    "title": "Simulador RabbitMQ",
+    "subtitle": "Simulador visual interactivo para aprender colas de mensajes",
+    "description": "Aprende conceptos de RabbitMQ construyendo y visualizando flujos de mensajes en tiempo real"
+  },
+  "nav": {
+    "simulator": "Simulador",
+    "learn": "Aprende RabbitMQ",
+    "examples": "Ejemplos"
+  },
+  "toolbar": {
+    "addProducer": "Agregar Producer",
+    "addExchange": "Agregar Exchange",
+    "addQueue": "Agregar Queue",
+    "addConsumer": "Agregar Consumer",
+    "clear": "Limpiar Canvas",
+    "export": "Exportar",
+    "import": "Importar",
+    "examples": "Cargar Ejemplo"
+  },
+  "nodes": {
+    "producer": {
+      "title": "Producer",
+      "description": "Envía mensajes a exchanges",
+      "placeholder": "Nombre del Producer"
+    },
+    "exchange": {
+      "title": "Exchange",
+      "description": "Enruta mensajes a colas basado en reglas",
+      "placeholder": "Nombre del Exchange",
+      "types": {
+        "direct": "Direct",
+        "fanout": "Fanout",
+        "topic": "Topic",
+        "headers": "Headers"
+      },
+      "typeDescriptions": {
+        "direct": "Enruta mensajes a colas con routing key coincidente",
+        "fanout": "Transmite mensajes a todas las colas vinculadas",
+        "topic": "Enruta mensajes usando patrones en routing key",
+        "headers": "Enruta mensajes basado en atributos del header"
+      }
+    },
+    "queue": {
+      "title": "Queue",
+      "description": "Almacena mensajes hasta ser consumidos",
+      "placeholder": "Nombre de la Queue",
+      "messages": "mensajes",
+      "empty": "Vacía",
+      "durable": "Durable",
+      "autoDelete": "Auto Delete"
+    },
+    "consumer": {
+      "title": "Consumer",
+      "description": "Recibe y procesa mensajes",
+      "placeholder": "Nombre del Consumer",
+      "consumed": "consumidos",
+      "processing": "Procesando...",
+      "idle": "Inactivo",
+      "autoAck": "Auto Ack",
+      "prefetch": "Prefetch"
+    }
+  },
+  "binding": {
+    "title": "Binding",
+    "routingKey": "Routing Key",
+    "routingKeyPlaceholder": "Ingrese routing key",
+    "pattern": "Patrón",
+    "patternHelp": "Use * para una palabra, # para cero o más palabras"
+  },
+  "messages": {
+    "title": "Mensajes",
+    "send": "Enviar Mensaje",
+    "content": "Contenido del Mensaje",
+    "contentPlaceholder": "Ingrese el contenido del mensaje...",
+    "routingKey": "Routing Key",
+    "routingKeyPlaceholder": "ej: order.created",
+    "headers": "Headers",
+    "addHeader": "Agregar Header",
+    "history": "Historial de Mensajes",
+    "noMessages": "Ningún mensaje enviado aún",
+    "status": {
+      "sent": "Enviado",
+      "routed": "Enrutado",
+      "queued": "En Cola",
+      "consumed": "Consumido",
+      "rejected": "Rechazado",
+      "unroutable": "No Enrutable"
+    }
+  },
+  "stats": {
+    "title": "Estadísticas",
+    "totalSent": "Total Enviados",
+    "totalRouted": "Total Enrutados",
+    "totalConsumed": "Total Consumidos",
+    "totalRejected": "Total Rechazados",
+    "messagesInQueues": "En Colas",
+    "publishRate": "Tasa de Publicación",
+    "consumeRate": "Tasa de Consumo"
+  },
+  "properties": {
+    "title": "Propiedades",
+    "name": "Nombre",
+    "type": "Tipo",
+    "delete": "Eliminar",
+    "duplicate": "Duplicar",
+    "noSelection": "Seleccione un nodo para ver propiedades"
+  },
+  "examples": {
+    "simpleQueue": {
+      "title": "Cola Simple",
+      "description": "Flujo básico producer → exchange → queue → consumer"
+    },
+    "workQueues": {
+      "title": "Work Queues",
+      "description": "Distribuye tareas entre múltiples workers"
+    },
+    "pubSub": {
+      "title": "Publish/Subscribe",
+      "description": "Exchange fanout transmitiendo a múltiples colas"
+    },
+    "routing": {
+      "title": "Routing",
+      "description": "Exchange direct con routing keys"
+    },
+    "topics": {
+      "title": "Topics",
+      "description": "Exchange topic con coincidencia de patrones"
+    }
+  },
+  "learn": {
+    "title": "Aprende RabbitMQ",
+    "subtitle": "Guía completa y didáctica sobre colas de mensajes con RabbitMQ",
+    "toc": "Índice",
+    "sections": {
+      "introduction": {
+        "title": "Introducción a RabbitMQ",
+        "subtitle": "Descubra qué es RabbitMQ y por qué revolucionó la comunicación entre sistemas",
+        "content": "RabbitMQ es uno de los message brokers open-source más utilizados del mundo, con millones de instalaciones globalmente. Desarrollado originalmente por Rabbit Technologies Ltd., actualmente es mantenido por Broadcom (anteriormente VMware). Implementa el Advanced Message Queuing Protocol (AMQP) y proporciona una plataforma robusta, escalable y confiable para construir sistemas distribuidos y arquitecturas basadas en microservicios. Desde startups hasta gigantes como Instagram, Reddit y Bloomberg, organizaciones de todos los tamaños confían en RabbitMQ para procesar miles de millones de mensajes diarios.",
+        "whatIs": {
+          "title": "¿Qué es RabbitMQ?",
+          "content": "RabbitMQ es un software de cola de mensajes, también conocido como message broker o queue manager. Funciona como intermediario inteligente para la comunicación entre diferentes sistemas, recibiendo, almacenando y reenviando mensajes. A diferencia de la comunicación directa entre servicios (donde el servicio A llama directamente al servicio B), RabbitMQ actúa como un 'amortiguador' que desacopla los sistemas. Esto significa que el servicio A puede enviar un mensaje y continuar su trabajo, mientras RabbitMQ se encarga de garantizar que el mensaje llegue al servicio B, incluso si B está temporalmente fuera del aire.",
+          "analogy": "Piense en RabbitMQ como una oficina de correos sofisticada: cuando deposita una carta (mensaje), tiene certeza de que será entregada al destinatario (consumidor), aunque este no esté en casa en el momento. La oficina de correos guarda la carta, organiza por destino, y la entrega cuando el destinatario esté disponible. Así como la oficina de correos no necesita que usted conozca personalmente al cartero o sepa dónde exactamente vive el destinatario, RabbitMQ permite que sus aplicaciones se comuniquen sin conocer los detalles internos unas de las otras."
+        },
+        "whyUse": {
+          "title": "¿Por qué usar RabbitMQ?",
+          "intro": "En sistemas modernos, la comunicación directa entre servicios crea acoplamiento fuerte, dificulta la escalabilidad y puede causar pérdida de datos cuando un servicio falla. RabbitMQ resuelve estos problemas y ofrece beneficios significativos:",
+          "items": {
+            "decoupling": {
+              "title": "Desacoplamiento Total",
+              "description": "Los servicios no necesitan conocerse mutuamente. El producer envía mensajes sin saber quién los consumirá, y el consumer procesa sin saber de dónde vinieron. Esto permite que equipos diferentes desarrollen, desplieguen y escalen servicios de forma independiente."
+            },
+            "reliability": {
+              "title": "Confiabilidad Garantizada",
+              "description": "Con persistencia de mensajes, acknowledgments y colas durables, RabbitMQ garantiza que ningún mensaje se pierda, incluso en caso de fallas de red, reinicio de servidores o caída de aplicaciones."
+            },
+            "scalability": {
+              "title": "Escalabilidad Horizontal",
+              "description": "¿Necesita procesar más mensajes? Agregue más consumers. RabbitMQ distribuye automáticamente la carga entre ellos. No hay límite práctico: clusters de RabbitMQ pueden manejar millones de mensajes por segundo."
+            },
+            "flexibility": {
+              "title": "Flexibilidad de Enrutamiento",
+              "description": "Con diferentes tipos de exchanges (Direct, Fanout, Topic, Headers), puede implementar prácticamente cualquier patrón de enrutamiento, desde entrega simple hasta sistemas de eventos complejos con múltiples suscriptores."
+            },
+            "protocols": {
+              "title": "Múltiples Protocolos",
+              "description": "Además de AMQP, RabbitMQ soporta MQTT (IoT), STOMP (streaming), HTTP y WebSockets, permitiendo integración con prácticamente cualquier tecnología."
+            }
+          }
+        },
+        "useCases": {
+          "title": "Casos de Uso en el Mundo Real",
+          "intro": "RabbitMQ es usado en los escenarios más diversos. Aquí hay ejemplos concretos de cómo grandes empresas utilizan colas de mensajes:",
+          "items": {
+            "async": {
+              "title": "Procesamiento Asíncrono",
+              "description": "Cuando un usuario solicita un reporte complejo, en lugar de hacerlo esperar minutos, el sistema encola la tarea y responde inmediatamente '¡Su reporte será enviado por email!'. Un worker procesa el reporte en segundo plano y envía cuando está listo.",
+              "example": "Netflix usa colas para procesar encoding de videos. Cuando usted sube un video, él es encolado y procesado en múltiples formatos asincrónicamente."
+            },
+            "microservices": {
+              "title": "Comunicación entre Microservicios",
+              "description": "En arquitectura de microservicios, los servicios necesitan comunicarse sin acoplamiento directo. Un servicio de Pedidos publica 'pedido.creado' y los servicios de Inventario, Pagos, Notificaciones y Logística reaccionan independientemente.",
+              "example": "Uber usa mensajería para coordinar sus microservicios de trips, pagos, notificaciones y matching con conductores."
+            },
+            "loadBalancing": {
+              "title": "Distribución de Carga",
+              "description": "Tareas pesadas como procesamiento de imágenes, envío de emails en masa o generación de PDFs son distribuidas entre múltiples workers. Si un worker está ocupado, otro asume el trabajo.",
+              "example": "Instagram usa colas para procesar y redimensionar millones de imágenes subidas diariamente."
+            },
+            "eventDriven": {
+              "title": "Arquitectura Dirigida por Eventos",
+              "description": "El sistema emite eventos ('usuario.registrado', 'pago.aprobado') y múltiples servicios reaccionan. Esto permite agregar nuevos comportamientos sin modificar el código existente.",
+              "example": "Un evento 'usuario.registrado' puede disparar simultáneamente: envío de email de bienvenida, creación de perfil, notificación al equipo de ventas, y registro en analytics."
+            },
+            "iot": {
+              "title": "Internet de las Cosas (IoT)",
+              "description": "Dispositivos IoT envían datos constantemente. RabbitMQ con MQTT puede recibir datos de millones de sensores, encolarlos y procesarlos de forma ordenada.",
+              "example": "Tesla recopila datos de telemetría de sus vehículos vía mensajería para análisis y mejora de los sistemas de autopilot."
+            },
+            "realtime": {
+              "title": "Actualizaciones en Tiempo Real",
+              "description": "Sistemas de chat, notificaciones push, dashboards en vivo y feeds de actividad usan colas para entregar mensajes instantáneamente a los usuarios conectados.",
+              "example": "Slack usa mensajería para entregar mensajes en tiempo real a millones de usuarios simultáneos."
+            }
+          }
+        },
+        "history": {
+          "title": "Breve Historia de RabbitMQ",
+          "content": "RabbitMQ fue creado en 2007 por Rabbit Technologies, una startup fundada por Alexis Richardson y Matthias Radestock. El nombre 'Rabbit' fue elegido porque conejos son conocidos por reproducirse rápidamente - una referencia a la capacidad del sistema de manejar muchos mensajes. Fue escrito en Erlang, lenguaje creado por Ericsson para sistemas de telecomunicaciones que necesitan funcionar 24/7 sin parar. En 2010, Rabbit Technologies fue adquirida por SpringSource (después VMware, actualmente Broadcom). Hoy, RabbitMQ es uno de los message brokers más usados del mundo, con una comunidad vibrante y constante evolución."
+        }
+      },
+      "concepts": {
+        "title": "Conceptos Fundamentales",
+        "subtitle": "Domine los componentes esenciales que forman la arquitectura de RabbitMQ",
+        "overview": {
+          "title": "Visión General de la Arquitectura",
+          "content": "La arquitectura de RabbitMQ sigue un flujo claro: Producers envían mensajes a Exchanges, que los enrutan a Queues basándose en reglas definidas por Bindings. Finalmente, Consumers retiran mensajes de las Queues para procesarlos. Este modelo proporciona flexibilidad extrema, permitiendo desde enrutamiento simple (un producer para un consumer) hasta topologías complejas con múltiples niveles de enrutamiento.",
+          "messageFlow": {
+            "title": "Flujo del Mensaje",
+            "step1": "1. Producer crea un mensaje con contenido y propiedades (routing key, headers, etc.)",
+            "step2": "2. Mensaje es publicado en un Exchange con una routing key",
+            "step3": "3. Exchange examina la routing key y/o headers del mensaje",
+            "step4": "4. Basándose en los Bindings configurados, Exchange enruta el mensaje a cero, una o más Queues",
+            "step5": "5. Queue almacena el mensaje hasta que un Consumer esté disponible",
+            "step6": "6. Consumer recibe el mensaje, lo procesa y envía un acknowledgment",
+            "step7": "7. Tras el ack, RabbitMQ remueve el mensaje de la Queue"
+          }
+        },
+        "producer": {
+          "title": "Producers (Productores)",
+          "content": "Los producers son aplicaciones o servicios que envían mensajes al sistema de mensajería. Un producer nunca envía mensajes directamente a una cola - esto es un concepto crucial en RabbitMQ. En su lugar, los envía a un exchange, que decidirá a dónde enrutar el mensaje. El producer no necesita saber cuáles colas existen o quién consumirá los mensajes, promoviendo así el desacoplamiento total entre sistemas.",
+          "responsibilities": {
+            "title": "Responsabilidades del Producer",
+            "list": {
+              "create": "Crear y formatear mensajes con contenido (payload) y metadatos relevantes",
+              "publish": "Publicar mensajes en exchanges específicos, no directamente en colas",
+              "routingKey": "Definir routing keys apropiadas que guiarán el enrutamiento",
+              "properties": "Configurar propiedades del mensaje (persistencia, TTL, prioridad, headers)",
+              "confirm": "Opcionalmente, usar Publisher Confirms para garantizar recepción por el broker"
+            }
+          },
+          "codeHint": {
+            "title": "En el Código",
+            "content": "El producer establece una conexión con RabbitMQ, crea un canal, y usa el método channel.publish() o channel.sendToQueue(). Es importante reutilizar conexiones y canales en lugar de crear nuevos para cada mensaje - crear conexiones es costoso."
+          },
+          "antiPattern": {
+            "title": "Anti-patrón Común",
+            "content": "Un error frecuente es crear una nueva conexión para cada mensaje publicado. Esto causa sobrecarga innecesaria y puede agotar los recursos del broker. Siempre reutilice conexiones y canales."
+          },
+          "example": "Ejemplo práctico: Un servicio de e-commerce publica un mensaje con routing key 'pedido.creado.premium' cuando un cliente premium realiza un pedido, incluyendo headers como {cliente_tipo: 'premium', region: 'latam'}."
+        },
+        "exchange": {
+          "title": "Exchanges (Intercambiadores)",
+          "content": "Los exchanges son el corazón del sistema de enrutamiento de RabbitMQ. Son agentes responsables de recibir mensajes de los producers y direccionarlos a las colas correctas basándose en reglas. El exchange NUNCA almacena mensajes; su función es puramente decisional - recibe, decide y enruta. Si no hay cola vinculada que coincida con las reglas, el mensaje puede ser descartado silenciosamente, devuelto al producer (con flag mandatory), o redirigido a un Alternate Exchange.",
+          "types": {
+            "title": "Tipos de Exchange",
+            "content": "RabbitMQ ofrece cuatro tipos de exchange, cada uno con una estrategia de enrutamiento distinta. La elección del tipo correcto es fundamental y depende de su caso de uso específico. Vea la sección 'Tipos de Exchange en Detalle' para comprensión completa de cada tipo."
+          },
+          "defaultExchange": {
+            "title": "Exchange por Defecto",
+            "content": "RabbitMQ crea automáticamente un exchange directo sin nombre (string vacío). Este exchange tiene una propiedad especial: cada cola es automáticamente vinculada a él con una routing key igual al nombre de la cola. Por eso parece que usted envía mensajes 'directamente' a colas - en realidad está usando el exchange por defecto."
+          },
+          "codeHint": {
+            "title": "En el Código",
+            "content": "Exchanges se declaran con channel.assertExchange(nombre, tipo, opciones). Las opciones incluyen: durable (sobrevive reinicio), autoDelete (borrado cuando no hay bindings), y arguments (configuraciones adicionales como alternate-exchange)."
+          },
+          "example": "Ejemplo práctico: Un exchange 'eventos.pedidos' del tipo topic recibe mensajes con routing keys como 'pedido.creado.brasil' y 'pedido.cancelado.argentina', enrutándolos a colas interesadas en pedidos de regiones específicas."
+        },
+        "queue": {
+          "title": "Queues (Colas)",
+          "content": "Las queues son buffers que almacenan mensajes hasta que sean consumidos. Son el destino final de los mensajes y el único lugar donde los mensajes realmente 'esperan'. Una cola mantiene los mensajes en orden FIFO (primero en entrar, primero en salir), aunque prioridades y características del consumidor pueden alterar este orden. Las colas residen en la memoria para acceso rápido, pero pueden persistir mensajes en disco para durabilidad.",
+          "properties": {
+            "title": "Propiedades de la Cola",
+            "durable": "Durable: la cola persiste tras reinicio del servidor. La cola continúa existiendo, pero mensajes solo persisten si también fueron marcados como persistentes.",
+            "exclusive": "Exclusive: usada solo por la conexión que la creó. Útil para colas temporales de reply en RPC.",
+            "autoDelete": "Auto-delete: automáticamente borrada cuando el último consumer se desconecta. Común en colas temporales.",
+            "ttl": "Message TTL: tiempo máximo que un mensaje puede permanecer en la cola antes de ser descartado o enviado a DLX.",
+            "maxLength": "Max Length: número máximo de mensajes en la cola. Mensajes excedentes van a DLX o son descartados.",
+            "maxPriority": "Max Priority: habilita colas de prioridad (1-255). Mensajes de mayor prioridad son entregados primero."
+          },
+          "codeHint": {
+            "title": "En el Código",
+            "content": "Colas se declaran con channel.assertQueue(nombre, opciones). Es idempotente: si la cola ya existe con las mismas propiedades, simplemente retorna. Si existe con propiedades diferentes, lanza error."
+          },
+          "antiPattern": {
+            "title": "Anti-patrón Común",
+            "content": "Crear colas ilimitadas sin TTL o max-length puede causar que el broker consuma toda la memoria disponible. Siempre configure límites apropiados para su caso de uso."
+          },
+          "example": "Ejemplo práctico: Una cola 'emails-pendientes' con durable=true, messageTtl=86400000 (24h), y maxLength=100000 almacena emails a ser enviados. El servicio de email consume y procesa en orden de llegada."
+        },
+        "binding": {
+          "title": "Bindings (Vínculos)",
+          "content": "Los bindings son reglas que conectan exchanges a colas (o incluso a otros exchanges). Son la 'cola' que une los componentes del sistema de mensajería. Un binding puede incluir una routing key o patrón que el exchange usa para decidir si el mensaje debe ser enrutado a aquella cola. Sin bindings, los mensajes publicados en un exchange simplemente no llegarán a ningún lugar.",
+          "importance": {
+            "title": "Importancia de los Bindings",
+            "content": "Los bindings definen la topología de su sistema de mensajería. Un exchange puede tener bindings para múltiples colas (permitiendo broadcast o enrutamiento selectivo), y una cola puede recibir mensajes de múltiples exchanges (agregando fuentes de mensajes). Esta flexibilidad permite modelar prácticamente cualquier flujo de comunicación."
+          },
+          "routingKeyVsBindingKey": {
+            "title": "Routing Key vs Binding Key",
+            "content": "La 'routing key' es definida por el producer al publicar el mensaje. La 'binding key' es definida al crear el binding entre exchange y cola. El exchange compara estas dos keys para decidir el enrutamiento. En exchanges Direct, deben ser iguales; en Topic, la binding key puede contener wildcards."
+          },
+          "codeHint": {
+            "title": "En el Código",
+            "content": "Bindings se crean con channel.bindQueue(cola, exchange, routingKey, arguments). Para exchanges Headers, los arguments definen los headers a coincidir y el modo (all/any)."
+          },
+          "example": "Ejemplo práctico: El exchange 'eventos.usuarios' tiene bindings para: cola 'notificaciones' con routing key 'usuario.creado' (enviar email de bienvenida), cola 'analytics' con routing key 'usuario.*' (rastrear todos los eventos de usuario), y cola 'marketing' con routing key 'usuario.premium.creado' (alertar equipo sobre clientes premium)."
+        },
+        "consumer": {
+          "title": "Consumers (Consumidores)",
+          "content": "Los consumers son aplicaciones que se suscriben a colas para recibir y procesar mensajes. Son el punto final del flujo de mensajería, donde el trabajo real acontece. El consumer recibe el mensaje, ejecuta la lógica de negocio (enviar email, procesar pago, actualizar base de datos) y informa a RabbitMQ si el procesamiento fue exitoso (ack) o falló (nack/reject).",
+          "strategies": {
+            "title": "Estrategias de Consumo",
+            "push": "Push (suscripción básica): el consumer se suscribe con basicConsume y recibe mensajes automáticamente cuando están disponibles. Es el modelo más común y eficiente.",
+            "pull": "Pull (básico.get): el consumer solicita mensajes explícitamente con basicGet. Menos eficiente, pero útil para consumo controlado o polling ocasional.",
+            "prefetch": "Prefetch: controla cuántos mensajes no confirmados el consumer puede tener simultáneamente. Crucial para distribución justa y evitar sobrecarga."
+          },
+          "acknowledgment": {
+            "title": "Sobre Acknowledgments",
+            "content": "El acknowledgment (ack) es la forma como el consumer informa a RabbitMQ que un mensaje fue procesado exitosamente. Sin ack explícito (en modo manual), RabbitMQ mantiene el mensaje 'en vuelo' y puede reenviarlo si el consumer desconecta. Vea la sección de Confiabilidad para más detalles."
+          },
+          "codeHint": {
+            "title": "En el Código",
+            "content": "Consumo se inicia con channel.consume(cola, callback, opciones). El callback recibe el mensaje y debe llamar channel.ack(msg), channel.nack(msg, requeue) o channel.reject(msg, requeue) al final del procesamiento."
+          },
+          "antiPattern": {
+            "title": "Anti-patrón Común",
+            "content": "Usar auto-ack (noAck: true) para mensajes importantes es peligroso. Si el consumer falla después de recibir el mensaje pero antes de procesar, el mensaje se pierde. Siempre use ack manual para mensajes que no pueden perderse."
+          },
+          "example": "Ejemplo práctico: Un servicio de email consume de la cola 'emails-pendientes', procesa cada mensaje llamando la API del proveedor de email, y envía ack solo después de recibir confirmación del envío. Si la API falla, envía nack con requeue=true para reintentar después."
+        }
+      },
+      "exchangeTypes": {
+        "title": "Tipos de Exchange en Detalle",
+        "subtitle": "Domine cada tipo de exchange y sepa exactamente cuándo usar cada uno",
+        "comparison": {
+          "title": "Comparación Rápida",
+          "direct": "Direct: Coincidencia exacta de routing key. Simple y eficiente.",
+          "fanout": "Fanout: Broadcast para todas las colas. Ignora routing keys.",
+          "topic": "Topic: Coincidencia de patrones con wildcards (* y #).",
+          "headers": "Headers: Enrutamiento basado en headers del mensaje, no en routing key."
+        },
+        "direct": {
+          "title": "Exchange Direct",
+          "content": "El exchange Direct es el tipo más simple y directo (literalmente). Enruta mensajes basándose en una coincidencia EXACTA entre la routing key del mensaje y la binding key del binding. Cuando el producer publica un mensaje con routing key 'pagos', el exchange Direct lo entrega a todas las colas que tengan un binding con binding key exactamente 'pagos'.",
+          "howItWorks": {
+            "title": "Cómo Funciona - Paso a Paso",
+            "step1": "1. Producer publica mensaje con routing key 'pagos.procesado'",
+            "step2": "2. Mensaje llega al exchange Direct",
+            "step3": "3. Exchange examina todos sus bindings buscando binding key = 'pagos.procesado'",
+            "step4": "4. Para cada binding coincidente, el mensaje es copiado a la respectiva cola",
+            "step5": "5. Si ningún binding coincide, el mensaje es descartado (o retornado con flag mandatory)"
+          },
+          "multipleBindings": {
+            "title": "Múltiples Bindings",
+            "content": "Una cola puede tener múltiples bindings con diferentes routing keys (ej: cola 'alertas' vinculada a 'error' Y 'critical'). Y múltiples colas pueden tener binding para la misma routing key (el mensaje va para todas)."
+          },
+          "whenToUse": {
+            "title": "Cuándo Usar",
+            "scenarios": {
+              "taskRouting": "Enrutamiento de tareas por tipo: mensajes de 'email' van para workers de email, 'sms' para workers de SMS",
+              "logLevels": "Separación de logs por nivel: 'error' para cola de errores, 'info' para cola de logs generales",
+              "prioritization": "Sistema de priorización: mensajes VIP van para cola dedicada de alta prioridad"
+            }
+          },
+          "whenNotToUse": {
+            "title": "Cuándo NO Usar",
+            "content": "No use Direct si necesita enrutamiento basado en patrones (use Topic), si quiere broadcast para todas las colas (use Fanout), o si necesita enrutamiento basado en múltiples criterios (use Headers)."
+          },
+          "example": {
+            "title": "Ejemplo Práctico: Sistema de Logs",
+            "scenario": "Sistema de logging con diferentes niveles de severidad",
+            "setup": "Exchange: 'logs' (direct). Colas: 'logs.errores', 'logs.warnings', 'logs.todos'",
+            "bindings": "Bindings: logs.errores←'error', logs.warnings←'warning', logs.todos←'error'+'warning'+'info'",
+            "flow": "Log de error: routing key 'error' → va para 'logs.errores' Y 'logs.todos'"
+          }
+        },
+        "fanout": {
+          "title": "Exchange Fanout",
+          "content": "El exchange Fanout es el más simple en términos de lógica: ignora completamente las routing keys y hace broadcast de todos los mensajes para TODAS las colas vinculadas. Cada cola vinculada recibe una copia de cada mensaje. Es el patrón publish/subscribe en su forma más pura.",
+          "howItWorks": {
+            "title": "Cómo Funciona - Paso a Paso",
+            "step1": "1. Producer publica mensaje (routing key es ignorada)",
+            "step2": "2. Mensaje llega al exchange Fanout",
+            "step3": "3. Exchange identifica todas las colas vinculadas",
+            "step4": "4. Mensaje es copiado y entregado a CADA cola vinculada",
+            "step5": "5. Cada consumer de cada cola recibe su propia copia del mensaje"
+          },
+          "analogy": {
+            "title": "Analogía",
+            "content": "Piense en una estación de radio FM: cuando el DJ habla, todos los oyentes sintonizados reciben la misma transmisión simultáneamente. No importa si el oyente está en casa, en el auto o en el trabajo - todos escuchan lo mismo. El exchange Fanout funciona igual: todos los 'oyentes' (colas) reciben todos los 'programas' (mensajes)."
+          },
+          "whenToUse": {
+            "title": "Cuándo Usar",
+            "scenarios": {
+              "events": "Propagación de eventos: evento 'usuario.registrado' debe ser procesado por servicios de email, analytics, CRM, y marketing",
+              "cache": "Invalidación de cache distribuida: cuando un producto es actualizado, todos los servidores de cache necesitan ser notificados",
+              "updates": "Actualizaciones en tiempo real: cambio de precio debe reflejarse en website, app móvil, y sistema de reportes",
+              "logs": "Distribución de logs: mismo log va para ElasticSearch, archivo local, y sistema de alertas"
+            }
+          },
+          "whenNotToUse": {
+            "title": "Cuándo NO Usar",
+            "content": "No use Fanout si necesita que solo algunos consumers reciban ciertos mensajes (use Direct/Topic), si quiere enrutamiento basado en contenido (use Headers), o si desea distribución de carga entre workers (use Direct con múltiples consumers en la misma cola)."
+          },
+          "example": {
+            "title": "Ejemplo Práctico: Notificaciones de Pedido",
+            "scenario": "Cuando un pedido es creado, múltiples sistemas necesitan ser notificados",
+            "setup": "Exchange: 'pedidos.eventos' (fanout). Colas: 'notificaciones', 'inventario', 'analytics', 'facturación'",
+            "bindings": "Cada cola simplemente se vincula al exchange (sin routing key)",
+            "flow": "Pedido creado → Mensaje va para las 4 colas simultáneamente → Cada servicio procesa independientemente"
+          }
+        },
+        "topic": {
+          "title": "Exchange Topic",
+          "content": "El exchange Topic es el más poderoso y flexible, ofreciendo enrutamiento basado en patrones usando wildcards. Las routing keys DEBEN seguir un formato específico: una lista de palabras separadas por puntos (ej: 'pedido.creado.brasil'). Los bindings pueden usar comodines: '*' coincide exactamente con una palabra, y '#' coincide con cero o más palabras.",
+          "howItWorks": {
+            "title": "Cómo Funciona - Paso a Paso",
+            "step1": "1. Producer publica mensaje con routing key estructurada: 'stock.update.frutas.naranjas'",
+            "step2": "2. Mensaje llega al exchange Topic",
+            "step3": "3. Exchange compara la routing key con el patrón de cada binding",
+            "step4": "4. Bindings con patrones coincidentes: 'stock.#', 'stock.update.*.*', '*.update.frutas.*'",
+            "step5": "5. Mensaje es enrutado a todas las colas cuyos bindings coincidieron"
+          },
+          "wildcards": {
+            "title": "Wildcards en Detalle",
+            "star": "* (asterisco): Coincide exactamente con UNA palabra. 'pedido.*.brasil' coincide con 'pedido.creado.brasil' y 'pedido.cancelado.brasil', pero NO con 'pedido.brasil' o 'pedido.item.creado.brasil'.",
+            "hash": "# (numeral): Coincide con CERO O MÁS palabras. 'pedido.#' coincide con 'pedido', 'pedido.creado', 'pedido.creado.brasil', y 'pedido.item.creado.brasil.premium'."
+          },
+          "routingKeyDesign": {
+            "title": "Diseñando Routing Keys",
+            "content": "Una buena estructura de routing key sigue una taxonomía consistente. Formato recomendado: 'entidad.evento.contexto.detalle'. Ejemplos: 'usuario.creado.web.premium', 'pedido.enviado.latam.express', 'producto.stock.bajo.electronica'. La clave es ser consistente en toda la aplicación."
+          },
+          "whenToUse": {
+            "title": "Cuándo Usar",
+            "scenarios": {
+              "hierarchical": "Enrutamiento jerárquico: mensajes de 'ventas.latam.brasil' van para colas de Brasil, Latam, y ventas globales",
+              "selective": "Suscripción selectiva: cola A quiere todos los eventos de usuario, cola B solo registros en web, cola C solo usuarios premium",
+              "multiDimension": "Filtrado multidimensional: combinar tipo de evento, región, y categoría en una routing key"
+            }
+          },
+          "whenNotToUse": {
+            "title": "Cuándo NO Usar",
+            "content": "No use Topic si la coincidencia exacta es suficiente (Direct es más simple), si quiere broadcast sin filtrado (Fanout es más eficiente), o si sus criterios de enrutamiento no encajan en un formato delimitado por puntos (considere Headers)."
+          },
+          "example": {
+            "title": "Ejemplo Práctico: Sistema Multi-región",
+            "scenario": "E-commerce global con operaciones en múltiples países",
+            "setup": "Exchange: 'eventos.globales' (topic). Routing keys: 'pedido.{evento}.{region}.{tipo}'",
+            "bindings": "Cola global: 'pedido.#'. Cola latam: 'pedido.*.latam.*'. Cola urgentes: 'pedido.*.*.express'",
+            "flow": "Routing key 'pedido.creado.latam.express' → va para las 3 colas"
+          }
+        },
+        "headers": {
+          "title": "Exchange Headers",
+          "content": "El exchange Headers es el más flexible, usando atributos del header del mensaje en lugar de routing keys para el enrutamiento. Permite lógica compleja basada en múltiples atributos, con modos 'all' (todos deben coincidir) o 'any' (cualquiera es suficiente). Es útil cuando la lógica de enrutamiento no cabe en el formato de routing key.",
+          "howItWorks": {
+            "title": "Cómo Funciona - Paso a Paso",
+            "step1": "1. Producer publica mensaje con headers: {format: 'pdf', departamento: 'ventas', urgente: true}",
+            "step2": "2. Mensaje llega al exchange Headers (routing key es ignorada)",
+            "step3": "3. Exchange examina los headers del mensaje",
+            "step4": "4. Compara con los headers definidos en cada binding",
+            "step5": "5. Basándose en x-match (all/any), determina las colas destino"
+          },
+          "matchModes": {
+            "title": "Modos de Coincidencia",
+            "all": "x-match: 'all' - TODOS los headers especificados en el binding deben estar presentes con los valores exactos. Es un AND lógico.",
+            "any": "x-match: 'any' - CUALQUIER header que coincida es suficiente para enrutar. Es un OR lógico."
+          },
+          "whenToUse": {
+            "title": "Cuándo Usar",
+            "scenarios": {
+              "multiCriteria": "Enrutamiento por múltiples criterios independientes: mensajes con header 'urgente=true' O 'departamento=directoria' van para cola prioritaria",
+              "nonHierarchical": "Lógica no jerárquica: criterios que no encajan en formato de palabras separadas por puntos",
+              "metadata": "Enrutamiento por metadatos: formato de archivo, tipo de contenido, versión de API, etc."
+            }
+          },
+          "whenNotToUse": {
+            "title": "Cuándo NO Usar",
+            "content": "Headers es el tipo más lento en términos de rendimiento. No lo use si Topic o Direct resuelven su caso de uso. La evaluación de múltiples headers es más costosa que coincidencia de string."
+          },
+          "example": {
+            "title": "Ejemplo Práctico: Procesamiento de Documentos",
+            "scenario": "Sistema que procesa documentos de diferentes formatos y departamentos",
+            "setup": "Exchange: 'documentos' (headers). Headers posibles: format, departamento, prioridad",
+            "bindings": "Cola PDFs: {format: 'pdf', x-match: 'any'}. Cola urgentes: {prioridad: 'alta', x-match: 'all'}",
+            "flow": "Documento {format: 'pdf', departamento: 'rh', prioridad: 'alta'} → va para ambas colas"
+          }
+        }
+      },
+      "patterns": {
+        "title": "Patrones de Mensajería",
+        "subtitle": "Patrones arquitectónicos probados en batalla para resolver problemas comunes",
+        "overview": {
+          "title": "Eligiendo el Patrón Correcto",
+          "content": "Cada patrón resuelve un problema específico. Work Queues para distribución de tareas, Pub/Sub para broadcast de eventos, Routing para entrega selectiva, RPC para solicitud/respuesta, y Dead Letter para manejo de fallos. Entienda el problema antes de elegir el patrón."
+        },
+        "workQueues": {
+          "title": "Work Queues (Colas de Trabajo)",
+          "problem": {
+            "title": "El Problema",
+            "content": "Tareas pesadas como procesamiento de imágenes, generación de reportes o envío de emails en masa no pueden ejecutarse síncronamente - el usuario no puede esperar minutos por una respuesta. Además, un único servidor puede no dar cuenta del volumen de tareas."
+          },
+          "solution": {
+            "title": "La Solución",
+            "content": "El patrón Work Queues (también conocido como Task Queues) distribuye tareas entre múltiples workers. Las tareas son encoladas y procesadas asincrónicamente. Múltiples workers compiten por tareas de la misma cola, permitiendo escalabilidad horizontal."
+          },
+          "howItWorks": {
+            "title": "Cómo Funciona - Paso a Paso",
+            "step1": "1. Producer encola tareas en una cola (ej: 'procesamiento-imagenes')",
+            "step2": "2. Múltiples workers se suscriben a la misma cola",
+            "step3": "3. RabbitMQ distribuye mensajes en round-robin entre workers disponibles",
+            "step4": "4. Cada mensaje es entregado a EXACTAMENTE un worker",
+            "step5": "5. Worker procesa, envía ack, y RabbitMQ entrega el próximo mensaje"
+          },
+          "fairDispatch": {
+            "title": "Distribución Justa (Fair Dispatch)",
+            "content": "Por defecto, RabbitMQ usa round-robin ciego: el mensaje 1 va para worker A, mensaje 2 para worker B, etc. Pero si el worker A es más lento, acumula tareas mientras B queda inactivo. Con prefetch=1, RabbitMQ solo envía un nuevo mensaje cuando el worker confirmó el anterior, garantizando distribución basada en capacidad real."
+          },
+          "example": {
+            "title": "Ejemplo Práctico: Envío de Emails",
+            "scenario": "Sistema de marketing necesita enviar 100.000 emails de campaña",
+            "setup": "Producer encola un mensaje por email en cola 'emails-marketing'. 10 workers consumen.",
+            "flow": "Cada worker procesa ~10.000 emails. Si un worker falla, sus mensajes pendientes vuelven a la cola.",
+            "result": "Escalable: ¿necesita más velocidad? Agregue más workers. ¿Pico de demanda? Workers temporales."
+          },
+          "considerations": {
+            "title": "Consideraciones Importantes",
+            "ack": "Use ack manual: solo confirme después de procesamiento completo. Si worker falla, mensaje vuelve a la cola.",
+            "prefetch": "Configure prefetch: valor bajo (1-10) para tareas pesadas, alto (50+) para tareas rápidas.",
+            "idempotent": "Haga tareas idempotentes: el mismo mensaje puede ser procesado más de una vez en caso de fallas."
+          }
+        },
+        "pubSub": {
+          "title": "Publish/Subscribe",
+          "problem": {
+            "title": "El Problema",
+            "content": "Cuando un evento ocurre (usuario registrado, pedido creado), múltiples sistemas necesitan reaccionar: enviar email, actualizar analytics, notificar equipo de ventas, sincronizar CRM. ¿Cómo propagar el evento sin acoplar el emisor a los receptores?"
+          },
+          "solution": {
+            "title": "La Solución",
+            "content": "El patrón Publish/Subscribe (Pub/Sub) usa un exchange Fanout para hacer broadcast de mensajes para todas las colas interesadas. El producer publica una vez, y cada suscriptor recibe su propia copia del mensaje."
+          },
+          "howItWorks": {
+            "title": "Cómo Funciona - Paso a Paso",
+            "step1": "1. Administrador crea un exchange Fanout (ej: 'eventos.usuario')",
+            "step2": "2. Cada servicio interesado crea su propia cola y la vincula al exchange",
+            "step3": "3. Producer publica mensaje en el exchange (routing key es ignorada)",
+            "step4": "4. Exchange copia el mensaje para TODAS las colas vinculadas",
+            "step5": "5. Cada servicio consume de su propia cola independientemente"
+          },
+          "comparison": {
+            "title": "Pub/Sub vs Work Queues",
+            "pubsub": "Pub/Sub: cada cola recibe TODOS los mensajes. Usado para notificaciones donde todos necesitan saber.",
+            "workqueues": "Work Queues: cada mensaje va para UN consumer. Usado para distribución de tareas."
+          },
+          "example": {
+            "title": "Ejemplo Práctico: Nuevo Usuario Registrado",
+            "scenario": "Usuario se registra en la plataforma y múltiples sistemas necesitan reaccionar",
+            "setup": "Exchange: 'usuarios.eventos' (fanout). Colas: 'email-bienvenida', 'analytics', 'crm-sync', 'notif-ventas'",
+            "flow": "Mensaje 'usuario.registrado' publicado → Llega a las 4 colas simultáneamente",
+            "result": "Servicio de email envía bienvenida, analytics registra evento, CRM crea lead, ventas recibe alerta"
+          },
+          "considerations": {
+            "title": "Consideraciones Importantes",
+            "storage": "Cada cola almacena su copia: 4 suscriptores = 4x almacenamiento. Use TTL para mensajes temporales.",
+            "coupling": "Agregar nuevos suscriptores es trivial: solo cree una cola y vincule. Cero cambios en el producer.",
+            "ordering": "El orden de procesamiento entre diferentes colas no es garantizado - cada una procesa independientemente."
+          }
+        },
+        "routing": {
+          "title": "Routing Selectivo",
+          "problem": {
+            "title": "El Problema",
+            "content": "No todos los consumers quieren todos los mensajes. El servicio de reportes solo quiere eventos de ventas concluidas, el servicio de alertas solo quiere errores críticos, el servicio regional solo quiere eventos de su región. ¿Cómo filtrar?"
+          },
+          "solution": {
+            "title": "La Solución",
+            "content": "El patrón de Routing usa exchanges Direct o Topic para enrutar mensajes selectivamente basándose en routing keys o patrones. Cada cola 'suscribe' solo a los tipos de mensajes que le interesan."
+          },
+          "howItWorks": {
+            "title": "Cómo Funciona - Paso a Paso",
+            "step1": "1. Producer define routing key descriptiva: 'venta.concluida.premium'",
+            "step2": "2. Colas crean bindings con keys o patrones de interés",
+            "step3": "3. Exchange examina routing key del mensaje",
+            "step4": "4. Mensaje es enrutado solo para colas cuyos bindings coinciden",
+            "step5": "5. Colas no interesadas simplemente no reciben el mensaje"
+          },
+          "directVsTopic": {
+            "title": "Direct vs Topic para Routing",
+            "direct": "Direct: coincidencia exacta. Use cuando tiene categorías discretas y conocidas (error, warning, info).",
+            "topic": "Topic: coincidencia por patrón. Use cuando necesita flexibilidad (*.error.*, pedidos.#.brasil)."
+          },
+          "example": {
+            "title": "Ejemplo Práctico: Sistema de Logs Multi-nivel",
+            "scenario": "Sistema genera logs de diferentes niveles y componentes, equipos diferentes necesitan logs diferentes",
+            "setup": "Exchange: 'logs' (topic). Routing keys: '{componente}.{nivel}' (ej: 'api.error', 'db.warning')",
+            "bindings": "Equipo infra: '#.error'. Equipo DB: 'db.*'. Equipo API: 'api.#'. Archivo: '#' (todo)",
+            "flow": "Log 'db.error' → va para equipos infra, DB, y archivo. No va para equipo API."
+          },
+          "considerations": {
+            "title": "Consideraciones Importantes",
+            "taxonomy": "Diseñe su taxonomía de routing keys cuidadosamente. Cambios posteriores pueden requerir actualizar múltiples bindings.",
+            "granularity": "Muy granular = flexibilidad pero complejidad. Muy genérico = simplicidad pero menos control.",
+            "evolution": "Use Topic cuando el sistema puede evolucionar - es más fácil agregar nuevos patrones que nuevos exchanges."
+          }
+        },
+        "rpc": {
+          "title": "RPC (Remote Procedure Call)",
+          "problem": {
+            "title": "El Problema",
+            "content": "A veces necesita una respuesta: '¿Cuál es el saldo del cliente X?', '¿Está este producto en stock?'. Comunicación puramente asíncrona no sirve cuando el resultado es necesario para continuar el procesamiento."
+          },
+          "solution": {
+            "title": "La Solución",
+            "content": "El patrón RPC sobre mensajería permite semántica de solicitud/respuesta manteniendo los beneficios de desacoplamiento. El cliente envía una solicitud y espera la respuesta en una callback queue dedicada."
+          },
+          "howItWorks": {
+            "title": "Cómo Funciona - Paso a Paso",
+            "step1": "1. Cliente crea una callback queue exclusiva y temporal",
+            "step2": "2. Cliente publica solicitud con propiedades: reply_to (callback queue) y correlation_id (ID único)",
+            "step3": "3. Servidor consume la solicitud de la cola de solicitudes",
+            "step4": "4. Servidor procesa, crea respuesta con el mismo correlation_id",
+            "step5": "5. Servidor publica respuesta en la callback queue especificada en reply_to",
+            "step6": "6. Cliente consume respuesta, usa correlation_id para asociar con la solicitud original"
+          },
+          "correlationId": {
+            "title": "Por Qué Correlation ID",
+            "content": "El cliente puede tener múltiples solicitudes pendientes en la misma callback queue. El correlation_id (generalmente un UUID) permite asociar cada respuesta con su solicitud correspondiente. Sin él, las respuestas se mezclarían."
+          },
+          "example": {
+            "title": "Ejemplo Práctico: Servicio de Cálculo de Flete",
+            "scenario": "Checkout necesita calcular el flete, pero el servicio de flete es un microservicio separado",
+            "setup": "Cola de solicitudes: 'calcular-flete'. Cliente crea callback queue exclusiva.",
+            "flow": "Checkout envía {origen, destino, peso} → Servicio calcula → Respuesta {valor, plazo} vuelve al checkout",
+            "result": "Checkout recibe el cálculo y puede continuar el flujo de pago"
+          },
+          "considerations": {
+            "title": "Consideraciones Importantes",
+            "latency": "RPC sobre mensajería es más lento que llamadas HTTP directas. Use cuando los beneficios compensan.",
+            "timeout": "Siempre implemente timeout. Si el servidor falla, el cliente no puede esperar indefinidamente.",
+            "whenToUse": "Use RPC cuando necesita respuesta Y quiere beneficios de colas (desacoplamiento, resiliencia, balanceo)."
+          }
+        },
+        "deadLetter": {
+          "title": "Dead Letter (Letras Muertas)",
+          "problem": {
+            "title": "El Problema",
+            "content": "¿Qué ocurre con mensajes que no pueden ser procesados? Mensaje con formato inválido, error de lógica de negocio, servicio externo fuera del aire... Sin tratamiento adecuado, estos mensajes pueden ser perdidos o quedar en loop infinito."
+          },
+          "solution": {
+            "title": "La Solución",
+            "content": "El patrón Dead Letter Exchange (DLX) redirige mensajes problemáticos a una cola especial para análisis y tratamiento. Mensajes 'muertos' no se pierden y pueden ser reprocesados después o analizados para debug."
+          },
+          "howItWorks": {
+            "title": "Cómo Funciona - Paso a Paso",
+            "step1": "1. Configure la cola principal con argumento 'x-dead-letter-exchange'",
+            "step2": "2. Cree el DLX y una cola para recibir mensajes muertos",
+            "step3": "3. Cuando mensaje es rechazado (nack sin requeue), expirado (TTL), o cola llena...",
+            "step4": "4. RabbitMQ automáticamente republica el mensaje en el DLX",
+            "step5": "5. Mensaje llega a la cola de dead letters con headers indicando el motivo"
+          },
+          "triggers": {
+            "title": "Qué Dispara Dead Letter",
+            "rejected": "Mensaje rechazado: consumer hace nack/reject con requeue=false",
+            "expired": "TTL expirado: mensaje quedó en la cola más tiempo que el permitido",
+            "overflow": "Cola llena: cola alcanzó max-length y política es 'reject-publish-dlx'"
+          },
+          "example": {
+            "title": "Ejemplo Práctico: Procesamiento con Reintentos",
+            "scenario": "Sistema de pagos necesita manejar fallos temporales con reintentos y eventual dead letter",
+            "setup": "Cola 'pagos' → DLX 'pagos-dlx' → Cola 'pagos-fallidos'",
+            "flow": "Pago falla 3x → nack sin requeue → va para 'pagos-fallidos' → Operador analiza y reprocesa manualmente",
+            "result": "Ningún pago es perdido, fallos son visibles y tratables"
+          },
+          "considerations": {
+            "title": "Consideraciones Importantes",
+            "monitor": "Siempre monitoree la cola de dead letters. Mensajes acumulando indican problemas sistémicos.",
+            "retry": "Considere implementar reintentos antes de enviar para DLX. Use contador de reintentos en headers.",
+            "alert": "Configure alertas cuando la cola de dead letters crece. Esto indica fallos que necesitan atención."
+          }
+        }
+      },
+      "reliability": {
+        "title": "Confiabilidad y Durabilidad",
+        "subtitle": "Domine las técnicas para garantizar que ningún mensaje se pierda jamás",
+        "overview": {
+          "title": "Las Tres Piernas de la Confiabilidad",
+          "content": "Un sistema de mensajería confiable depende de tres elementos trabajando juntos: Publisher Confirms (producer sabe que mensaje llegó al broker), Durabilidad (mensajes sobreviven reinicios), y Consumer Acknowledgments (broker sabe que mensaje fue procesado). Falla en cualquiera de ellos crea brecha para pérdida de datos."
+        },
+        "messageLifecycle": {
+          "title": "Ciclo de Vida del Mensaje",
+          "step1": "1. Producer publica mensaje → en memoria del broker",
+          "step2": "2. Si persistente, mensaje es escrito en disco",
+          "step3": "3. Si Publisher Confirms está activo, broker envía confirmación al producer",
+          "step4": "4. Mensaje es enrutado para cola(s) basándose en bindings",
+          "step5": "5. Mensaje espera en la cola hasta que consumer esté disponible",
+          "step6": "6. RabbitMQ entrega mensaje al consumer",
+          "step7": "7. Consumer procesa y envía ack/nack",
+          "step8": "8. Tras ack, mensaje es removido permanentemente"
+        },
+        "acks": {
+          "title": "Acknowledgments de Mensajes",
+          "content": "Los acknowledgments (acks) son la forma como un consumer informa a RabbitMQ que un mensaje fue recibido y procesado con éxito. Sin ack, RabbitMQ mantiene el mensaje como 'unacknowledged' y puede reenviarlo si el consumer desconecta.",
+          "types": {
+            "title": "Tipos de Acknowledgment",
+            "autoAck": {
+              "name": "Auto-ack (noAck: true)",
+              "description": "Mensaje es considerado entregado inmediatamente cuando enviado al consumer. Si el consumer falla antes de procesar, el mensaje es PERDIDO. Use solo para mensajes dispensables."
+            },
+            "manualAck": {
+              "name": "Ack Manual (basic.ack)",
+              "description": "Consumer confirma explícitamente con channel.ack(message). Use para mensajes importantes. Confirme SOLO después que el procesamiento esté realmente completo."
+            },
+            "nack": {
+              "name": "Nack (basic.nack)",
+              "description": "Consumer rechaza el mensaje. Con requeue=true, vuelve a la cola. Con requeue=false, es descartado o enviado a DLX. Útil para errores recuperables vs permanentes."
+            },
+            "reject": {
+              "name": "Reject (basic.reject)",
+              "description": "Similar al nack, pero solo para un mensaje (nack puede rechazar múltiples con multiple=true). Funcionalidad equivalente para mensaje individual."
+            }
+          },
+          "multipleAck": {
+            "title": "Ack Múltiple",
+            "content": "channel.ack(message, allUpTo=true) confirma TODOS los mensajes hasta el delivery tag especificado. Aumenta la performance pero úselo con cuidado: si falla antes de procesar todos, mensajes confirmados se pierden."
+          },
+          "codeHint": {
+            "title": "En el Código",
+            "success": "Procesamiento exitoso: channel.ack(msg)",
+            "retryable": "Error recuperable (reintentar): channel.nack(msg, false, true) // requeue",
+            "permanent": "Error permanente (descartar): channel.nack(msg, false, false) // para DLX"
+          }
+        },
+        "durability": {
+          "title": "Durabilidad",
+          "content": "Durabilidad garantiza que mensajes sobrevivan reinicios del servidor RabbitMQ. Sin durabilidad, un reinicio (planificado o no) resulta en pérdida de todos los mensajes en memoria.",
+          "threeLegs": {
+            "title": "Los Tres Pilares de la Durabilidad",
+            "exchanges": {
+              "name": "Exchanges Durables",
+              "description": "Declarados con durable=true. El exchange continúa existiendo después de reinicio. Si es transiente, desaparece y sus bindings también."
+            },
+            "queues": {
+              "name": "Colas Durables",
+              "description": "Declaradas con durable=true. La cola persiste después de reinicio. PERO mensajes solo sobreviven si también son persistentes."
+            },
+            "messages": {
+              "name": "Mensajes Persistentes",
+              "description": "Publicados con deliveryMode=2 (o persistent=true en algunos clientes). El mensaje es escrito en disco antes de confirmación. Impacto en performance."
+            }
+          },
+          "important": {
+            "title": "Importante: Todos Son Necesarios",
+            "content": "Para garantía completa, los TRES deben ser configurados: exchange durable + cola durable + mensaje persistente. Cola durable con mensajes transientes = mensajes perdidos en reinicio. Exchange transiente = bindings perdidos en reinicio."
+          },
+          "performanceNote": {
+            "title": "Nota de Performance",
+            "content": "Persistencia requiere escritura en disco (fsync), lo que impacta performance. Para mensajes dispensables de alto volumen, considere usar mensajes transientes. Para mensajes críticos, la performance es aceptable comparada con la garantía."
+          }
+        },
+        "prefetch": {
+          "title": "Prefetch (QoS)",
+          "content": "El prefetch (también llamado QoS - Quality of Service) controla cuántos mensajes no confirmados RabbitMQ enviará a un consumer simultáneamente. Es crucial para distribución justa de trabajo y prevenir sobrecarga de consumers lentos.",
+          "howItWorks": {
+            "title": "Cómo Funciona",
+            "content": "Con prefetch=10, RabbitMQ enviará hasta 10 mensajes al consumer sin esperar ack. Cuando el consumer confirma un mensaje, RabbitMQ envía el próximo de la cola. Sin prefetch (o valor muy alto), RabbitMQ puede enviar miles de mensajes, sobrecargando el consumer."
+          },
+          "fairDispatch": {
+            "title": "Distribución Justa",
+            "content": "Sin prefetch, RabbitMQ usa round-robin ciego: distribuye mensajes igualmente independiente de la velocidad del consumer. Con prefetch=1, cada consumer solo recibe un nuevo mensaje después de confirmar el anterior, garantizando que workers rápidos reciben más trabajo."
+          },
+          "values": {
+            "title": "Valores Recomendados",
+            "one": "Prefetch = 1: distribución perfectamente justa, pero menor throughput. Use para tareas muy pesadas (minutos de procesamiento).",
+            "low": "Prefetch = 1-10: buen equilibrio para tareas pesadas (segundos de procesamiento). Recomendado para la mayoría de los casos.",
+            "medium": "Prefetch = 10-50: para tareas moderadas (cientos de milisegundos). Buen throughput con distribución razonable.",
+            "high": "Prefetch = 50-100+: para tareas muy rápidas (milisegundos). Maximiza throughput, distribución menos importante."
+          },
+          "global": {
+            "title": "Prefetch por Canal vs por Consumer",
+            "content": "prefetch puede ser configurado por canal (global=true) o por consumer (global=false). Por consumer es más común y más intuitivo: cada consumer en el canal tiene su propio límite."
+          }
+        },
+        "publisherConfirms": {
+          "title": "Publisher Confirms",
+          "content": "Publisher Confirms es un mecanismo donde el broker confirma para el producer que el mensaje fue recibido con éxito. Sin esto, el producer no tiene garantía de que el mensaje llegó - puede haberse perdido en la red.",
+          "howItWorks": {
+            "title": "Cómo Funciona",
+            "content": "El producer habilita modo confirm en el canal. Para cada mensaje publicado, RabbitMQ envía un ack (mensaje recibido) o nack (problema, mensaje rechazado). El producer puede entonces decidir si reintenta o registra el fallo."
+          },
+          "modes": {
+            "title": "Modos de Uso",
+            "sync": "Síncrono: waitForConfirms() bloquea hasta recibir confirmación. Simple pero lento - un mensaje por vez.",
+            "batch": "Batch: publica varios mensajes, después waitForConfirmsOrDie(). Más rápido, pero si falla, no sabe cuál falló.",
+            "async": "Asíncrono: callbacks para ack/nack. Más complejo pero mejor performance. El producer continúa publicando mientras espera confirmaciones."
+          },
+          "whatIsConfirmed": {
+            "title": "Qué Exactamente Es Confirmado",
+            "content": "El ack del broker significa: mensaje fue recibido y enrutado para cola(s). Si el mensaje es persistente, también significa que fue escrito en disco. NO significa que fue consumido - solo que está seguro en el broker."
+          }
+        },
+        "ha": {
+          "title": "Alta Disponibilidad (HA)",
+          "content": "Para sistemas críticos, un único servidor RabbitMQ es un punto único de falla. Clusters y Quorum Queues proporcionan alta disponibilidad, replicando colas entre múltiples nodos.",
+          "quorumQueues": {
+            "title": "Quorum Queues",
+            "content": "Quorum Queues son el tipo recomendado para alta disponibilidad. Usan el algoritmo Raft para replicar datos entre nodos. Si un nodo cae, otro asume automáticamente. Requieren mayoría de nodos vivos (quorum) para funcionar."
+          },
+          "considerations": {
+            "title": "Consideraciones",
+            "content": "HA añade latencia (replicación) y complejidad operacional. Evalúe si su caso realmente necesita HA o si backups y recuperación rápida son suficientes. Para muchos casos, un único servidor bien configurado con persistencia es adecuado."
+          }
+        }
+      },
+      "bestPractices": {
+        "title": "Mejores Prácticas",
+        "subtitle": "Lecciones aprendidas y directrices para sistemas de producción robustos",
+        "naming": {
+          "title": "Convenciones de Nomenclatura",
+          "intro": "Nombres claros y consistentes facilitan debugging, monitoreo y comunicación entre equipos. Establezca convenciones desde el inicio del proyecto.",
+          "exchanges": {
+            "title": "Exchanges",
+            "convention": "Formato: {dominio}.{entidad}.{tipo}",
+            "examples": "Ejemplos: 'pedidos.eventos' (fanout), 'usuarios.comandos' (direct), 'logs.sistema' (topic)"
+          },
+          "queues": {
+            "title": "Colas",
+            "convention": "Formato: {servicio}.{función} o {dominio}.{acción}.{servicio}",
+            "examples": "Ejemplos: 'email-service.envio', 'pedidos.procesamiento.facturacion', 'analytics.eventos.usuario'"
+          },
+          "routingKeys": {
+            "title": "Routing Keys",
+            "convention": "Formato: {entidad}.{evento}.{contexto} (de específico a general)",
+            "examples": "Ejemplos: 'pedido.creado.premium', 'usuario.actualizado.perfil', 'pago.fallido.tarjeta'"
+          },
+          "tips": {
+            "title": "Consejos",
+            "lowercase": "Use minúsculas y guiones o puntos como separadores (nunca camelCase o espacios)",
+            "consistent": "Sea consistente: si usa 'pedido.creado', no use 'usuario_registrado'",
+            "meaningful": "Nombres deben ser autoexplicativos: 'procesamiento-pagos' > 'queue1'"
+          }
+        },
+        "errorHandling": {
+          "title": "Manejo de Errores",
+          "intro": "Errores son inevitables. La pregunta es: ¿su sistema maneja fallos graciosamente o pierde datos silenciosamente?",
+          "retryStrategy": {
+            "title": "Estrategia de Reintentos",
+            "immediate": "Reintento inmediato: para fallos transitorios (timeout de red). nack con requeue=true.",
+            "delayed": "Reintento con delay: use TTL + DLX para crear cola de 'espera'. Mensaje vuelve después de X segundos.",
+            "exponential": "Backoff exponencial: 1s, 2s, 4s, 8s... Evita sobrecarga del sistema que ya está con problemas.",
+            "maxRetries": "Límite de reintentos: después de N intentos, envíe para dead letter. Evita loops infinitos."
+          },
+          "dlxSetup": {
+            "title": "Configurando DLX",
+            "step1": "1. Cree el DLX: channel.assertExchange('mi-dlx', 'fanout')",
+            "step2": "2. Cree la cola de dead letters: channel.assertQueue('dead-letters')",
+            "step3": "3. Vincule: channel.bindQueue('dead-letters', 'mi-dlx', '')",
+            "step4": "4. Configure la cola principal: arguments: {'x-dead-letter-exchange': 'mi-dlx'}"
+          },
+          "monitoring": {
+            "title": "Monitoreo de Errores",
+            "content": "Configure alertas para: colas de dead letter creciendo, tasa de nack/reject alta, mensajes 'unacked' acumulados. Estos son síntomas de problemas que necesitan atención."
+          }
+        },
+        "performance": {
+          "title": "Performance",
+          "intro": "RabbitMQ puede manejar decenas de miles de mensajes por segundo, pero configuración incorrecta puede crear cuellos de botella.",
+          "connections": {
+            "title": "Conexiones y Canales",
+            "reuse": "SIEMPRE reutilice conexiones. Crear conexión es costoso (TCP handshake, autenticación, negociación AMQP).",
+            "channels": "Use canales para paralelismo. Una conexión puede tener múltiples canales (ligeros, bajo costo).",
+            "pooling": "Considere pool de conexiones para aplicaciones de alto throughput.",
+            "antiPattern": "Anti-patrón: crear conexión para cada mensaje publicado. Esto mata la performance y el broker."
+          },
+          "batching": {
+            "title": "Agrupamiento",
+            "content": "Cuando posible, agrupe operaciones. Publisher confirms en batch, múltiples publicaciones antes de esperar confirmación, procesamiento en lote de mensajes."
+          },
+          "queueSize": {
+            "title": "Tamaño de las Colas",
+            "content": "Colas muy largas (millones de mensajes) impactan la performance. Si colas crecen constantemente, agregue más consumers o investigue por qué el procesamiento es lento.",
+            "lazy": "Colas Lazy: para colas que pueden crecer mucho, considere colas lazy que mantienen mensajes en disco, liberando RAM."
+          },
+          "messageSize": {
+            "title": "Tamaño del Mensaje",
+            "content": "Mensajes grandes (MB) no son ideales para RabbitMQ. Considere almacenar datos en S3/blob storage y enviar solo la referencia en el mensaje."
+          }
+        },
+        "security": {
+          "title": "Seguridad",
+          "intro": "RabbitMQ puede contener datos sensibles (pedidos, pagos, datos personales). Seguridad no es opcional.",
+          "tls": {
+            "title": "TLS/SSL",
+            "content": "SIEMPRE use TLS en producción. Sin TLS, credenciales y mensajes viajan en texto plano. Configure certificados válidos, no solo en el broker sino también en los clientes."
+          },
+          "authentication": {
+            "title": "Autenticación y Autorización",
+            "users": "Cree usuarios específicos por aplicación/servicio. Nunca use el usuario 'guest' en producción.",
+            "permissions": "Configure permisos mínimos: servicio de email solo necesita leer de cola 'emails', no acceso a todo.",
+            "vhosts": "Use virtual hosts para aislar entornos (desarrollo, staging, producción) o equipos diferentes."
+          },
+          "network": {
+            "title": "Red",
+            "firewall": "RabbitMQ no debe estar expuesto a internet. Use firewall para permitir solo IPs conocidas.",
+            "management": "La UI de management (puerto 15672) es especialmente sensible. Restrinja acceso severamente."
+          }
+        },
+        "operations": {
+          "title": "Operaciones",
+          "intro": "RabbitMQ en producción requiere monitoreo, mantenimiento y preparación para incidentes.",
+          "monitoring": {
+            "title": "Monitoreo",
+            "metrics": "Métricas esenciales: tasa de publicación/consumo, tamaño de colas, conexiones activas, uso de memoria/disco.",
+            "tools": "Use Prometheus + Grafana, o el plugin de management. Configure alertas para anomalías.",
+            "healthCheck": "Implemente health checks que verifiquen conexión con RabbitMQ en sus aplicaciones."
+          },
+          "backup": {
+            "title": "Backup y Recuperación",
+            "definitions": "Exporte definiciones (exchanges, colas, bindings) regularmente: rabbitmqadmin export definitions.json",
+            "messages": "Mensajes en tránsito son difíciles de respaldar. La mejor estrategia es durabilidad + replicación (clusters).",
+            "practice": "Pruebe recuperación regularmente. Un backup que nunca fue probado no es un backup."
+          },
+          "upgrades": {
+            "title": "Actualizaciones",
+            "content": "Mantenga RabbitMQ actualizado para correcciones de seguridad y performance. Lea las notas de versión cuidadosamente - algunas versiones tienen breaking changes."
+          }
+        }
+      },
+      "antiPatterns": {
+        "title": "Anti-patrones Comunes",
+        "subtitle": "Errores frecuentes que deben evitarse a toda costa",
+        "connectionPerMessage": {
+          "title": "Conexión por Mensaje",
+          "problem": "Crear una nueva conexión para cada mensaje publicado.",
+          "consequence": "Sobrecarga del broker, latencia altísima, posible agotamiento de recursos.",
+          "solution": "Reutilice conexiones. Use pool de conexiones si necesario."
+        },
+        "noAckImportant": {
+          "title": "Auto-ack para Mensajes Importantes",
+          "problem": "Usar noAck: true para mensajes que no pueden perderse.",
+          "consequence": "Si el consumer falla después de recibir pero antes de procesar, el mensaje se pierde.",
+          "solution": "Use ack manual y confirme solo después del procesamiento completo."
+        },
+        "infiniteRequeue": {
+          "title": "Requeue Infinito",
+          "problem": "Siempre hacer nack con requeue=true sin límite de reintentos.",
+          "consequence": "Mensaje problemático queda en loop infinito, consumiendo recursos sin progreso.",
+          "solution": "Implemente contador de reintentos (en headers) y envíe para DLX después de N intentos."
+        },
+        "hugeMessages": {
+          "title": "Mensajes Enormes",
+          "problem": "Enviar archivos binarios grandes (imágenes, PDFs) directamente en el mensaje.",
+          "consequence": "Sobrecarga de memoria, lentitud, posibles timeouts.",
+          "solution": "Almacene el archivo en blob storage (S3) y envíe solo la URL/referencia en el mensaje."
+        },
+        "noMonitoring": {
+          "title": "Sin Monitoreo",
+          "problem": "RabbitMQ en producción sin métricas o alertas.",
+          "consequence": "Problemas descubiertos solo cuando usuarios reclaman. Colas crecen sin control, disco lleno, crash.",
+          "solution": "Configure monitoreo desde el primer día. Métricas, alertas, dashboards."
+        },
+        "unboundedQueues": {
+          "title": "Colas Sin Límite",
+          "problem": "Colas sin max-length o TTL en escenarios donde consumers pueden fallar.",
+          "consequence": "Colas crecen indefinidamente, consumiendo toda la memoria/disco disponible.",
+          "solution": "Configure límites apropiados: max-length, TTL, o ambos. Dimensione para su caso de uso."
+        }
+      }
+    },
+    "glossary": {
+      "title": "Glosario",
+      "subtitle": "Términos esenciales de RabbitMQ y mensajería explicados de forma clara",
+      "terms": {
+        "amqp": {
+          "term": "AMQP",
+          "definition": "Advanced Message Queuing Protocol - protocolo estándar abierto para middleware de mensajería, creado para interoperabilidad entre diferentes implementaciones. Define exactamente cómo los mensajes deben ser formateados, transmitidos, encolados y confirmados. RabbitMQ implementa AMQP 0-9-1 con extensiones."
+        },
+        "broker": {
+          "term": "Broker",
+          "definition": "El servidor central que recibe mensajes de producers, los almacena en colas, y los entrega a consumers. Es el 'intermediario' que desacopla emisores de receptores. RabbitMQ es un broker de mensajes. Otros ejemplos: Apache Kafka, ActiveMQ, Redis (con limitaciones)."
+        },
+        "vhost": {
+          "term": "Virtual Host (vhost)",
+          "definition": "Agrupación lógica de recursos (exchanges, colas, bindings, usuarios) que proporciona aislamiento completo dentro del mismo servidor RabbitMQ. Cada vhost es como una 'instancia' independiente. Comúnmente usado para separar entornos (dev/staging/prod) o equipos. El vhost por defecto es '/'."
+        },
+        "connection": {
+          "term": "Connection (Conexión)",
+          "definition": "Conexión TCP persistente entre una aplicación y el broker RabbitMQ. Crear conexiones es costoso (handshake TCP, autenticación AMQP, negociación de características), por eso deben ser reutilizadas. Una conexión puede contener múltiples canales."
+        },
+        "channel": {
+          "term": "Channel (Canal)",
+          "definition": "Conexión virtual ligera dentro de una conexión TCP. Múltiples canales comparten una conexión, permitiendo operaciones paralelas sin el costo de múltiples conexiones TCP. Cada operación (publicar, consumir, declarar) ocurre dentro de un canal. Canales no son thread-safe - use un canal por thread."
+        },
+        "exchange": {
+          "term": "Exchange",
+          "definition": "Componente que recibe mensajes de producers y los enruta a colas basándose en reglas (bindings) y tipo de exchange. Nunca almacena mensajes - su función es puramente de enrutamiento. Tipos: Direct (coincidencia exacta), Fanout (broadcast), Topic (patrones), Headers (atributos)."
+        },
+        "queue": {
+          "term": "Queue (Cola)",
+          "definition": "Buffer que almacena mensajes hasta que sean consumidos. Es el destino final donde los mensajes esperan. Propiedades importantes: durable (sobrevive reinicio), exclusive (una conexión), auto-delete (borrada cuando sin consumers), argumentos (TTL, max-length, DLX, etc.)."
+        },
+        "binding": {
+          "term": "Binding (Vínculo)",
+          "definition": "Regla que conecta un exchange a una cola (o a otro exchange). Define qué mensajes deben ser enrutados a dónde. Incluye una routing key o patrón (para Direct/Topic) o headers (para Headers). Sin binding, el exchange no tiene para dónde enviar mensajes."
+        },
+        "routingKey": {
+          "term": "Routing Key",
+          "definition": "String que el producer adjunta al mensaje y que el exchange usa para decidir el enrutamiento. En exchanges Direct, debe coincidir exactamente con la binding key. En Topic, soporta wildcards (* = una palabra, # = cero o más). Ignorada en Fanout."
+        },
+        "bindingKey": {
+          "term": "Binding Key",
+          "definition": "String o patrón definido al crear un binding entre exchange y cola. El exchange compara la routing key del mensaje con las binding keys de sus bindings para decidir el enrutamiento. En Topic, puede contener wildcards."
+        },
+        "producer": {
+          "term": "Producer (Productor)",
+          "definition": "Aplicación que envía mensajes al broker. El producer publica mensajes en un exchange (nunca directamente en una cola), especificando routing key y propiedades. Ejemplos: servicio web encolando tareas, aplicación emitiendo eventos."
+        },
+        "consumer": {
+          "term": "Consumer (Consumidor)",
+          "definition": "Aplicación que recibe y procesa mensajes de una cola. Se suscribe a la cola y recibe mensajes cuando están disponibles. Responsable por enviar acknowledgment después de procesar. Ejemplos: worker procesando tareas, servicio reaccionando a eventos."
+        },
+        "ack": {
+          "term": "Acknowledgment (Ack)",
+          "definition": "Confirmación enviada por el consumer al broker indicando que un mensaje fue recibido y procesado con éxito. Después del ack, RabbitMQ remueve el mensaje de la cola permanentemente. Sin ack (en modo manual), el mensaje permanece 'unacked' y puede ser reenviado si el consumer desconecta."
+        },
+        "nack": {
+          "term": "Negative Acknowledgment (Nack)",
+          "definition": "Rechazo de un mensaje por el consumer. Con requeue=true, el mensaje vuelve a la cola para reintento. Con requeue=false, el mensaje es descartado o enviado a DLX (si configurado). Útil para diferenciar errores temporales de permanentes."
+        },
+        "reject": {
+          "term": "Reject",
+          "definition": "Similar al nack, pero solo para un mensaje individual (nack puede rechazar múltiples con el flag multiple). Funcionalidad equivalente al nack para operación en mensaje único. Soporta requeue=true/false."
+        },
+        "dlx": {
+          "term": "Dead Letter Exchange (DLX)",
+          "definition": "Exchange especial que recibe mensajes 'muertos': rechazados sin requeue, expirados (TTL), o descartados por cola llena. Configurado con el argumento x-dead-letter-exchange en la cola. Esencial para debug y manejo de errores - mensajes problemáticos no se pierden."
+        },
+        "ttl": {
+          "term": "Time-To-Live (TTL)",
+          "definition": "Tiempo máximo que un mensaje puede permanecer en una cola antes de ser automáticamente descartado o enviado a DLX. Puede ser configurado por mensaje (propiedad expiration) o por cola (argumento x-message-ttl). Útil para mensajes que pierden valor con el tiempo."
+        },
+        "prefetch": {
+          "term": "Prefetch Count / QoS",
+          "definition": "Límite de cuántos mensajes no confirmados un consumer puede tener simultáneamente. Configurado vía basic_qos(). Prefetch=1 garantiza distribución más justa. Valores mayores aumentan throughput."
+        },
+        "publisherConfirm": {
+          "term": "Publisher Confirms",
+          "definition": "Mecanismo donde el broker confirma al producer que el mensaje fue recibido con éxito. Sin confirms, el producer no tiene garantía - el mensaje puede haberse perdido en la red. Modos: síncrono (bloquea), batch (confirma grupo), asíncrono (callbacks)."
+        },
+        "mandatory": {
+          "term": "Mandatory Flag",
+          "definition": "Flag en la publicación que instruye al broker a retornar el mensaje al producer si no puede ser enrutado a ninguna cola (ningún binding coincidió). Sin mandatory, mensajes no enrutables son descartados silenciosamente."
+        },
+        "persistent": {
+          "term": "Persistent / Delivery Mode",
+          "definition": "Propiedad del mensaje que indica si debe ser escrito en disco (deliveryMode=2) o mantenido solo en memoria (deliveryMode=1). Mensajes persistentes sobreviven reinicio del broker (si la cola también es durable). Impacto en performance."
+        },
+        "durable": {
+          "term": "Durable",
+          "definition": "Propiedad de exchanges y colas que indica si deben sobrevivir reinicio del broker. Exchanges/colas durables persisten; transientes son borrados en reinicio. Para mensajes, la propiedad equivalente es 'persistent'."
+        },
+        "transient": {
+          "term": "Transient",
+          "definition": "Opuesto de durable. Exchange o cola transiente es borrada cuando el broker reinicia. Mensajes transientes (deliveryMode=1) son mantenidos solo en memoria y perdidos en reinicio. Más rápido, pero sin garantías de durabilidad."
+        },
+        "exclusive": {
+          "term": "Exclusive Queue",
+          "definition": "Cola que solo puede ser usada por la conexión que la creó. Automáticamente borrada cuando la conexión cierra. Comúnmente usada para colas de callback en RPC - cada cliente tiene su propia cola temporal exclusiva."
+        },
+        "autoDelete": {
+          "term": "Auto-delete",
+          "definition": "Propiedad de cola o exchange que indica borrado automático cuando el último consumer desconecta (cola) o el último binding es removido (exchange). Útil para recursos temporales que no deben quedarse huérfanos."
+        },
+        "cluster": {
+          "term": "Cluster",
+          "definition": "Grupo de servidores RabbitMQ trabajando juntos. Proporciona escalabilidad y alta disponibilidad. Todos los nodos comparten usuarios, vhosts y topología. Mensajes pueden ser replicados entre nodos con Quorum Queues o clásicas mirrored."
+        },
+        "dlq": {
+          "term": "Dead Letter Queue (DLQ)",
+          "definition": "Cola vinculada a un DLX que almacena mensajes 'muertos'. Permite análisis manual, reintento o archivo de mensajes problemáticos."
+        },
+        "alternateExchange": {
+          "term": "Alternate Exchange",
+          "definition": "Exchange configurado para recibir mensajes que no coinciden con ningún binding en el exchange original. Útil como 'catch-all' para mensajes huérfanos. Configure con argumento x-alternate-exchange."
+        },
+        "lazyQueue": {
+          "term": "Lazy Queue",
+          "definition": "Modo de cola que almacena mensajes directamente en disco en lugar de memoria. Ideal para colas muy grandes (millones de mensajes) o cuando la memoria es escasa. Tradeoff: latencia ligeramente mayor."
+        },
+        "quorumQueue": {
+          "term": "Quorum Queue",
+          "definition": "Tipo de cola diseñada para alta disponibilidad y consistencia de datos. Usa el algoritmo Raft para replicación. Requiere quorum (mayoría) de nodos para operaciones de escritura. Recomendada sobre clásicas mirrored queues para nuevos deployments."
+        },
+        "stream": {
+          "term": "Stream",
+          "definition": "Estructura de datos append-only introducida en RabbitMQ 3.9. Similar a topics de Kafka. Permite múltiples consumidores leyendo del mismo offset, replay de mensajes, y retención basada en tamaño/tiempo."
+        },
+        "federation": {
+          "term": "Federation",
+          "definition": "Mecanismo para conectar brokers RabbitMQ en diferentes datacenters/regiones. Permite que mensajes publicados en un broker sean automáticamente replicados a otro. Diferente de clustering - cada broker opera independientemente."
+        },
+        "shovel": {
+          "term": "Shovel",
+          "definition": "Plugin que mueve mensajes de una cola (o exchange) a otro destino, posiblemente en otro broker. Más simple que federation, útil para migraciones, integración entre sistemas, o bridging entre entornos."
+        }
+      }
+    }
+  },
+  "actions": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "connect": "Conectar",
+    "disconnect": "Desconectar",
+    "start": "Iniciar",
+    "stop": "Detener",
+    "reset": "Reiniciar"
+  },
+  "errors": {
+    "connectionFailed": "Conexión fallida",
+    "invalidRoutingKey": "Routing key inválida",
+    "queueFull": "Cola está llena",
+    "consumerBusy": "Consumer está ocupado"
+  },
+  "footer": {
+    "madeWith": "Hecho con",
+    "forLearning": "para aprender",
+    "openSource": "Código Abierto",
+    "by": "por",
+    "owner": "Rafael Coelho"
+  },
+  "shortcuts": {
+    "title": "Atajos",
+    "keyboardShortcuts": "Atajos de Teclado",
+    "general": "General",
+    "addNodes": "Agregar Nodos",
+    "canvas": "Canvas",
+    "undo": "Deshacer",
+    "redo": "Rehacer",
+    "selectAll": "Seleccionar todo",
+    "duplicate": "Duplicar",
+    "delete": "Eliminar seleccionado",
+    "clearSelection": "Limpiar selección",
+    "addProducer": "Agregar Producer",
+    "addExchange": "Agregar Exchange",
+    "addQueue": "Agregar Queue",
+    "addConsumer": "Agregar Consumer",
+    "middleMouse": "Botón del Medio",
+    "pan": "Mover canvas",
+    "zoom": "Zoom in/out",
+    "clickDrag": "Clic + Arrastrar",
+    "boxSelect": "Selección en caja",
+    "addToSelection": "Agregar a selección"
+  },
+  "contextMenu": {
+    "edit": "Editar",
+    "duplicate": "Duplicar",
+    "delete": "Eliminar"
+  }
+}

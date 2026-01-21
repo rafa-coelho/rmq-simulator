@@ -1,0 +1,11 @@
+# robots.txt for RabbitMQ Simulator
+# https://rmq-simulator.com
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://rmq-simulator.com/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1

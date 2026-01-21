@@ -1,0 +1,1290 @@
+{
+  "app": {
+    "title": "RabbitMQ Simulator",
+    "subtitle": "Interactive visual simulator for learning message queuing",
+    "description": "Learn RabbitMQ concepts by building and visualizing message flows in real-time"
+  },
+  "nav": {
+    "simulator": "Simulator",
+    "learn": "Learn RabbitMQ",
+    "examples": "Examples"
+  },
+  "toolbar": {
+    "addProducer": "Add Producer",
+    "addExchange": "Add Exchange",
+    "addQueue": "Add Queue",
+    "addConsumer": "Add Consumer",
+    "clear": "Clear Canvas",
+    "export": "Export",
+    "import": "Import",
+    "examples": "Load Example"
+  },
+  "nodes": {
+    "producer": {
+      "title": "Producer",
+      "description": "Sends messages to exchanges",
+      "placeholder": "Producer Name"
+    },
+    "exchange": {
+      "title": "Exchange",
+      "description": "Routes messages to queues based on rules",
+      "placeholder": "Exchange Name",
+      "types": {
+        "direct": "Direct",
+        "fanout": "Fanout",
+        "topic": "Topic",
+        "headers": "Headers"
+      },
+      "typeDescriptions": {
+        "direct": "Routes messages to queues with matching routing key",
+        "fanout": "Broadcasts messages to all bound queues",
+        "topic": "Routes messages using pattern matching on routing key",
+        "headers": "Routes messages based on header attributes"
+      }
+    },
+    "queue": {
+      "title": "Queue",
+      "description": "Stores messages until consumed",
+      "placeholder": "Queue Name",
+      "messages": "messages",
+      "empty": "Empty",
+      "durable": "Durable",
+      "autoDelete": "Auto Delete"
+    },
+    "consumer": {
+      "title": "Consumer",
+      "description": "Receives and processes messages",
+      "placeholder": "Consumer Name",
+      "consumed": "consumed",
+      "processing": "Processing...",
+      "idle": "Idle",
+      "autoAck": "Auto Ack",
+      "prefetch": "Prefetch"
+    }
+  },
+  "binding": {
+    "title": "Binding",
+    "routingKey": "Routing Key",
+    "routingKeyPlaceholder": "Enter routing key",
+    "pattern": "Pattern",
+    "patternHelp": "Use * for one word, # for zero or more words"
+  },
+  "messages": {
+    "title": "Messages",
+    "send": "Send Message",
+    "content": "Message Content",
+    "contentPlaceholder": "Enter message content...",
+    "routingKey": "Routing Key",
+    "routingKeyPlaceholder": "e.g., order.created",
+    "headers": "Headers",
+    "addHeader": "Add Header",
+    "history": "Message History",
+    "noMessages": "No messages sent yet",
+    "status": {
+      "sent": "Sent",
+      "routed": "Routed",
+      "queued": "Queued",
+      "consumed": "Consumed",
+      "rejected": "Rejected",
+      "unroutable": "Unroutable"
+    }
+  },
+  "stats": {
+    "title": "Statistics",
+    "totalSent": "Total Sent",
+    "totalRouted": "Total Routed",
+    "totalConsumed": "Total Consumed",
+    "totalRejected": "Total Rejected",
+    "messagesInQueues": "In Queues",
+    "publishRate": "Publish Rate",
+    "consumeRate": "Consume Rate"
+  },
+  "properties": {
+    "title": "Properties",
+    "name": "Name",
+    "type": "Type",
+    "delete": "Delete",
+    "duplicate": "Duplicate",
+    "noSelection": "Select a node to view properties"
+  },
+  "examples": {
+    "simpleQueue": {
+      "title": "Simple Queue",
+      "description": "Basic producer → exchange → queue → consumer flow"
+    },
+    "workQueues": {
+      "title": "Work Queues",
+      "description": "Distribute tasks among multiple workers"
+    },
+    "pubSub": {
+      "title": "Publish/Subscribe",
+      "description": "Fanout exchange broadcasting to multiple queues"
+    },
+    "routing": {
+      "title": "Routing",
+      "description": "Direct exchange with routing keys"
+    },
+    "topics": {
+      "title": "Topics",
+      "description": "Topic exchange with pattern matching"
+    }
+  },
+  "learn": {
+    "title": "Learn RabbitMQ",
+    "subtitle": "Comprehensive, in-depth guide to message queuing with RabbitMQ",
+    "toc": "Table of Contents",
+    "trySimulator": "Try it in the simulator!",
+    "sections": {
+      "introduction": {
+        "title": "Introduction to RabbitMQ",
+        "subtitle": "What is RabbitMQ and why has it revolutionized inter-system communication?",
+        "content": "RabbitMQ is one of the most widely deployed open-source message brokers in the world, with millions of production installations. Created in 2007 by Rabbit Technologies (later acquired by VMware/Pivotal), it implements the Advanced Message Queuing Protocol (AMQP) and provides an extremely robust, scalable, and reliable platform for building distributed systems and microservices architectures. Companies like Reddit, 9GAG, Bloomberg, and many others rely on RabbitMQ to process billions of messages daily.",
+        "whatIs": {
+          "title": "What is a Message Broker?",
+          "content": "A message broker is intermediary software that enables applications, systems, and services to communicate with each other in an asynchronous and decoupled way. Consider this scenario: in a traditional architecture, when Service A needs to communicate with Service B, it makes a direct call (HTTP, for example). If Service B is down or overloaded, the request fails. With a message broker like RabbitMQ, Service A sends the message to the broker, which stores it safely and ensures it will be delivered to Service B when it becomes available. Think of it as a post office for your applications: it receives messages from senders (producers), stores them securely, and delivers them to the correct recipients (consumers), even if they're not available at the time of sending.",
+          "analogy": "Real-world analogy: Imagine you need to deliver an important document to someone. Instead of waiting for them to be available (synchronous communication), you leave the document in a secure mailbox (message broker). They can pick it up when available, and you have a guarantee the document won't be lost. Additionally, if multiple people need copies of the document, the post office can handle that automatically."
+        },
+        "whyUse": {
+          "title": "Why Use RabbitMQ?",
+          "intro": "RabbitMQ solves fundamental distributed systems problems that would be extremely difficult to solve manually:",
+          "items": [
+            "Temporal and spatial decoupling: Producers and consumers don't need to be running simultaneously, nor know each other's location. This allows teams to develop and deploy services independently.",
+            "Elastic scalability: Dynamically add or remove consumers based on demand. If the queue grows, add more workers; if it shrinks, remove them. No code changes required.",
+            "Guaranteed reliability: Messages can be persisted to disk, replicated across cluster nodes, and confirmed by both broker and consumer. You choose the guarantee level.",
+            "Pattern flexibility: Supports multiple messaging patterns (pub/sub, work queues, RPC, routing) using the same basic components, just configured differently.",
+            "Language agnostic: Official and community client libraries for Java, Python, .NET, Ruby, PHP, JavaScript/Node.js, Go, Rust, and virtually any modern language.",
+            "High availability: Native support for clustering, queue mirroring, and quorum queues for scenarios where downtime is not acceptable.",
+            "Observability: Web management interface, Prometheus metrics, structured logs, and integrations with monitoring tools."
+          ]
+        },
+        "useCases": {
+          "title": "Common Use Cases",
+          "intro": "RabbitMQ is versatile and can be applied in various scenarios. Here are the most common ones with concrete examples:",
+          "items": [
+            "Asynchronous task queues: Image/video processing, PDF report generation, bulk email sending, payment processing. Example: When a user uploads a video, instead of processing it synchronously (keeping the user waiting), you queue the task and respond immediately. Workers process the video in the background.",
+            "Microservices communication: Instead of direct HTTP calls between services, use messages. If the inventory service is down, the order isn't lost - it stays in the queue until processed.",
+            "Event-driven architectures (EDA): When an event happens (user created, order paid, product updated), publish an event. All interested services automatically receive it.",
+            "Log aggregation and processing: Centralize logs from multiple services in a queue, process them with Elasticsearch/Logstash, and never lose an entry even under high load.",
+            "Real-time notifications: Push notifications, transactional emails, SMS, in-app notifications. A notification service consumes from a queue and delivers through appropriate channels.",
+            "E-commerce order processing: Stock validation, payment processing, invoice generation, inventory update, confirmation sending - each step as a queue stage.",
+            "IoT and telemetry: Thousands of devices sending data. RabbitMQ absorbs traffic spikes and distributes for processing."
+          ]
+        },
+        "history": {
+          "title": "Brief History",
+          "content": "RabbitMQ was developed by Rabbit Technologies Ltd, a small British company founded in 2007. The name 'Rabbit' was chosen because rabbits are known for reproducing quickly - a metaphor for messages moving rapidly through the system. Written in Erlang (a language created by Ericsson for highly available telecommunications systems), RabbitMQ inherits characteristics like fault tolerance, hot code swapping, and excellent concurrent I/O performance. In 2010, VMware acquired Rabbit Technologies, and in 2013 the project moved to Pivotal. Today it's maintained by VMware/Broadcom under the Mozilla Public License open-source license."
+        }
+      },
+      "concepts": {
+        "title": "Core Concepts",
+        "subtitle": "Understanding the building blocks that form the RabbitMQ ecosystem",
+        "overview": "RabbitMQ follows the AMQP (Advanced Message Queuing Protocol) model that defines an elegant and powerful architecture: producers send messages to exchanges, which route them to queues through bindings, and consumers read from queues. This separation of concerns is what makes RabbitMQ so flexible. Let's explore each component in depth.",
+        "producer": {
+          "title": "Producers",
+          "content": "Producers are applications or services that create and publish messages to RabbitMQ. A fundamental concept: producers NEVER send messages directly to queues. They always publish to an exchange, and it's the exchange that decides the destination. This might seem like an extra layer of complexity, but it's exactly what enables complete decoupling between senders and receivers.",
+          "details": [
+            "Connection and Channel: Producers establish a TCP connection with RabbitMQ and create one or more channels within that connection. Channels are lightweight 'virtual connections' that allow multiplexing operations on a single TCP connection, saving resources.",
+            "Routing Key: When publishing a message, the producer specifies a routing key - a string that the exchange uses to decide routing. The meaning of the routing key depends on the exchange type.",
+            "Message Properties: Besides the body (payload), messages can have properties: content_type (e.g., 'application/json'), delivery_mode (1=transient, 2=persistent), priority, correlation_id, reply_to, expiration, message_id, timestamp, type, user_id, app_id, and custom headers.",
+            "Publisher Confirms: For delivery guarantees, producers can enable confirm mode. RabbitMQ sends an ack when the message has been safely processed (written to disk if persistent, delivered to queues).",
+            "Mandatory Flag: If set to true, the broker will return the message to the producer if it cannot be routed to any queue (no matching binding)."
+          ],
+          "example": "Practical example: An e-commerce application publishes messages when events happen. When creating an order: exchange='orders', routing_key='order.created', body={'order_id': 123, 'total': 99.90, 'items': [...]}. When paid: routing_key='order.paid'. When shipped: routing_key='order.shipped'. Each event can be consumed by different services (inventory, finance, logistics, notifications) without the producer knowing how many or which ones.",
+          "codeHint": "Code hint: In Python with pika, publishing is as simple as: channel.basic_publish(exchange='orders', routing_key='order.created', body=json.dumps(order_data), properties=pika.BasicProperties(delivery_mode=2, content_type='application/json'))"
+        },
+        "exchange": {
+          "title": "Exchanges",
+          "content": "Exchanges are the heart of RabbitMQ's routing system. Think of them as intelligent network routers: they receive messages and decide which queues should receive them based on rules (bindings) and the exchange type. An exchange NEVER stores messages - it only routes. If a message arrives and there's no bound queue matching the rules, the message is silently discarded (unless the mandatory flag is set).",
+          "details": [
+            "Exchange Types: There are 4 built-in types - Direct (exact routing key match), Fanout (broadcast to all queues), Topic (pattern matching with wildcards), and Headers (routing by header attributes). Each type will be explained in detail in the following section.",
+            "Default Exchange: RabbitMQ has a nameless direct exchange (empty string) that has an automatic binding to every queue using the queue name as the routing key. This allows publishing 'directly' to a queue, but under the hood it still goes through an exchange.",
+            "Durability: Exchanges can be durable (survive broker restart) or transient (deleted on restart). In production, always use durable exchanges.",
+            "Auto-delete: If configured, the exchange is deleted when the last queue unbinds from it. Useful for temporary exchanges.",
+            "Exchange-to-Exchange Binding: An advanced feature allows exchanges to route to other exchanges, creating complex routing topologies."
+          ],
+          "example": "Practical example: Imagine a logging system. A topic exchange called 'logs' receives all log messages. Messages are published with routing keys like 'app.payment.error', 'app.auth.info', 'app.order.warning'. A queue 'all-errors' is bound with pattern '*.*.error'. A queue 'payment-all' is bound with 'app.payment.*'. A queue 'everything' is bound with '#'. Each queue receives only what it needs.",
+          "antiPattern": "Common anti-pattern: Creating one exchange per consuming service. This tightly couples the producer to consumers. Better: create exchanges per domain/context (orders, users, payments) and let consumers bind as needed."
+        },
+        "queue": {
+          "title": "Queues",
+          "content": "Queues are ordered buffers (FIFO - First In, First Out) that store messages until they are consumed and acknowledged. They are the 'final destination' for messages in RabbitMQ. A queue can receive messages from multiple exchanges (through multiple bindings) and can have multiple consumers reading from it (for load balancing).",
+          "details": [
+            "Durability: Durable queues survive broker restart. IMPORTANT: queue durability doesn't mean messages persist - you also need to publish messages as persistent (delivery_mode=2). Both are required.",
+            "Exclusivity: Exclusive queues are used only by the connection that created them and are deleted when the connection closes. Useful for temporary reply queues in RPC patterns.",
+            "Auto-delete: The queue is deleted when the last consumer disconnects. Useful for ephemeral queues.",
+            "TTL (Time-To-Live): You can set a TTL for messages in the queue (x-message-ttl) or for the queue itself (x-expires). Expired messages can be discarded or sent to a Dead Letter Exchange.",
+            "Size Limit: Queues can have maximum message count (x-max-length) or byte limits (x-max-length-bytes). When the limit is reached, old messages are discarded or sent to DLX.",
+            "Lazy Queues: 'Lazy' queues store messages on disk instead of memory, allowing millions of messages without exhausting RAM. There's a small latency penalty.",
+            "Quorum Queues: The newest type, uses Raft consensus for replication. Safer than classic mirrored queues, with stronger durability guarantees."
+          ],
+          "example": "Practical example: An 'email-notifications' queue with the following settings: durable=true (survives restart), x-message-ttl=86400000 (messages expire in 24h), x-max-length=100000 (max 100k messages), x-dead-letter-exchange='dlx.emails' (rejected/expired messages go to DLX for analysis).",
+          "naming": "Suggested naming convention: Use the pattern 'service.purpose' or 'domain.action'. Examples: 'email-service.send-notification', 'order-processor.validate', 'inventory.update-stock'. This makes it obvious who consumes and why."
+        },
+        "binding": {
+          "title": "Bindings",
+          "content": "Bindings are the rules that connect exchanges to queues (or exchanges to other exchanges). Without a binding, messages published to an exchange simply go nowhere. A binding says: 'messages arriving at this exchange that match this rule should be copied to this queue'.",
+          "details": [
+            "Binding Key: The binding 'rule'. For Direct exchanges, it's an exact string. For Topic, it's a pattern with wildcards. For Fanout, it's ignored. For Headers, it's header attributes.",
+            "Multiple Bindings: A queue can have multiple bindings to the same exchange (with different keys) or to different exchanges. An exchange can have bindings to multiple queues.",
+            "Binding Arguments: For Headers exchanges, the arguments define which headers must match. The special 'x-match' argument defines whether ALL headers must match ('all') or ANY one ('any').",
+            "No Binding = No Messages: A common mistake is creating a queue but forgetting to bind it. The queue will exist but never receive messages. Always verify your bindings!"
+          ],
+          "example": "Practical example: A 'orders' exchange of type Topic. We create bindings: queue 'inventory-service' with binding key 'order.created' (needs to reserve stock), queue 'notification-service' with binding key 'order.*' (sends notification for any order event), queue 'analytics-service' with binding key '#' (logs everything for analysis).",
+          "visualization": "Visualization: Exchange 'orders' ─┬─ [order.created] ──> queue 'inventory-service'\n                                              ├─ [order.*] ──────> queue 'notification-service'\n                                              └─ [#] ─────────────> queue 'analytics-service'"
+        },
+        "consumer": {
+          "title": "Consumers",
+          "content": "Consumers are applications that subscribe to queues to receive and process messages. When a consumer connects to a queue, RabbitMQ starts pushing messages to it (push model). Multiple consumers on the same queue receive messages in round-robin (circular distribution), enabling horizontal scalability.",
+          "details": [
+            "Acknowledgments (ACKs): After successfully processing a message, the consumer sends an ACK to RabbitMQ. Only then is the message removed from the queue. If the consumer dies without sending an ACK, the message is redelivered to another consumer.",
+            "Auto-ACK vs Manual ACK: Auto-ACK acknowledges the message as soon as it's delivered (faster, less reliable). Manual ACK acknowledges after processing (slower, more reliable). For important messages, ALWAYS use manual ACK.",
+            "NACK and Reject: If processing fails, you can reject or negatively acknowledge (nack) the message. With requeue=true, it returns to the queue. With requeue=false, it's discarded or sent to DLX.",
+            "Prefetch (QoS): Defines how many unacknowledged messages a consumer can have simultaneously. prefetch=1 guarantees fair distribution but reduces throughput. prefetch=10-50 is a good balance for most cases.",
+            "Consumer Tags: Unique identifier for the consumer. Useful for monitoring and canceling specific consumers.",
+            "Exclusive Consumer: If marked as exclusive, only this consumer can read from the queue. Useful for guaranteeing sequential processing."
+          ],
+          "example": "Practical example: A payment processing worker. Connects to queue 'payments.process', sets prefetch=1 (one payment at a time to avoid issues), uses manual ACK. When receiving a message: validates data, processes payment with gateway, if success: sends ACK, publishes 'payment.completed' event. If failure: publishes 'payment.failed' event, sends NACK with requeue=false (goes to DLX for analysis).",
+          "scaling": "Scaling consumers: Need to process faster? Simply start more consumer instances. RabbitMQ distributes automatically. In Kubernetes, this is as simple as increasing the deployment replica count."
+        },
+        "messageFlow": {
+          "title": "Complete Message Flow",
+          "content": "Let's trace the complete path of a message through RabbitMQ:",
+          "steps": [
+            "1. Producer creates TCP connection with broker and opens a channel",
+            "2. Producer publishes message to exchange with routing key and properties",
+            "3. Exchange receives message and evaluates all its bindings",
+            "4. For each binding that matches (based on exchange type), the message is COPIED to the queue",
+            "5. Message stays in queue until a consumer is available",
+            "6. RabbitMQ pushes the message to a subscribed consumer",
+            "7. Consumer processes message and sends ACK",
+            "8. RabbitMQ permanently removes message from queue"
+          ]
+        }
+      },
+      "exchangeTypes": {
+        "title": "Exchange Types In-Depth",
+        "subtitle": "Master the four exchange types and know when to use each",
+        "overview": "RabbitMQ provides four built-in exchange types, each with different routing logic. Choosing the right one is crucial - a wrong choice can complicate your architecture or limit future flexibility. Let's analyze each type in detail.",
+        "direct": {
+          "title": "Direct Exchange",
+          "subtitle": "Exact routing key matching",
+          "content": "The Direct exchange is the simplest and most intuitive: it delivers messages only to queues whose binding key EXACTLY matches the message's routing key. If you publish with routing_key='pdf', only queues bound with binding_key='pdf' receive it.",
+          "howItWorks": {
+            "title": "How It Works",
+            "steps": [
+              "1. Message arrives with routing_key='invoice.generate'",
+              "2. Exchange checks all bindings",
+              "3. Queue 'invoice-processor' has binding_key='invoice.generate' → RECEIVES",
+              "4. Queue 'email-sender' has binding_key='email.send' → Does NOT receive",
+              "5. Queue 'audit-log' has binding_key='invoice.generate' → RECEIVES (multiple queues can have the same key)"
+            ]
+          },
+          "multipleBindings": {
+            "title": "Multiple Bindings with Same Key",
+            "content": "A single queue can have multiple bindings to the same exchange with different keys. This allows a queue to receive messages from various 'categories'. Example: queue 'critical-alerts' bound with 'error' AND 'critical' AND 'fatal'."
+          },
+          "useCases": [
+            "Work queues where each task type has a dedicated queue",
+            "Routing by message category/type",
+            "When you know exactly which categories exist and they don't change frequently",
+            "RabbitMQ's default exchange implementation"
+          ],
+          "example": {
+            "title": "Complete Example: Notification System",
+            "scenario": "An application needs to send notifications through different channels.",
+            "setup": "Exchange 'notifications' (direct) with 3 queues: 'email-queue' (binding_key='email'), 'sms-queue' (binding_key='sms'), 'push-queue' (binding_key='push').",
+            "usage": "When publishing, specify the channel: routing_key='email' for emails, routing_key='sms' for SMS. Each notification service consumes its specific queue."
+          },
+          "when": {
+            "use": "Use Direct when: you have well-defined and stable categories, want simplicity, each message should go to a specific destination.",
+            "avoid": "Avoid Direct when: your categories are hierarchical or may grow significantly, you need flexible patterns, you want consumers to filter dynamically."
+          }
+        },
+        "fanout": {
+          "title": "Fanout Exchange",
+          "subtitle": "Broadcast to all queues",
+          "content": "The Fanout exchange is the simplest in terms of logic: it IGNORES the routing key completely and delivers a copy of the message to ALL bound queues. No rules, no filters - everything goes to everyone. It's also the fastest because it doesn't need any comparisons.",
+          "howItWorks": {
+            "title": "How It Works",
+            "steps": [
+              "1. Message arrives (routing_key is ignored, can be anything or empty)",
+              "2. Exchange checks which queues are bound",
+              "3. For EACH bound queue, a copy of the message is delivered",
+              "4. If 5 queues are bound, 5 copies are created"
+            ]
+          },
+          "characteristics": {
+            "title": "Important Characteristics",
+            "items": [
+              "Routing key is completely ignored - you can even pass an empty string",
+              "Binding key is also ignored when creating the binding",
+              "Messages are COPIED, not shared - each queue has its own copy",
+              "If no queues are bound, the message is silently discarded",
+              "Adding a new queue is transparent to the producer"
+            ]
+          },
+          "useCases": [
+            "Events that all services need to know about (user.deleted, config.updated)",
+            "Distributed cache invalidation (all nodes need to clear cache)",
+            "Logs that should go to multiple destinations simultaneously",
+            "Real-time notifications to all connected clients",
+            "Classic Publish/Subscribe pattern"
+          ],
+          "example": {
+            "title": "Complete Example: Cache Invalidation",
+            "scenario": "You have 10 application servers, each with local cache. When a product is updated, all need to invalidate cache.",
+            "setup": "Exchange 'cache-invalidation' (fanout). Each server creates its own exclusive, auto-delete queue (e.g., 'cache-invalidation.server-1') and binds it.",
+            "usage": "When updating a product: publish message {entity: 'product', id: 123} to the exchange. All 10 servers receive it and clear the cache for product 123."
+          },
+          "when": {
+            "use": "Use Fanout when: all consumers need all messages, you want pure broadcast, simplicity is more important than filters.",
+            "avoid": "Avoid Fanout when: consumers only need a subset of messages (use Topic), message volume is very high and not everyone needs everything."
+          }
+        },
+        "topic": {
+          "title": "Topic Exchange",
+          "subtitle": "Flexible routing with wildcard patterns",
+          "content": "The Topic exchange is the most versatile and powerful. It routes messages using PATTERN matching on the routing key. The routing key must be a list of words separated by dots (e.g., 'order.created.brazil'), and bindings can use wildcards: * (exactly one word) and # (zero or more words). This enables extremely flexible filtering.",
+          "howItWorks": {
+            "title": "How It Works",
+            "steps": [
+              "1. Message arrives with routing_key='order.created.brazil.premium'",
+              "2. Exchange checks each binding and applies pattern matching:",
+              "3. Binding 'order.created.*.*' → MATCHES (4 words, * = one word each)",
+              "4. Binding 'order.created.#' → MATCHES (# = 'brazil.premium')",
+              "5. Binding 'order.*.brazil.*' → MATCHES (* = 'created', * = 'premium')",
+              "6. Binding '#.premium' → MATCHES (# = 'order.created.brazil')",
+              "7. Binding 'order.shipped.*' → Does NOT match ('created' ≠ 'shipped')",
+              "8. Binding 'payment.#' → Does NOT match ('order' ≠ 'payment')"
+            ]
+          },
+          "patterns": {
+            "title": "Understanding Wildcards",
+            "star": {
+              "symbol": "* (asterisk)",
+              "meaning": "Matches EXACTLY one word",
+              "examples": [
+                "'order.*' matches 'order.created', 'order.shipped', but NOT 'order' or 'order.item.added'",
+                "'*.error' matches 'payment.error', 'auth.error', but NOT 'error' or 'payment.service.error'",
+                "'order.*.brazil' matches 'order.created.brazil', but NOT 'order.brazil' or 'order.item.added.brazil'"
+              ]
+            },
+            "hash": {
+              "symbol": "# (hash)",
+              "meaning": "Matches ZERO or more words",
+              "examples": [
+                "'order.#' matches 'order', 'order.created', 'order.created.brazil', 'order.item.added.brazil.premium'",
+                "'#.error' matches 'error', 'payment.error', 'payment.gateway.error'",
+                "'#' alone matches EVERYTHING (equivalent to fanout)"
+              ]
+            },
+            "combinations": {
+              "title": "Powerful Combinations",
+              "examples": [
+                "'order.*.*.premium' - premium orders of any type from any region",
+                "'#.error.#' - any message containing 'error' in any position",
+                "'*.*.brazil' - any entity, any action, but only from Brazil"
+              ]
+            }
+          },
+          "useCases": [
+            "Log system: 'app.level.service' allows filtering by app, level (error/warn/info), service",
+            "Multinational e-commerce: 'order.status.country.tier' allows filtering by status, country, customer tier",
+            "IoT: 'device.type.location.metric' allows consuming specific metrics from specific locations",
+            "Domain events: 'domain.entity.action' allows services to subscribe to specific events"
+          ],
+          "example": {
+            "title": "Complete Example: Multi-tenant Logging System",
+            "scenario": "A SaaS platform with multiple customers (tenants), multiple services, and different log levels.",
+            "routingKey": "Routing key: '{tenant}.{service}.{level}' - e.g., 'acme.payment.error', 'globex.auth.info'",
+            "bindings": [
+              "Queue 'acme-all-logs': binding '#.acme.#' or 'acme.#' - all ACME logs",
+              "Queue 'all-errors': binding '#.error' - all errors from all tenants",
+              "Queue 'payment-critical': binding '*.payment.error' - payment service errors from any tenant",
+              "Queue 'globex-auth': binding 'globex.auth.*' - all auth log levels from Globex"
+            ]
+          },
+          "when": {
+            "use": "Use Topic when: you have message hierarchies or taxonomies, different consumers need different subsets, you want flexibility to add new filters without code changes.",
+            "avoid": "Avoid Topic when: you don't need filters (use Fanout) or only have simple categories without hierarchy (use Direct)."
+          },
+          "performance": "Performance note: Topic exchanges are slightly slower than Direct/Fanout because they need to evaluate patterns. For most cases this is irrelevant, but in ultra-high-performance scenarios, consider Direct with multiple bindings."
+        },
+        "headers": {
+          "title": "Headers Exchange",
+          "subtitle": "Routing by message attributes",
+          "content": "The Headers exchange is the least used but most flexible in terms of routing criteria. Instead of using the routing key (which is a simple string), it routes based on AMQP message HEADERS. You can define multiple attributes and use AND ('all') or OR ('any') logic for matching.",
+          "howItWorks": {
+            "title": "How It Works",
+            "steps": [
+              "1. Message arrives with headers: {format: 'pdf', department: 'sales', priority: 'high'}",
+              "2. Exchange checks each binding and its arguments:",
+              "3. Binding with args {format: 'pdf', x-match: 'all'} → checks if format='pdf' is present",
+              "4. Binding with args {department: 'sales', priority: 'high', x-match: 'all'} → checks BOTH",
+              "5. Binding with args {department: 'sales', priority: 'high', x-match: 'any'} → checks ANY ONE"
+            ]
+          },
+          "xMatch": {
+            "title": "The x-match Argument",
+            "all": "'x-match: all' (default) - ALL headers specified in the binding must match the message headers. It's AND logic.",
+            "any": "'x-match: any' - ANY specified header that matches is sufficient. It's OR logic."
+          },
+          "useCases": [
+            "Routing based on content-type (application/json, application/xml, text/plain)",
+            "Multi-dimensional routing that doesn't fit well in hierarchical routing keys",
+            "When you need OR logic between criteria",
+            "Messages with complex metadata that determine processing"
+          ],
+          "example": {
+            "title": "Complete Example: Document Processing",
+            "scenario": "A system processes documents with different formats and priorities.",
+            "setup": [
+              "Queue 'pdf-high-priority': binding args {format: 'pdf', priority: 'high', x-match: 'all'}",
+              "Queue 'pdf-processor': binding args {format: 'pdf', x-match: 'all'}",
+              "Queue 'urgent-any-format': binding args {priority: 'urgent', x-match: 'all'}",
+              "Queue 'reports-or-invoices': binding args {type: 'report', type: 'invoice', x-match: 'any'}"
+            ],
+            "note": "A message with {format: 'pdf', priority: 'high'} goes to 'pdf-high-priority' AND 'pdf-processor' (both match)."
+          },
+          "when": {
+            "use": "Use Headers when: you need multi-dimensional routing, want OR logic, hierarchical routing keys don't fit your model, messages already have meaningful headers.",
+            "avoid": "Avoid Headers when: routing keys solve your problem (it's simpler), you don't need complex OR logic, performance is critical (headers is slowest)."
+          },
+          "limitations": "Limitations: Headers exchange is the slowest because it needs to compare multiple values. It's also less intuitive and harder to debug. Use only when others don't meet your needs."
+        },
+        "comparison": {
+          "title": "Comparison Table",
+          "headers": ["Type", "Routing Key", "Binding Key", "Logic", "Performance", "Primary Use"],
+          "rows": [
+            ["Direct", "Required", "Exact", "key = binding", "Fast", "Fixed categories"],
+            ["Fanout", "Ignored", "Ignored", "All queues", "Very fast", "Broadcast"],
+            ["Topic", "Hierarchical", "Pattern (*/#)", "Pattern matching", "Medium", "Flexible filters"],
+            ["Headers", "Ignored", "N/A (args)", "Header matching", "Slow", "Multi-dimensional"]
+          ]
+        }
+      },
+      "patterns": {
+        "title": "Messaging Patterns",
+        "subtitle": "Proven architectures for solving real problems",
+        "overview": "RabbitMQ isn't just a tool - it's a platform that implements architectural patterns tested by decades of industry experience. Understanding these patterns is as important as understanding RabbitMQ's mechanics. Each pattern solves a specific problem, and knowing them allows you to choose the right solution for each situation.",
+        "workQueues": {
+          "title": "Work Queues (Task Queues)",
+          "subtitle": "Distributing heavy tasks among multiple workers",
+          "content": "The Work Queue pattern (also called Task Queue) is used to distribute time-consuming tasks among multiple worker processes. The main idea is to avoid doing a resource-intensive task immediately and having to wait for it to complete. Instead, we schedule the task to be done later, by a dedicated worker.",
+          "problem": {
+            "title": "The Problem It Solves",
+            "content": "Imagine an API endpoint that needs to generate a complex PDF report. If you generate the PDF synchronously, the user waits 30 seconds staring at a loading screen. If 100 users request reports at the same time, your server crashes. With work queues: you queue the task, respond immediately 'Your report is being generated', and background workers process tasks at their own pace."
+          },
+          "howItWorks": {
+            "title": "How It Works",
+            "steps": [
+              "1. Producer sends message to a queue (via direct or default exchange)",
+              "2. Multiple workers (consumers) are connected to the same queue",
+              "3. RabbitMQ distributes messages round-robin: worker1 gets msg1, worker2 gets msg2, worker1 gets msg3...",
+              "4. IMPORTANT: Each message goes to exactly ONE worker (different from pub/sub)",
+              "5. Worker processes the task and sends ACK",
+              "6. If worker dies before ACK, message is redelivered to another worker"
+            ]
+          },
+          "fairDispatch": {
+            "title": "Fair Dispatch with Prefetch",
+            "content": "Basic round-robin has a problem: it doesn't consider if a worker is busy. Worker1 might be processing a heavy 5-minute task while Worker2 is idle. Solution: use prefetch_count=1. This tells RabbitMQ: 'don't send me a new message until I acknowledge the previous one'. This way, busy workers don't receive more tasks.",
+            "example": "channel.basic_qos(prefetch_count=1)  # Fair distribution"
+          },
+          "acknowledgments": {
+            "title": "Ensuring Tasks Aren't Lost",
+            "content": "By default, as soon as RabbitMQ delivers a message, it's marked for deletion. But what if the worker dies mid-processing? The task is lost! Solution: use manual acknowledgment. The worker only sends ACK after successfully completing the task. If it dies, RabbitMQ redelivers to another worker.",
+            "warning": "WARNING: A common mistake is forgetting to send ACK. Messages accumulate indefinitely because RabbitMQ thinks they're still being processed. Monitor 'unacked' in the management UI."
+          },
+          "durability": {
+            "title": "Surviving Restarts",
+            "content": "For tasks not to be lost if RabbitMQ restarts, you need: 1) Durable queue (durable=true), 2) Persistent messages (delivery_mode=2). Both are required.",
+            "example": "channel.queue_declare(queue='task_queue', durable=True)\nchannel.basic_publish(properties=pika.BasicProperties(delivery_mode=2), ...)"
+          },
+          "benefits": [
+            "Process 1000 tasks with 10 workers in parallel - 100x faster than sequential",
+            "Scale horizontally: need more capacity? Start more workers. No code changes.",
+            "Absorb spikes: if 10,000 tasks arrive suddenly, the queue absorbs and workers process at their pace",
+            "Fault tolerance: worker died? Task is automatically redelivered. Nothing is lost."
+          ],
+          "useCases": [
+            "Image/video processing (resize, thumbnail, transcode)",
+            "PDF/Excel report generation",
+            "Bulk email sending",
+            "Data import/export",
+            "Payment processing",
+            "Any task that takes more than a few seconds"
+          ],
+          "example": {
+            "title": "Complete Example: Image Processing",
+            "scenario": "Users upload photos that need to be resized to 5 different sizes.",
+            "setup": "Queue 'image-processing' (durable), 5 workers running in Docker containers, prefetch=1.",
+            "flow": "Upload → API queues {image_id: 123, sizes: ['thumb', 'small', 'medium', 'large', 'original']} → Responds 202 Accepted → Worker picks task → Processes → Saves to S3 → ACK → Webhook notifies frontend",
+            "scaling": "Black Friday coming? kubectl scale deployment image-worker --replicas=20"
+          }
+        },
+        "pubSub": {
+          "title": "Publish/Subscribe",
+          "subtitle": "Delivering messages to all interested parties",
+          "content": "The Publish/Subscribe (Pub/Sub) pattern is fundamentally different from Work Queues. In Work Queues, each message goes to only ONE consumer. In Pub/Sub, each message goes to ALL subscribers. It's like the difference between a letter (one recipient) and a newspaper ad (all readers).",
+          "problem": {
+            "title": "The Problem It Solves",
+            "content": "When a user deletes their account, multiple systems need to react: search service needs to remove from index, email service needs to cancel newsletters, billing service needs to cancel subscriptions, analytics needs to log the event. If the user service called each one directly, it would be a coupling nightmare. With Pub/Sub: publish 'user.deleted' and whoever wants to listen, listens."
+          },
+          "howItWorks": {
+            "title": "How It Works",
+            "steps": [
+              "1. Producer publishes message to a FANOUT exchange",
+              "2. Each subscriber has its OWN queue bound to the exchange",
+              "3. Exchange COPIES the message to ALL bound queues",
+              "4. Each subscriber/consumer receives the message independently",
+              "5. If a subscriber is offline when the message arrives, it stays in their queue waiting"
+            ]
+          },
+          "temporaryQueues": {
+            "title": "Temporary vs Permanent Queues",
+            "temporary": "Temporary queues (exclusive, auto-delete): For ephemeral subscribers like websockets. When the consumer disconnects, the queue is deleted. Old messages don't accumulate.",
+            "permanent": "Permanent queues (durable): For subscribers that need all messages, even if they go offline. The queue accumulates messages until the subscriber returns."
+          },
+          "benefits": [
+            "Total decoupling: producer doesn't know (nor needs to know) who the subscribers are",
+            "Extensibility: adding a new subscriber means creating a queue and binding, without touching the producer",
+            "Domain events: publish 'order.paid' and let interested parties react",
+            "Real-time: instant notifications to multiple clients"
+          ],
+          "useCases": [
+            "Domain events in microservices architecture",
+            "Cache invalidation across multiple servers",
+            "Real-time notifications (chat, feeds, dashboards)",
+            "Configuration updates to multiple instances",
+            "Logs and audit (multiple destinations receive the same logs)"
+          ],
+          "example": {
+            "title": "Complete Example: Domain Event System",
+            "scenario": "E-commerce platform where a paid order triggers multiple actions.",
+            "setup": "Exchange 'domain-events' (fanout). Queues: 'inventory-service', 'notification-service', 'analytics-service', 'fulfillment-service'. Each bound to the exchange.",
+            "flow": "Payment confirmed → OrderService publishes {event: 'order.paid', order_id: 123, items: [...]} → All 4 services receive: Inventory reserves stock, Notification sends email, Analytics logs metric, Fulfillment starts picking."
+          },
+          "vsWorkQueues": {
+            "title": "Pub/Sub vs Work Queues",
+            "comparison": "Work Queues: N workers, 1 receives each message. For distributing WORK. / Pub/Sub: N subscribers, ALL receive each message. For NOTIFYING EVENTS."
+          }
+        },
+        "routing": {
+          "title": "Routing (Selective Receive)",
+          "subtitle": "Subscribers choose what they want to receive",
+          "content": "The Routing pattern is an evolution of Pub/Sub. In pure Pub/Sub, everyone receives everything. With Routing, subscribers can FILTER and receive only messages they're interested in. It's like the difference between subscribing to a whole newspaper vs just the sports section.",
+          "problem": {
+            "title": "The Problem It Solves",
+            "content": "Log system: you have INFO, WARNING, ERROR logs from multiple services. The development team wants to see all logs. The operations team wants only ERRORs. The dashboard wants ERROR and WARNING. With Routing: each subscriber binds only to the levels they want to receive."
+          },
+          "howItWorks": {
+            "title": "How It Works",
+            "direct": {
+              "title": "With Direct Exchange",
+              "content": "Queues bind with specific routing keys. Message with routing_key='error' only goes to queues bound with binding_key='error'."
+            },
+            "topic": {
+              "title": "With Topic Exchange",
+              "content": "More powerful: queues use patterns. Binding '*.error' receives 'payment.error', 'auth.error', etc."
+            }
+          },
+          "benefits": [
+            "Efficiency: subscribers don't receive messages they don't need",
+            "Flexibility: easy to add new filters without changing producers",
+            "Organization: clear separation of responsibilities based on message type"
+          ],
+          "example": {
+            "title": "Complete Example: Log Routing",
+            "setup": "Exchange 'logs' (topic). Routing key: '{service}.{level}'. E.g., 'payment.error', 'auth.info'.",
+            "bindings": [
+              "Queue 'all-logs': binding '#' (everything)",
+              "Queue 'all-errors': binding '*.error' (all errors)",
+              "Queue 'payment-team': binding 'payment.*' (everything from payment)",
+              "Queue 'critical-alerts': bindings '*.error' + '*.critical' (errors and critical)"
+            ]
+          }
+        },
+        "rpc": {
+          "title": "RPC (Remote Procedure Call)",
+          "subtitle": "Request/Response over messages",
+          "content": "RPC over RabbitMQ allows you to make remote procedure calls using messages. The client sends a request and WAITS for a response, but asynchronously and through the broker. It's like HTTP, but with messaging benefits: automatic load balancing, buffering, decoupling.",
+          "problem": {
+            "title": "The Problem It Solves",
+            "content": "You have a heavy computation service (e.g., dynamic pricing). Multiple clients need to call this service. With direct HTTP: you need load balancer, service discovery, circuit breakers, retry logic. With RPC over RabbitMQ: all of this comes 'for free' - multiple workers consume from the queue, messages are buffered if workers are busy."
+          },
+          "howItWorks": {
+            "title": "How It Works",
+            "steps": [
+              "1. Client creates an exclusive reply queue (e.g., 'amq.gen-Xa2...')",
+              "2. Client publishes request with two special fields:",
+              "   - reply_to: name of the reply queue",
+              "   - correlation_id: unique ID to associate response with request",
+              "3. Server receives request, processes, and publishes response to the reply_to queue with the same correlation_id",
+              "4. Client receives response and uses correlation_id to know which request it belongs to"
+            ]
+          },
+          "correlationId": {
+            "title": "Why correlation_id is Essential",
+            "content": "A client can have multiple pending requests simultaneously. When a response arrives, how to know which request it belongs to? The correlation_id is a unique identifier (usually UUID) that the client generates for each request. The server MUST include the same ID in the response."
+          },
+          "benefits": [
+            "Automatic load balancing: multiple servers consume from the request queue",
+            "Decoupling: client doesn't need to know where servers are",
+            "Buffering: if servers are busy, requests stay in the queue",
+            "Automatic retry: if server dies while processing, message is redelivered"
+          ],
+          "considerations": [
+            "Higher latency than direct calls (two network trips)",
+            "Implementing timeout is the client's responsibility",
+            "Error handling needs careful thought (how to communicate errors to client?)",
+            "Don't overuse: if you need RPC for everything, maybe RabbitMQ isn't the solution"
+          ],
+          "example": {
+            "title": "Complete Example: Shipping Cost Service",
+            "scenario": "Checkout needs to calculate shipping. Calculation is complex and slow.",
+            "setup": "Queue 'rpc.freight.requests' with 5 calculation workers.",
+            "flow": "Checkout generates correlation_id='abc123' → Publishes {items: [...], zip: '10001'} with reply_to='amq.gen-Xyz' → Worker calculates → Worker publishes response {price: 15.90, days: 3} to queue 'amq.gen-Xyz' with correlation_id='abc123' → Checkout receives and matches by ID."
+          },
+          "alternatives": {
+            "title": "When NOT to use RPC over RabbitMQ",
+            "items": [
+              "If latency is critical (<10ms) - use gRPC directly",
+              "If you already have mature service mesh infrastructure",
+              "If these are simple calls that don't need buffering",
+              "If you need bi-directional streaming"
+            ]
+          }
+        },
+        "deadLetter": {
+          "title": "Dead Letter (Failed Messages)",
+          "subtitle": "What to do when messages fail",
+          "content": "Dead Letter Exchange (DLX) is a mechanism for handling messages that can't be processed. Instead of losing problematic messages, you redirect them to a special queue where they can be analyzed, reprocessed, or archived.",
+          "whenTriggered": {
+            "title": "When a Message Becomes Dead Letter",
+            "triggers": [
+              "Consumer rejects (nack/reject) with requeue=false",
+              "Message TTL expires",
+              "Queue reaches maximum limit and old messages are discarded"
+            ]
+          },
+          "setup": {
+            "title": "How to Configure",
+            "steps": [
+              "1. Create an exchange for dead letters: 'dlx.main'",
+              "2. Create a queue for dead letters: 'dlq.main'",
+              "3. Bind the queue to the exchange",
+              "4. On your main queues, configure x-dead-letter-exchange='dlx.main'",
+              "5. Optionally, configure x-dead-letter-routing-key to route by origin"
+            ]
+          },
+          "useCases": [
+            "Analysis of messages that failed repeatedly",
+            "Manual retry after bug fixes",
+            "Audit of rejected messages",
+            "Alerts when dead letter rate increases"
+          ]
+        }
+      },
+      "reliability": {
+        "title": "Reliability & Durability",
+        "subtitle": "Ensuring message delivery in any scenario",
+        "overview": "In distributed systems, failures are the norm, not the exception. Servers restart, networks fail, processes die. RabbitMQ was designed with this in mind and offers multiple layers of protection. The key is understanding that reliability is a SPECTRUM - you choose the appropriate level for each use case, balancing with performance.",
+        "messageLifecycle": {
+          "title": "Message Lifecycle and Failure Points",
+          "content": "To understand reliability, first understand where things can go wrong:",
+          "points": [
+            "1. Producer → Broker: Message can be lost in the network before reaching RabbitMQ",
+            "2. Broker (memory): If RabbitMQ restarts before persisting, message is lost",
+            "3. Broker → Consumer: If consumer dies before processing, task is lost",
+            "4. Consumer: If processing fails silently, message is 'lost' logically"
+          ],
+          "solution": "RabbitMQ offers mechanisms to protect EACH point: Publisher Confirms (1), Durability (2), Consumer ACKs (3), and good coding practices (4)."
+        },
+        "acks": {
+          "title": "Consumer Acknowledgments (ACKs)",
+          "subtitle": "Ensuring messages are processed",
+          "content": "Acknowledgments are signals from consumer to RabbitMQ informing what happened to the message. Without explicit ACK, RabbitMQ assumes the message is still being processed and keeps it in the queue (marked as 'unacked').",
+          "types": {
+            "title": "Acknowledgment Types",
+            "ack": {
+              "name": "ACK (Acknowledge)",
+              "description": "Successful processing. Message is permanently removed from queue.",
+              "when": "Use when: processing completed successfully AND any side effects (save to DB, call API) also completed."
+            },
+            "nack": {
+              "name": "NACK (Negative Acknowledge)",
+              "description": "Processing failed. You decide whether to requeue (back to queue) or discard (goes to DLX if configured).",
+              "when": "Use when: recoverable error (requeue=true) or permanent error (requeue=false, like invalid JSON)."
+            },
+            "reject": {
+              "name": "REJECT",
+              "description": "Similar to NACK, but for a specific message. NACK can reject multiple messages at once.",
+              "when": "Use when: you want to reject only this specific message."
+            }
+          },
+          "autoVsManual": {
+            "title": "Auto-ACK vs Manual-ACK",
+            "auto": {
+              "name": "auto_ack=True",
+              "description": "Message is acknowledged IMMEDIATELY when delivered to consumer, BEFORE processing.",
+              "pros": "Faster, simpler code",
+              "cons": "If consumer dies mid-processing, message is LOST forever",
+              "when": "Acceptable only for non-critical messages where losing some is OK (metrics, debug logs)"
+            },
+            "manual": {
+              "name": "auto_ack=False (Manual)",
+              "description": "You decide when to acknowledge. Message is only removed when you explicitly call ack().",
+              "pros": "Safe: if consumer dies, message is redelivered. Full control.",
+              "cons": "More complex code, must remember to acknowledge",
+              "when": "Use ALWAYS for important messages. This is the recommended default."
+            }
+          },
+          "commonMistakes": {
+            "title": "Common Mistakes",
+            "items": [
+              "Forgetting to send ACK: Messages stay 'unacked' and aren't redelivered until consumer disconnects. Queue looks empty but isn't!",
+              "ACK before processing: If error happens after, message is lost.",
+              "Not handling exceptions: Unhandled exception = no ACK = message stuck until timeout.",
+              "Using requeue=true in infinite loop: Message is rejected and reprocessed forever. Use retry counter or DLX."
+            ]
+          }
+        },
+        "durability": {
+          "title": "Durability & Persistence",
+          "subtitle": "Surviving broker restarts",
+          "content": "Durability ensures your messages survive if RabbitMQ restarts (whether for maintenance, crash, or upgrade). This requires three SIMULTANEOUS configurations - missing any one and you can lose messages.",
+          "threeLegs": {
+            "title": "The Three Pillars of Durability",
+            "exchange": {
+              "name": "Durable Exchange",
+              "how": "exchange_declare(durable=True)",
+              "what": "Exchange survives restart. But exchanges don't store messages, so this alone isn't enough."
+            },
+            "queue": {
+              "name": "Durable Queue",
+              "how": "queue_declare(durable=True)",
+              "what": "Queue survives restart AND its messages (if persistent) are restored."
+            },
+            "message": {
+              "name": "Persistent Message",
+              "how": "properties=pika.BasicProperties(delivery_mode=2)",
+              "what": "Message is written to disk, not just memory. delivery_mode=1 is transient, 2 is persistent."
+            }
+          },
+          "important": {
+            "title": "Important!",
+            "content": "Durable queue + transient message = message LOST on restart. All three are needed for complete guarantee."
+          },
+          "performance": {
+            "title": "Performance Impact",
+            "content": "Persistence has cost: each message is written to disk (fsync). In high-throughput scenarios, this can be a bottleneck. Strategies:",
+            "strategies": [
+              "Batching: Group multiple messages before fsync",
+              "Lazy Queues: Messages go directly to disk instead of memory first",
+              "RAM disk: If loss is acceptable but you want performance + some durability",
+              "Separation: Critical messages (persistent) vs metrics (transient)"
+            ]
+          },
+          "lazyQueues": {
+            "title": "Lazy Queues",
+            "content": "Traditional queues keep messages in memory and periodically flush to disk. Lazy queues do the opposite: messages go directly to disk and are read on demand. Ideal for queues with millions of messages or when memory is scarce. Tradeoff: slightly higher latency.",
+            "how": "queue_declare(arguments={'x-queue-mode': 'lazy'})"
+          }
+        },
+        "prefetch": {
+          "title": "Prefetch (QoS)",
+          "subtitle": "Controlling flow and fair distribution",
+          "content": "Prefetch (Quality of Service) limits how many unacknowledged messages a consumer can have simultaneously. Without prefetch, RabbitMQ sends messages as fast as possible, which can overwhelm consumers or cause unfair distribution.",
+          "howItWorks": {
+            "title": "How It Works",
+            "content": "basic_qos(prefetch_count=N) means: 'RabbitMQ, send me at most N messages at a time. Only send more when I acknowledge some.' This creates a limited buffer at the consumer."
+          },
+          "values": {
+            "title": "Choosing the Right Value",
+            "one": {
+              "value": "prefetch=1",
+              "description": "Fairest possible distribution. Worker only receives new message when finished with current.",
+              "when": "Long-running or highly variable duration tasks. Each worker processes at their own pace.",
+              "downside": "Lower throughput because there's latency between finishing one message and receiving the next."
+            },
+            "medium": {
+              "value": "prefetch=10-50",
+              "description": "Balance between fairness and throughput. Workers have buffer to process continuously.",
+              "when": "Most cases. Tasks of moderate and similar duration."
+            },
+            "high": {
+              "value": "prefetch=100+",
+              "description": "Maximum throughput. Each worker has large buffer.",
+              "when": "Very fast tasks (<1ms). Network latency is the bottleneck.",
+              "downside": "If one worker is slower, it accumulates messages while others are idle."
+            },
+            "unlimited": {
+              "value": "prefetch=0 (unlimited)",
+              "description": "RabbitMQ sends everything it can as fast as possible.",
+              "when": "Almost never recommended. Can exhaust consumer memory.",
+              "downside": "Very unfair distribution. One consumer can receive thousands while others have zero."
+            }
+          },
+          "global": {
+            "title": "Global vs Per-Consumer Prefetch",
+            "content": "basic_qos has a 'global' parameter. If false (default): limit is per consumer on the channel. If true: limit is shared among all consumers on the channel."
+          }
+        },
+        "confirms": {
+          "title": "Publisher Confirms",
+          "subtitle": "Ensuring messages reached the broker",
+          "content": "Consumer ACKs ensure messages were processed. But what if the message never reached RabbitMQ? Publisher Confirms close this gap: the broker confirms it received the message safely.",
+          "howItWorks": {
+            "title": "How It Works",
+            "steps": [
+              "1. Producer enables confirm mode on channel: channel.confirm_delivery()",
+              "2. Producer publishes message normally",
+              "3. RabbitMQ processes the message (routes, persists if needed)",
+              "4. RabbitMQ sends ACK (success) or NACK (failure) back to producer",
+              "5. Producer acts accordingly: NACK = retry, error, log, etc."
+            ]
+          },
+          "modes": {
+            "title": "Confirmation Modes",
+            "sync": {
+              "name": "Synchronous (wait_for_confirms)",
+              "description": "Publish and wait for confirmation. Simple but slow.",
+              "when": "Critical messages, low volume."
+            },
+            "async": {
+              "name": "Asynchronous (callbacks)",
+              "description": "Publish and register callback to receive confirmation later.",
+              "when": "High volume, can't block."
+            },
+            "batch": {
+              "name": "Batch",
+              "description": "Publish several messages, then wait for confirmation of all.",
+              "when": "Medium-high volume, acceptable to block periodically."
+            }
+          },
+          "whatIsConfirmed": {
+            "title": "What ACK Means",
+            "content": "When you receive ACK from the broker, it means:",
+            "items": [
+              "Message was received by broker",
+              "If message is persistent: was written to disk",
+              "If there are bound queues: was enqueued (or delivered to quorum queue)",
+              "Does NOT mean consumer received or processed - only that broker has the message safely"
+            ]
+          },
+          "mandatoryFlag": {
+            "title": "Mandatory Flag",
+            "content": "Publisher confirm says if broker received. But what if there's no queue to route to? By default, message is silently discarded. With mandatory=True, message is returned to producer if it can't be routed. Useful for detecting configuration errors."
+          }
+        },
+        "ha": {
+          "title": "High Availability",
+          "subtitle": "Clusters and replication",
+          "content": "For mission-critical systems, a single broker is a single point of failure. RabbitMQ supports clustering and replication for high availability.",
+          "options": {
+            "classic": {
+              "name": "Classic Mirrored Queues (legacy)",
+              "description": "Messages are replicated to multiple nodes. If master dies, a mirror takes over.",
+              "status": "Works but being deprecated in favor of Quorum Queues."
+            },
+            "quorum": {
+              "name": "Quorum Queues (recommended)",
+              "description": "Uses Raft algorithm for consensus. Message is only confirmed when majority of nodes persisted.",
+              "benefits": "Safer, better in network partition scenarios, more predictable recovery."
+            },
+            "streams": {
+              "name": "Streams (new)",
+              "description": "Replicated append-only log. Multiple consumers can read from the same offset.",
+              "when": "Kafka-like scenarios: event replay, multiple independent consumers."
+            }
+          }
+        }
+      },
+      "bestPractices": {
+        "title": "Best Practices",
+        "subtitle": "Lessons learned from production systems",
+        "intro": "These practices come from years of experience operating RabbitMQ in production. Following them from the start will save you a lot of headaches.",
+        "naming": {
+          "title": "Naming Conventions",
+          "content": "Well-chosen names make your system self-documenting. When something goes wrong at 3 AM, you want to understand the system just by looking at names in RabbitMQ Management.",
+          "exchanges": {
+            "title": "Exchanges",
+            "pattern": "Suggested pattern: {domain} or {domain}.{subdomain}",
+            "examples": ["orders", "users", "payments.refunds", "notifications.email"],
+            "tips": [
+              "Use business domain names, not technical names",
+              "Avoid generic names like 'main', 'default', 'events'"
+            ]
+          },
+          "queues": {
+            "title": "Queues",
+            "pattern": "Suggested pattern: {consuming-service}.{purpose}",
+            "examples": ["inventory-service.reserve-stock", "email-worker.send-transactional", "analytics.track-events"],
+            "tips": [
+              "Include the name of the service that CONSUMES (not produces)",
+              "Name should indicate WHAT is done with the messages",
+              "For DLQs: dlq.{original-queue}"
+            ]
+          },
+          "routingKeys": {
+            "title": "Routing Keys",
+            "pattern": "Suggested pattern: {entity}.{action}.{qualifier}",
+            "examples": ["order.created", "order.paid.premium", "user.profile.updated.brazil"],
+            "tips": [
+              "Use logical hierarchy from most generic to most specific",
+              "Past tense verbs for events (created, updated, deleted)",
+              "Be consistent: don't mix 'user.create' with 'order.created'"
+            ]
+          }
+        },
+        "errorHandling": {
+          "title": "Error Handling",
+          "content": "Errors WILL happen. The question is: are you prepared?",
+          "retryStrategy": {
+            "title": "Retry Strategy",
+            "content": "Not every error deserves a retry. Classify:",
+            "transient": {
+              "name": "Transient Errors (retry is worth it)",
+              "examples": "Database timeout, external service unavailable, rate limit",
+              "strategy": "Retry with exponential backoff: 1s, 2s, 4s, 8s... max 3-5 attempts"
+            },
+            "permanent": {
+              "name": "Permanent Errors (retry won't help)",
+              "examples": "Malformed JSON, validation failed, resource doesn't exist",
+              "strategy": "Send to DLQ immediately for manual analysis"
+            }
+          },
+          "dlqSetup": {
+            "title": "Setting Up Dead Letter Queues",
+            "steps": [
+              "1. Create exchange: 'dlx' (direct)",
+              "2. Create queue: 'dlq.{original-queue}' for each main queue",
+              "3. Bind with routing_key={queue-name}",
+              "4. Configure main queue: x-dead-letter-exchange='dlx', x-dead-letter-routing-key='{queue-name}'",
+              "5. Monitor DLQ sizes - growth indicates problems"
+            ]
+          },
+          "headerForRetry": {
+            "title": "Tracking Retry Attempts",
+            "content": "Add header 'x-retry-count' incrementing on each retry. When limit is reached, send to DLQ instead of retrying again. This prevents infinite loops."
+          },
+          "monitoring": {
+            "title": "What to Monitor",
+            "items": [
+              "DLQ message rate (alert if > threshold)",
+              "Queue depths (alert if continuously growing)",
+              "Reject/nack rate (indicates processing problems)",
+              "High 'unacked' consumers (possible message leak)"
+            ]
+          }
+        },
+        "performance": {
+          "title": "Performance Optimization",
+          "content": "RabbitMQ can easily handle tens of thousands of messages per second with proper configuration.",
+          "connections": {
+            "title": "Connection Management",
+            "problems": "Common problem: creating a new connection for each message. TCP connections are expensive!",
+            "solution": "Solution: use connection pooling and reuse channels. One connection can have multiple channels.",
+            "rule": "Rule of thumb: 1 connection per process, 1 channel per thread."
+          },
+          "batching": {
+            "title": "Publish Batching",
+            "content": "Instead of publishing and waiting for confirm for each message, publish a batch and wait for all confirms. Drastically reduces total latency.",
+            "example": "Example: Instead of 1000 publish+wait (1000 round trips), do 1000 publishes, then 1 wait (1 round trip)."
+          },
+          "queueSize": {
+            "title": "Queue Sizes",
+            "content": "Very large queues (millions of messages) degrade performance. Prefer:",
+            "strategies": [
+              "Multiple smaller queues instead of one giant one",
+              "Lazy queues if you need large queues (moves to disk)",
+              "TTL to discard old messages automatically",
+              "Alerts when queue exceeds threshold (processing isn't keeping up)"
+            ]
+          },
+          "persistenceTradeoff": {
+            "title": "Persistence Tradeoff",
+            "content": "Not every message needs to be durable. Monitoring metrics? Debug logs? If losing some isn't catastrophic, use transient messages (delivery_mode=1). Much faster."
+          }
+        },
+        "security": {
+          "title": "Security",
+          "content": "RabbitMQ often carries sensitive data. Protect appropriately.",
+          "tls": {
+            "title": "TLS/SSL",
+            "content": "ALWAYS use TLS in production. Messages travel in plain text by default - anyone on the network can read them.",
+            "tips": [
+              "Configure TLS on the broker",
+              "Clients should validate certificates (don't disable verification!)",
+              "Consider mutual TLS for client authentication"
+            ]
+          },
+          "authentication": {
+            "title": "Authentication",
+            "content": "Never use guest/guest in production (only works on localhost by default, but still...).",
+            "tips": [
+              "Create specific users per application/service",
+              "Use strong passwords or client certificates",
+              "Integrate with LDAP/AD for centralized management"
+            ]
+          },
+          "authorization": {
+            "title": "Authorization (Permissions)",
+            "content": "Principle of least privilege: each user/service should have only necessary permissions.",
+            "examples": [
+              "Orders producer: write to 'orders' exchange, no queue permissions",
+              "Inventory consumer: read from 'inventory-service.*' queue, write for ACK",
+              "Admin: full access for operations only"
+            ]
+          },
+          "vhosts": {
+            "title": "Virtual Hosts",
+            "content": "VHosts are like different databases on the same server. Use for isolation:",
+            "useCases": [
+              "Environments: /production, /staging, /development",
+              "Teams/Products: /team-a, /product-x",
+              "Customers (multi-tenant): /customer-123"
+            ]
+          }
+        },
+        "operations": {
+          "title": "Production Operations",
+          "intro": "Running RabbitMQ in production requires monitoring, maintenance, and incident preparedness. These practices help ensure reliable operation.",
+          "backup": {
+            "title": "Backup and Recovery",
+            "content": "RabbitMQ stores definitions (exchanges, queues, bindings, users) separate from messages.",
+            "definitions": "Definitions: Export via management UI or API. Store in version control.",
+            "messages": "Messages: No native backup. For critical messages, consider shovel for backup or replication architecture."
+          },
+          "upgrades": {
+            "title": "Upgrades",
+            "tips": [
+              "Always read release notes before upgrading",
+              "Test in staging first",
+              "In clusters: upgrade one node at a time (rolling upgrade)",
+              "Have a rollback plan"
+            ]
+          },
+          "monitoring": {
+            "title": "Monitoring",
+            "metrics": [
+              "rabbitmq_queue_messages: total messages in queues",
+              "rabbitmq_queue_messages_unacked: messages being processed",
+              "rabbitmq_connections: active connections",
+              "rabbitmq_channels: active channels",
+              "rabbitmq_node_mem_used: memory usage",
+              "rabbitmq_node_disk_free: disk space"
+            ],
+            "tools": "Tools: Prometheus + Grafana (official plugin), Datadog, New Relic"
+          }
+        }
+      },
+      "antiPatterns": {
+        "title": "Common Anti-Patterns",
+        "subtitle": "What NOT to do",
+        "items": [
+          {
+            "name": "One queue for everything",
+            "problem": "A single 'messages' queue with millions of messages of different types",
+            "solution": "Separate by type/domain. Each consumer processes one type of message."
+          },
+          {
+            "name": "Polling instead of Subscribe",
+            "problem": "Consumer doing basic_get in a loop (polling) instead of basic_consume",
+            "solution": "Use basic_consume. RabbitMQ is optimized for push, not pull."
+          },
+          {
+            "name": "Creating connection per message",
+            "problem": "New TCP connection for each publish or consume",
+            "solution": "Reuse connections. Connection pool if needed."
+          },
+          {
+            "name": "Ignoring unroutable messages",
+            "problem": "Published messages with no matching queue are silently discarded",
+            "solution": "Use mandatory=true and/or alternate-exchange to capture orphan messages."
+          },
+          {
+            "name": "Auto-ACK for everything",
+            "problem": "Using auto_ack=True for all queues, losing messages when consumer fails",
+            "solution": "Manual ACK by default. Auto-ACK only for disposable messages."
+          }
+        ]
+      }
+    },
+    "glossary": {
+      "title": "Complete Glossary",
+      "subtitle": "All the terms you need to know",
+      "terms": {
+        "amqp": {
+          "term": "AMQP",
+          "definition": "Advanced Message Queuing Protocol. Standardized application layer protocol for messaging middleware. Defines how messages are formatted, transmitted, and queued. RabbitMQ implements AMQP 0-9-1 (the most common version)."
+        },
+        "broker": {
+          "term": "Broker / Message Broker",
+          "definition": "Intermediary software that receives messages from producers, stores them in queues, and delivers them to consumers. RabbitMQ is a message broker. Other examples: ActiveMQ, Redis (with Streams), Apache Kafka (though architecturally different)."
+        },
+        "vhost": {
+          "term": "Virtual Host (vhost)",
+          "definition": "Logical partition within a RabbitMQ broker. Each vhost has its own exchanges, queues, bindings, and permissions - completely isolated. Useful for separating environments (dev/staging/prod) or multi-tenancy."
+        },
+        "connection": {
+          "term": "Connection",
+          "definition": "TCP connection between a client application and the RabbitMQ broker. Establishing a connection involves handshake, authentication, and parameter negotiation. Connections are relatively expensive to create."
+        },
+        "channel": {
+          "term": "Channel",
+          "definition": "A lightweight 'virtual connection' inside a TCP Connection. Multiplexes operations on a single connection. Most AMQP operations (publish, consume, declare) happen on channels. Create multiple channels on one connection, not multiple connections."
+        },
+        "exchange": {
+          "term": "Exchange",
+          "definition": "Entity that receives messages from producers and routes them to zero or more queues based on rules (bindings). Types: Direct, Fanout, Topic, Headers. Exchanges never store messages."
+        },
+        "queue": {
+          "term": "Queue",
+          "definition": "Buffer that stores messages in FIFO order until they are consumed and acknowledged. Queues can be durable (survive restart), exclusive (single connection only), or auto-delete (deleted when last consumer leaves)."
+        },
+        "binding": {
+          "term": "Binding",
+          "definition": "Rule that connects an exchange to a queue (or another exchange). Defines how messages are routed. For Direct/Topic exchanges, includes a binding key. For Fanout, binding key is ignored."
+        },
+        "routingKey": {
+          "term": "Routing Key",
+          "definition": "String sent with the message that the exchange uses to decide routing. In Direct exchanges, must match the binding key exactly. In Topic, can use wildcard patterns (* and #)."
+        },
+        "bindingKey": {
+          "term": "Binding Key",
+          "definition": "Routing key specified in the binding between exchange and queue. It's the 'filter' the queue uses to receive messages. For Topic exchanges, can contain wildcards."
+        },
+        "ack": {
+          "term": "Acknowledgment (ACK)",
+          "definition": "Signal sent by consumer to broker indicating the message was processed successfully. After ACK, the message is permanently removed from the queue. Without ACK, message is redelivered if consumer disconnects."
+        },
+        "nack": {
+          "term": "Negative Acknowledgment (NACK)",
+          "definition": "Signal sent by consumer indicating processing failure. With requeue=true, message returns to queue. With requeue=false, goes to Dead Letter Exchange (if configured) or is discarded."
+        },
+        "reject": {
+          "term": "Reject",
+          "definition": "Similar to NACK, but for a single message. NACK can reject multiple messages at once (multiple=true). In practice, they're used interchangeably."
+        },
+        "prefetch": {
+          "term": "Prefetch Count / QoS",
+          "definition": "Limit on how many unacknowledged messages a consumer can have simultaneously. Configured via basic_qos(). Prefetch=1 guarantees fairest distribution. Higher values increase throughput."
+        },
+        "dlx": {
+          "term": "Dead Letter Exchange (DLX)",
+          "definition": "Exchange where messages are sent when: rejected with requeue=false, expired (TTL), or queue reaches maximum limit. Essential for error handling. Configure with x-dead-letter-exchange on the queue."
+        },
+        "dlq": {
+          "term": "Dead Letter Queue (DLQ)",
+          "definition": "Queue bound to a DLX that stores 'dead' messages. Allows manual analysis, retry, or archival of problematic messages."
+        },
+        "ttl": {
+          "term": "Time-To-Live (TTL)",
+          "definition": "Maximum time a message can stay in a queue before being discarded or sent to DLX. Can be set per message (expiration property) or per queue (x-message-ttl argument)."
+        },
+        "durable": {
+          "term": "Durable",
+          "definition": "Property of exchanges and queues indicating they survive broker restart. For messages to survive, they must also be persistent (delivery_mode=2). Queue durability alone isn't enough."
+        },
+        "persistent": {
+          "term": "Persistent Message",
+          "definition": "Message with delivery_mode=2, written to disk. Survives broker restart if queue is also durable. Delivery_mode=1 is transient (memory only, faster, but lost on restart)."
+        },
+        "publisherConfirm": {
+          "term": "Publisher Confirm",
+          "definition": "Mechanism where broker confirms to producer that message was safely received. Closes the reliability gap on publishing side. Enabled via confirm_select() on channel."
+        },
+        "mandatory": {
+          "term": "Mandatory Flag",
+          "definition": "Publishing flag that indicates: if message cannot be routed to any queue, return it to producer. By default (mandatory=false), unroutable messages are silently discarded."
+        },
+        "alternateExchange": {
+          "term": "Alternate Exchange",
+          "definition": "Exchange configured to receive messages that don't match any binding on the original exchange. Useful as 'catch-all' for orphan messages. Configure with x-alternate-exchange argument."
+        },
+        "lazyQueue": {
+          "term": "Lazy Queue",
+          "definition": "Queue mode that stores messages directly on disk instead of memory. Ideal for very large queues (millions of messages) or when memory is scarce. Tradeoff: slightly higher latency."
+        },
+        "quorumQueue": {
+          "term": "Quorum Queue",
+          "definition": "Replicated queue type using Raft algorithm for consensus. Safer than classic mirrored queues. Message is only confirmed when majority of nodes persisted. Recommended for high availability."
+        },
+        "stream": {
+          "term": "Stream",
+          "definition": "Append-only data structure introduced in RabbitMQ 3.9. Similar to Kafka topics. Allows multiple consumers to read from same offset, message replay, and size/time-based retention."
+        },
+        "consumer": {
+          "term": "Consumer",
+          "definition": "Application that subscribes to one or more queues to receive messages. Can use auto-ack (automatic acknowledgment) or manual-ack (explicit acknowledgment). Multiple consumers on same queue receive messages round-robin."
+        },
+        "producer": {
+          "term": "Producer",
+          "definition": "Application that publishes messages to exchanges. Producers never publish directly to queues - always through an exchange (even if it's the default exchange)."
+        },
+        "shovel": {
+          "term": "Shovel",
+          "definition": "Plugin that moves messages from one queue/exchange to another, possibly on different brokers. Useful for replication, migration, or integration between clusters."
+        },
+        "federation": {
+          "term": "Federation",
+          "definition": "Plugin that allows exchanges and queues on different brokers to be 'linked'. Messages published on one broker can appear on another. Useful for geographically distributed architectures."
+        }
+      }
+    }
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "start": "Start",
+    "stop": "Stop",
+    "reset": "Reset"
+  },
+  "errors": {
+    "connectionFailed": "Connection failed",
+    "invalidRoutingKey": "Invalid routing key",
+    "queueFull": "Queue is full",
+    "consumerBusy": "Consumer is busy"
+  },
+  "footer": {
+    "madeWith": "Made with",
+    "forLearning": "for learning",
+    "openSource": "Open Source",
+    "by": "by",
+    "owner": "Rafael Coelho"
+  },
+  "shortcuts": {
+    "title": "Shortcuts",
+    "keyboardShortcuts": "Keyboard Shortcuts",
+    "general": "General",
+    "addNodes": "Add Nodes",
+    "canvas": "Canvas",
+    "undo": "Undo",
+    "redo": "Redo",
+    "selectAll": "Select all",
+    "duplicate": "Duplicate",
+    "delete": "Delete selected",
+    "clearSelection": "Clear selection",
+    "addProducer": "Add Producer",
+    "addExchange": "Add Exchange",
+    "addQueue": "Add Queue",
+    "addConsumer": "Add Consumer",
+    "middleMouse": "Middle Mouse",
+    "pan": "Pan canvas",
+    "zoom": "Zoom in/out",
+    "clickDrag": "Click + Drag",
+    "boxSelect": "Box select",
+    "addToSelection": "Add to selection"
+  },
+  "contextMenu": {
+    "edit": "Edit",
+    "duplicate": "Duplicate",
+    "delete": "Delete"
+  }
+}
