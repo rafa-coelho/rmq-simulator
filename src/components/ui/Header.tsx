@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Rabbit, Github, Globe } from 'lucide-react';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 const languages = [
   { code: 'en', label: 'English' },
@@ -12,6 +13,7 @@ const languages = [
 export function Header() {
   const { t, i18n } = useTranslation();
   const location = useLocation();
+  const isMobile = useIsMobile();
   const [showLanguages, setShowLanguages] = React.useState(false);
 
   const changeLanguage = (code: string) => {
@@ -45,31 +47,33 @@ export function Header() {
             </div>
           </Link>
 
-          {/* Navigation */}
-          <nav className="flex items-center gap-1" aria-label="Main navigation">
-            <Link
-              to="/"
-              className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
-                isActive('/')
-                  ? 'bg-rmq-orange text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-rmq-light/30'
-              }`}
-              aria-current={isActive('/') ? 'page' : undefined}
-            >
-              {t('nav.simulator')}
-            </Link>
-            <Link
-              to="/learn"
-              className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
-                isActive('/learn')
-                  ? 'bg-rmq-orange text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-rmq-light/30'
-              }`}
-              aria-current={isActive('/learn') ? 'page' : undefined}
-            >
-              {t('nav.learn')}
-            </Link>
-          </nav>
+          {/* Navigation - hide on mobile */}
+          {!isMobile && (
+            <nav className="flex items-center gap-1" aria-label="Main navigation">
+              <Link
+                to="/"
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                  isActive('/')
+                    ? 'bg-rmq-orange text-white'
+                    : 'text-gray-400 hover:text-white hover:bg-rmq-light/30'
+                }`}
+                aria-current={isActive('/') ? 'page' : undefined}
+              >
+                {t('nav.simulator')}
+              </Link>
+              <Link
+                to="/learn"
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${
+                  isActive('/learn')
+                    ? 'bg-rmq-orange text-white'
+                    : 'text-gray-400 hover:text-white hover:bg-rmq-light/30'
+                }`}
+                aria-current={isActive('/learn') ? 'page' : undefined}
+              >
+                {t('nav.learn')}
+              </Link>
+            </nav>
+          )}
 
           {/* Actions */}
           <div className="flex items-center gap-2">

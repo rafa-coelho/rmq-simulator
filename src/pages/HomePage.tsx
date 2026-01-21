@@ -2,12 +2,14 @@ import { useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SimulatorCanvas } from '../components/canvas/SimulatorCanvas';
 import { useSEO } from '../hooks/useSEO';
+import { useIsMobile } from '../hooks/useIsMobile';
 import { FloatingToolbar } from '../components/panels/FloatingToolbar';
 import { Toolbar } from '../components/panels/Toolbar';
 import { MessagePanel } from '../components/panels/MessagePanel';
 import { PropertiesPanel } from '../components/panels/PropertiesPanel';
 import { StatsPanel } from '../components/panels/StatsPanel';
 import { ShortcutsPanel } from '../components/panels/ShortcutsPanel';
+import { MobileWarning } from '../components/ui/MobileWarning';
 import { useSimulatorStore } from '../store/simulatorStore';
 import { useMessageRouter } from '../hooks/useMessageRouter';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
@@ -15,6 +17,7 @@ import type { Position } from '../types';
 
 export function HomePage() {
   const { i18n } = useTranslation();
+  const isMobile = useIsMobile();
   const { addProducer, addExchange, addQueue, addConsumer } = useSimulatorStore();
   const [canvasOffset, setCanvasOffset] = useState<Position>({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
@@ -92,6 +95,11 @@ export function HomePage() {
     ogUrl: 'https://rmq-simulator.com/',
     lang: i18n.language,
   });
+
+  // Show mobile warning on small screens
+  if (isMobile) {
+    return <MobileWarning />;
+  }
 
   return (
     <div className="flex flex-col h-[calc(100vh-64px)]">

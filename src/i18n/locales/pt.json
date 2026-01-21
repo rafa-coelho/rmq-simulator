@@ -1286,5 +1286,12 @@
     "edit": "Editar",
     "duplicate": "Duplicar",
     "delete": "Excluir"
+  },
+  "mobile": {
+    "title": "Apenas Desktop",
+    "message": "O Simulador RabbitMQ requer um computador desktop ou notebook para a melhor experiência. O canvas interativo e os recursos de arrastar e soltar não são suportados em dispositivos móveis.",
+    "suggestion": "Por favor, visite esta página em um computador para usar o simulador.",
+    "learnButton": "Ler a Documentação",
+    "learnHint": "Você ainda pode aprender sobre os conceitos do RabbitMQ no seu dispositivo móvel!"
   }
 }

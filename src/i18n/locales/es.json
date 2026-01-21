@@ -1158,5 +1158,12 @@
     "edit": "Editar",
     "duplicate": "Duplicar",
     "delete": "Eliminar"
+  },
+  "mobile": {
+    "title": "Solo Escritorio",
+    "message": "El Simulador RabbitMQ requiere una computadora de escritorio o portátil para la mejor experiencia. El canvas interactivo y las funciones de arrastrar y soltar no son compatibles con dispositivos móviles.",
+    "suggestion": "Por favor, visite esta página en una computadora para usar el simulador.",
+    "learnButton": "Leer la Documentación",
+    "learnHint": "¡Aún puedes aprender sobre los conceptos de RabbitMQ en tu dispositivo móvil!"
   }
 }

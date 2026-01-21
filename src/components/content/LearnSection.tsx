@@ -12,8 +12,11 @@ import {
   Shield,
   Lightbulb,
   GraduationCap,
+  Menu,
+  X,
 } from 'lucide-react';
 import { useAnalytics } from '../../services/analytics';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 interface Section {
   id: string;
@@ -87,8 +90,10 @@ const sections: Section[] = [
 export function LearnSection() {
   const { t } = useTranslation();
   const { trackLearningSectionViewed } = useAnalytics();
+  const isMobile = useIsMobile();
   const [activeSection, setActiveSection] = useState('introduction');
   const [expandedSections, setExpandedSections] = useState<string[]>(['concepts']);
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
 
   const toggleSection = (sectionId: string) => {
     setExpandedSections(prev =>
@@ -102,6 +107,10 @@ export function LearnSection() {
     const fullId = subsectionId ? `${sectionId}.${subsectionId}` : sectionId;
     setActiveSection(fullId);
     trackLearningSectionViewed(fullId);
+    // Close mobile sidebar when selecting a section
+    if (isMobile) {
+      setShowMobileSidebar(false);
+    }
   };
 
   const renderContent = () => {
@@ -110,7 +119,7 @@ export function LearnSection() {
     if (section === 'introduction') {
       return (
         <article className="prose prose-invert max-w-none">
-          <h1 className="text-3xl font-bold text-white mb-4">
+          <h1 className="text-2xl md:text-3xl font-bold text-white mb-4">
             {t('learn.sections.introduction.title')}
           </h1>
           <p className="text-gray-300 text-lg leading-relaxed mb-6">
@@ -199,7 +208,7 @@ export function LearnSection() {
               </div>
 
               <h3 className="text-xl font-semibold text-white mt-6 mb-3">Exchange Types</h3>
-              <div className="grid grid-cols-2 gap-4 my-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
                 <div className="bg-rmq-darker p-4 rounded-lg border border-rmq-light">
                   <h4 className="text-blue-400 font-semibold">Direct</h4>
                   <p className="text-gray-400 text-sm">Exact routing key match</p>
@@ -480,86 +489,147 @@ export function LearnSection() {
     return null;
   };
 
+  // Sidebar content - reused for both mobile and desktop
+  const sidebarContent = (
+    <ul className="space-y-1">
+      {sections.map(section => (
+        <li key={section.id}>
+          {section.subsections ? (
+            <>
+              <button
+                onClick={() => toggleSection(section.id)}
+                className="w-full flex items-center gap-2 px-3 py-2 text-left text-gray-300 hover:text-white hover:bg-rmq-light/30 rounded-lg transition-colors"
+              >
+                {section.icon}
+                <span className="flex-1 text-sm">{t(section.titleKey)}</span>
+                {expandedSections.includes(section.id) ? (
+                  <ChevronDown size={14} />
+                ) : (
+                  <ChevronRight size={14} />
+                )}
+              </button>
+              {expandedSections.includes(section.id) && (
+                <ul className="ml-6 mt-1 space-y-1">
+                  {section.subsections.map(sub => (
+                    <li key={sub.id}>
+                      <button
+                        onClick={() => selectSection(section.id, sub.id)}
+                        className={`w-full px-3 py-1.5 text-left text-sm rounded-lg transition-colors ${
+                          activeSection === `${section.id}.${sub.id}`
+                            ? 'bg-rmq-orange/20 text-rmq-orange'
+                            : 'text-gray-400 hover:text-white hover:bg-rmq-light/30'
+                        }`}
+                      >
+                        {t(sub.titleKey)}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
+          ) : (
+            <button
+              onClick={() => selectSection(section.id)}
+              className={`w-full flex items-center gap-2 px-3 py-2 text-left rounded-lg transition-colors ${
+                activeSection === section.id
+                  ? 'bg-rmq-orange/20 text-rmq-orange'
+                  : 'text-gray-300 hover:text-white hover:bg-rmq-light/30'
+              }`}
+            >
+              {section.icon}
+              <span className="text-sm">{t(section.titleKey)}</span>
+            </button>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+
+  // Get current section title for mobile header
+  const getCurrentSectionTitle = () => {
+    const [section, subsection] = activeSection.split('.');
+    if (subsection) {
+      const sectionObj = sections.find(s => s.id === section);
+      const subObj = sectionObj?.subsections?.find(sub => sub.id === subsection);
+      return subObj ? t(subObj.titleKey) : t(sectionObj?.titleKey || '');
+    }
+    const sectionObj = sections.find(s => s.id === section);
+    return sectionObj ? t(sectionObj.titleKey) : '';
+  };
+
   return (
     <div className="min-h-screen bg-rmq-darker">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-4 md:py-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-white mb-4">
+        <div className="text-center mb-6 md:mb-12">
+          <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 md:mb-4">
             {t('learn.title')}
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-base md:text-xl text-gray-400 max-w-2xl mx-auto">
             {t('learn.subtitle')}
           </p>
         </div>
 
-        <div className="flex gap-8">
-          {/* Sidebar */}
-          <nav className="w-64 flex-shrink-0">
-            <div className="sticky top-4 bg-rmq-dark rounded-xl border border-rmq-light p-4">
-              <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                <BookOpen size={18} />
-                {t('learn.toc')}
-              </h3>
-
-              <ul className="space-y-1">
-                {sections.map(section => (
-                  <li key={section.id}>
-                    {section.subsections ? (
-                      <>
-                        <button
-                          onClick={() => toggleSection(section.id)}
-                          className="w-full flex items-center gap-2 px-3 py-2 text-left text-gray-300 hover:text-white hover:bg-rmq-light/30 rounded-lg transition-colors"
-                        >
-                          {section.icon}
-                          <span className="flex-1 text-sm">{t(section.titleKey)}</span>
-                          {expandedSections.includes(section.id) ? (
-                            <ChevronDown size={14} />
-                          ) : (
-                            <ChevronRight size={14} />
-                          )}
-                        </button>
-                        {expandedSections.includes(section.id) && (
-                          <ul className="ml-6 mt-1 space-y-1">
-                            {section.subsections.map(sub => (
-                              <li key={sub.id}>
-                                <button
-                                  onClick={() => selectSection(section.id, sub.id)}
-                                  className={`w-full px-3 py-1.5 text-left text-sm rounded-lg transition-colors ${
-                                    activeSection === `${section.id}.${sub.id}`
-                                      ? 'bg-rmq-orange/20 text-rmq-orange'
-                                      : 'text-gray-400 hover:text-white hover:bg-rmq-light/30'
-                                  }`}
-                                >
-                                  {t(sub.titleKey)}
-                                </button>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </>
-                    ) : (
-                      <button
-                        onClick={() => selectSection(section.id)}
-                        className={`w-full flex items-center gap-2 px-3 py-2 text-left rounded-lg transition-colors ${
-                          activeSection === section.id
-                            ? 'bg-rmq-orange/20 text-rmq-orange'
-                            : 'text-gray-300 hover:text-white hover:bg-rmq-light/30'
-                        }`}
-                      >
-                        {section.icon}
-                        <span className="text-sm">{t(section.titleKey)}</span>
-                      </button>
-                    )}
-                  </li>
-                ))}
-              </ul>
+        {/* Mobile sidebar toggle */}
+        {isMobile && (
+          <button
+            onClick={() => setShowMobileSidebar(true)}
+            className="w-full mb-4 flex items-center justify-between px-4 py-3 bg-rmq-dark rounded-xl border border-rmq-light text-white"
+          >
+            <div className="flex items-center gap-2">
+              <Menu size={20} />
+              <span className="font-medium">{getCurrentSectionTitle()}</span>
             </div>
-          </nav>
+            <ChevronRight size={20} className="text-gray-400" />
+          </button>
+        )}
+
+        {/* Mobile sidebar overlay */}
+        {isMobile && showMobileSidebar && (
+          <div className="fixed inset-0 z-50 flex">
+            {/* Backdrop */}
+            <div
+              className="fixed inset-0 bg-black/60"
+              onClick={() => setShowMobileSidebar(false)}
+            />
+            {/* Sidebar */}
+            <div className="relative w-80 max-w-[85vw] bg-rmq-dark border-r border-rmq-light overflow-y-auto">
+              <div className="sticky top-0 bg-rmq-dark border-b border-rmq-light p-4 flex items-center justify-between">
+                <h3 className="text-white font-semibold flex items-center gap-2">
+                  <BookOpen size={18} />
+                  {t('learn.toc')}
+                </h3>
+                <button
+                  onClick={() => setShowMobileSidebar(false)}
+                  className="p-2 text-gray-400 hover:text-white rounded-lg hover:bg-rmq-light/30"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="p-4">
+                {sidebarContent}
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="flex gap-8">
+          {/* Desktop Sidebar */}
+          {!isMobile && (
+            <nav className="w-64 flex-shrink-0">
+              <div className="sticky top-4 bg-rmq-dark rounded-xl border border-rmq-light p-4">
+                <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+                  <BookOpen size={18} />
+                  {t('learn.toc')}
+                </h3>
+                {sidebarContent}
+              </div>
+            </nav>
+          )}
 
           {/* Content */}
           <main className="flex-1 min-w-0">
-            <div className="bg-rmq-dark rounded-xl border border-rmq-light p-8">
+            <div className="bg-rmq-dark rounded-xl border border-rmq-light p-4 md:p-8">
               {renderContent()}
             </div>
           </main>
