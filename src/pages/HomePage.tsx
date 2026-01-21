@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
-import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { SimulatorCanvas } from '../components/canvas/SimulatorCanvas';
+import { useSEO } from '../hooks/useSEO';
 import { FloatingToolbar } from '../components/panels/FloatingToolbar';
 import { Toolbar } from '../components/panels/Toolbar';
 import { MessagePanel } from '../components/panels/MessagePanel';
@@ -81,20 +81,20 @@ export function HomePage() {
   const currentLang = i18n.language as keyof typeof seoContent;
   const seo = seoContent[currentLang] || seoContent.en;
 
-  return (
-    <>
-      <Helmet>
-        <title>{seo.title}</title>
-        <meta name="description" content={seo.description} />
-        <meta name="keywords" content={seo.keywords} />
-        <link rel="canonical" href="https://rmq-simulator.com/" />
-        <meta property="og:title" content={seo.title} />
-        <meta property="og:description" content={seo.description} />
-        <meta property="og:url" content="https://rmq-simulator.com/" />
-        <html lang={i18n.language} />
-      </Helmet>
+  // Apply SEO meta tags
+  useSEO({
+    title: seo.title,
+    description: seo.description,
+    keywords: seo.keywords,
+    canonicalUrl: 'https://rmq-simulator.com/',
+    ogTitle: seo.title,
+    ogDescription: seo.description,
+    ogUrl: 'https://rmq-simulator.com/',
+    lang: i18n.language,
+  });
 
-      <div className="flex flex-col h-[calc(100vh-64px)]">
+  return (
+    <div className="flex flex-col h-[calc(100vh-64px)]">
         <Toolbar onAddNode={handleAddNode} />
 
         <div className="flex-1 flex overflow-hidden relative">
@@ -128,6 +128,5 @@ export function HomePage() {
           <MessagePanel />
         </div>
       </div>
-    </>
   );
 }

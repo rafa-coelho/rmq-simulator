@@ -1,7 +1,8 @@
-import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LearnSection } from '../components/content/LearnSection';
 import { Footer } from '../components/ui/Footer';
+import { useSEO } from '../hooks/useSEO';
 
 export function LearnPage() {
   const { t, i18n } = useTranslation();
@@ -28,53 +29,73 @@ export function LearnPage() {
   const currentLang = i18n.language as keyof typeof seoContent;
   const seo = seoContent[currentLang] || seoContent.en;
 
+  // Apply SEO meta tags
+  useSEO({
+    title: seo.title,
+    description: seo.description,
+    keywords: seo.keywords,
+    canonicalUrl: 'https://rmq-simulator.com/learn',
+    ogTitle: seo.title,
+    ogDescription: seo.description,
+    ogUrl: 'https://rmq-simulator.com/learn',
+    ogType: 'article',
+    lang: i18n.language,
+  });
+
   // Structured data for the learning page
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Course",
-    "name": t('learn.title'),
-    "description": seo.description,
-    "provider": {
-      "@type": "Organization",
-      "name": "RabbitMQ Simulator",
-      "url": "https://rmq-simulator.com"
-    },
-    "courseMode": "online",
-    "isAccessibleForFree": true,
-    "inLanguage": i18n.language,
-    "educationalLevel": "Beginner to Advanced",
-    "teaches": [
-      "RabbitMQ fundamentals",
-      "Message queue concepts",
-      "Exchange types (Direct, Fanout, Topic, Headers)",
-      "Messaging patterns",
-      "Reliability and durability",
-      "Best practices"
-    ],
-    "hasCourseInstance": {
-      "@type": "CourseInstance",
+  useEffect(() => {
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": t('learn.title'),
+      "description": seo.description,
+      "provider": {
+        "@type": "Organization",
+        "name": "RabbitMQ Simulator",
+        "url": "https://rmq-simulator.com"
+      },
       "courseMode": "online",
-      "courseWorkload": "PT2H"
+      "isAccessibleForFree": true,
+      "inLanguage": i18n.language,
+      "educationalLevel": "Beginner to Advanced",
+      "teaches": [
+        "RabbitMQ fundamentals",
+        "Message queue concepts",
+        "Exchange types (Direct, Fanout, Topic, Headers)",
+        "Messaging patterns",
+        "Reliability and durability",
+        "Best practices"
+      ],
+      "hasCourseInstance": {
+        "@type": "CourseInstance",
+        "courseMode": "online",
+        "courseWorkload": "PT2H"
+      }
+    };
+
+    // Add or update the structured data script
+    let script = document.querySelector('script[data-page="learn"]');
+    if (script) {
+      script.textContent = JSON.stringify(structuredData);
+    } else {
+      script = document.createElement('script');
+      script.setAttribute('type', 'application/ld+json');
+      script.setAttribute('data-page', 'learn');
+      script.textContent = JSON.stringify(structuredData);
+      document.head.appendChild(script);
     }
-  };
+
+    // Cleanup on unmount
+    return () => {
+      const scriptToRemove = document.querySelector('script[data-page="learn"]');
+      if (scriptToRemove) {
+        scriptToRemove.remove();
+      }
+    };
+  }, [t, seo.description, i18n.language]);
 
   return (
     <>
-      <Helmet>
-        <title>{seo.title}</title>
-        <meta name="description" content={seo.description} />
-        <meta name="keywords" content={seo.keywords} />
-        <link rel="canonical" href="https://rmq-simulator.com/learn" />
-        <meta property="og:title" content={seo.title} />
-        <meta property="og:description" content={seo.description} />
-        <meta property="og:url" content="https://rmq-simulator.com/learn" />
-        <meta property="og:type" content="article" />
-        <html lang={i18n.language} />
-        <script type="application/ld+json">
-          {JSON.stringify(structuredData)}
-        </script>
-      </Helmet>
-
       <main className="flex-1">
         <LearnSection />
       </main>
