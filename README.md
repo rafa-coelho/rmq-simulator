@@ -1,73 +1,216 @@
-# React + TypeScript + Vite
+<p align="center">
+  <img src="https://raw.githubusercontent.com/rafa-coelho/rmq-simulator/main/public/og-image.png" alt="RabbitMQ Simulator" width="600">
+</p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<h1 align="center">RabbitMQ Simulator</h1>
 
-Currently, two official plugins are available:
+<p align="center">
+  <strong>An interactive visual simulator for learning RabbitMQ concepts</strong>
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#demo">Demo</a> •
+  <a href="#getting-started">Getting Started</a> •
+  <a href="#tech-stack">Tech Stack</a> •
+  <a href="#contributing">Contributing</a> •
+  <a href="#license">License</a>
+</p>
 
-## React Compiler
+<p align="center">
+  <a href="./LEIAME.md">🇧🇷 Leia em Português</a>
+</p>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## About
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+RabbitMQ Simulator is a free, open-source educational tool that helps developers understand message queuing concepts through an interactive visual interface. Build message flows by dragging and dropping components, connect them with bindings, and watch messages flow through the system in real-time.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Whether you're new to message brokers or want to prototype a RabbitMQ architecture, this simulator provides a hands-on learning experience without the need to set up a real RabbitMQ server.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Features
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Interactive Canvas
+- **Drag & Drop Interface**: Create producers, exchanges, queues, and consumers with intuitive drag-and-drop controls
+- **Visual Connections**: Draw bindings between components with routing keys and patterns
+- **Real-time Animation**: Watch messages flow through your architecture with smooth animations
+- **Pan & Zoom**: Navigate large architectures with mouse/trackpad controls
+
+### Complete RabbitMQ Simulation
+- **All Exchange Types**: Direct, Fanout, Topic, and Headers exchanges with accurate routing behavior
+- **Message Properties**: Configure routing keys, headers, persistence, and TTL
+- **Consumer Settings**: Adjust prefetch count and acknowledgment modes
+- **Queue Features**: Durable queues, auto-delete, and message counters
+
+### Learning Resources
+- **Comprehensive Documentation**: In-depth guides covering all RabbitMQ concepts
+- **Built-in Examples**: Pre-configured scenarios demonstrating common patterns:
+  - Simple Queue
+  - Work Queues (competing consumers)
+  - Publish/Subscribe (fanout)
+  - Routing (direct exchange)
+  - Topics (pattern matching)
+- **Glossary**: Quick reference for messaging terminology
+
+### Multi-language Support
+- English
+- Português (Brazilian Portuguese)
+- Español (Spanish)
+
+### Developer Experience
+- **Keyboard Shortcuts**: Speed up your workflow with hotkeys
+- **Export/Import**: Save and share your diagrams as JSON
+- **Responsive Design**: Works on desktop browsers (mobile shows documentation)
+- **Dark Theme**: Easy on the eyes for extended learning sessions
+
+## Demo
+
+**Live Demo**: [https://rmq.racoelho.com.br](https://rmq.racoelho.com.br)
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/rafa-coelho/rmq-simulator.git
+cd rmq-simulator
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Install dependencies:
+```bash
+npm install
 ```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+The built files will be in the `dist` directory, ready for deployment.
+
+## Tech Stack
+
+- **Framework**: [React 19](https://react.dev/) with TypeScript
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **State Management**: [Zustand](https://zustand-demo.pmnd.rs/)
+- **Routing**: [React Router](https://reactrouter.com/)
+- **Internationalization**: [i18next](https://www.i18next.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── canvas/          # Canvas and node rendering
+│   ├── content/         # Learning section content
+│   ├── nodes/           # Producer, Exchange, Queue, Consumer components
+│   ├── panels/          # Toolbar, Properties, Message panels
+│   └── ui/              # Reusable UI components
+├── hooks/               # Custom React hooks
+├── i18n/                # Internationalization files
+│   └── locales/         # Translation JSON files (en, pt, es)
+├── pages/               # Route pages
+├── services/            # Analytics and utilities
+├── store/               # Zustand state management
+└── types/               # TypeScript type definitions
+```
+
+## Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `P` | Add Producer |
+| `E` | Add Exchange |
+| `Q` | Add Queue |
+| `C` | Add Consumer |
+| `Delete` / `Backspace` | Delete selected |
+| `Ctrl/Cmd + D` | Duplicate selected |
+| `Ctrl/Cmd + A` | Select all |
+| `Ctrl/Cmd + Z` | Undo |
+| `Ctrl/Cmd + Shift + Z` | Redo |
+| `Escape` | Clear selection |
+| `Scroll` | Zoom in/out |
+| `Middle Mouse` | Pan canvas |
+
+## Contributing
+
+Contributions are welcome! Here's how you can help:
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+### Development Guidelines
+
+- Follow the existing code style
+- Write meaningful commit messages
+- Add tests for new features when applicable
+- Update documentation as needed
+
+### Translation Contributions
+
+Want to add a new language?
+
+1. Copy `src/i18n/locales/en.json` to a new file (e.g., `fr.json`)
+2. Translate all strings
+3. Add the language to the selector in `src/components/ui/Header.tsx`
+4. Submit a PR!
+
+## Roadmap
+
+- [ ] Dead Letter Exchange (DLX) visualization
+- [ ] Message TTL simulation
+- [ ] Cluster visualization
+- [ ] More exchange type examples
+- [ ] Shareable diagram URLs
+- [ ] Offline PWA support
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Author
+
+<p align="center">
+  <strong>Rafael Coelho</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/rafa-coelho">GitHub</a> •
+  <a href="https://racoelho.com.br">Website</a> •
+  <a href="https://linkedin.com/in/rafa-coelho">LinkedIn</a>
+</p>
+
+## Acknowledgments
+
+- The [RabbitMQ](https://www.rabbitmq.com/) team for their excellent documentation
+- The open-source community for the amazing tools that made this project possible
+
+---
+
+<p align="center">
+  Made with ❤️ by <a href="https://racoelho.com.br">Rafael Coelho</a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/rafa-coelho/rmq-simulator/stargazers">⭐ Star this repo if you find it useful!</a>
+</p>
