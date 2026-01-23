@@ -262,14 +262,17 @@ export function SimulatorCanvas({
 
       {/* SVG layer for connections - rendered after (above) */}
       <svg
-        className="absolute inset-0"
+        className="absolute"
         style={{
-          transform: `translate(${canvasOffset.x}px, ${canvasOffset.y}px) scale(${scale})`,
+          left: `${canvasOffset.x}px`,
+          top: `${canvasOffset.y}px`,
+          transform: `scale(${scale})`,
           transformOrigin: '0 0',
-          width: '100%',
-          height: '100%',
+          width: `${20000 / scale}px`,
+          height: `${20000 / scale}px`,
           pointerEvents: 'none',
           zIndex: 20,
+          overflow: 'visible',
         }}
       >
         <defs>
@@ -338,7 +341,7 @@ export function SimulatorCanvas({
             top: selectionBoxScreen.y,
             width: selectionBoxScreen.width,
             height: selectionBoxScreen.height,
-            zIndex: 100,
+            zIndex: 5,
           }}
         />
       )}

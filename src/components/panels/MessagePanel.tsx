@@ -248,6 +248,11 @@ export function MessagePanel() {
                       Key: {msg.routingKey}
                     </div>
                   )}
+                  {msg.headers && Object.keys(msg.headers).length > 0 && (
+                    <div className="text-orange-400 text-xs mt-1 font-mono">
+                      Headers: {JSON.stringify(msg.headers)}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

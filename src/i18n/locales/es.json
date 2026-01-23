@@ -19,6 +19,10 @@
     "import": "Importar",
     "examples": "Cargar Ejemplo"
   },
+  "actions": {
+    "undone": "Deshecho",
+    "redone": "Rehecho"
+  },
   "nodes": {
     "producer": {
       "title": "Producer",
@@ -49,7 +53,18 @@
       "messages": "mensajes",
       "empty": "Vacía",
       "durable": "Durable",
-      "autoDelete": "Auto Delete"
+      "autoDelete": "Auto Delete",
+      "inFlightTooltip": "Mensajes esperando confirmación (ACK)",
+      "config": {
+        "durable": {
+          "title": "Cola Durable (D)",
+          "description": "La cola sobrevive a reinicios del broker. Los mensajes NO se pierden si RabbitMQ se reinicia. Sin esto, la cola se elimina al reiniciar."
+        },
+        "autoDelete": {
+          "title": "Auto-Delete (AD)",
+          "description": "La cola se elimina automáticamente cuando el último consumidor se desconecta. Útil para colas temporales o exclusivas de un servicio."
+        }
+      }
     },
     "consumer": {
       "title": "Consumer",
@@ -59,7 +74,22 @@
       "processing": "Procesando...",
       "idle": "Inactivo",
       "autoAck": "Auto Ack",
-      "prefetch": "Prefetch"
+      "prefetch": "Prefetch",
+      "ackButton": "Confirmar (ACK)",
+      "config": {
+        "autoAck": {
+          "title": "Auto-ACK Activado",
+          "description": "Los mensajes se confirman AUTOMÁTICAMENTE al ser entregados. Más rápido, pero ARRIESGADO: ¡si el consumidor falla durante el procesamiento, el mensaje se pierde!"
+        },
+        "manualAck": {
+          "title": "ACK Manual",
+          "description": "El consumidor confirma manualmente después de procesar. SEGURO: si el consumidor falla, el mensaje vuelve a la cola y se reenvía a otro consumidor."
+        },
+        "prefetch": {
+          "title": "Prefetch Count",
+          "description": "Cuántos mensajes no confirmados puede recibir el consumidor simultáneamente. Prefetch=1 significa: solo envía el siguiente mensaje después de que confirme el anterior. Permite distribución justa de carga."
+        }
+      }
     }
   },
   "binding": {
@@ -67,7 +97,8 @@
     "routingKey": "Routing Key",
     "routingKeyPlaceholder": "Ingrese routing key",
     "pattern": "Patrón",
-    "patternHelp": "Use * para una palabra, # para cero o más palabras"
+    "patternHelp": "Use * para una palabra, # para cero o más palabras",
+    "headersHelp": "Los mensajes deben coincidir con estos headers para ser enrutados"
   },
   "messages": {
     "title": "Mensajes",
@@ -103,9 +134,14 @@
     "title": "Propiedades",
     "name": "Nombre",
     "type": "Tipo",
+    "exchangeType": "Tipo de Exchange",
+    "processingTime": "Tiempo de Procesamiento (ms)",
+    "from": "De",
+    "to": "Para",
     "delete": "Eliminar",
     "duplicate": "Duplicar",
-    "noSelection": "Seleccione un nodo para ver propiedades"
+    "noSelection": "Seleccione un nodo para ver propiedades",
+    "hasHeaders": "Tiene mensajes con headers"
   },
   "examples": {
     "simpleQueue": {
@@ -133,6 +169,92 @@
     "title": "Aprende RabbitMQ",
     "subtitle": "Guía completa y didáctica sobre colas de mensajes con RabbitMQ",
     "toc": "Índice",
+    "trySimulator": "¡Pruébalo en el simulador!",
+    "components": {
+      "producer": {
+        "title": "Producer",
+        "description": "Envía mensajes a exchanges",
+        "characteristicsTitle": "Características Clave",
+        "characteristics": [
+          "Los producers publican mensajes en exchanges, no directamente en colas",
+          "Cada mensaje incluye una routing key y headers opcionales",
+          "Los producers pueden solicitar confirmaciones para mensajes publicados",
+          "Los mensajes pueden marcarse como persistentes para durabilidad"
+        ]
+      },
+      "exchange": {
+        "title": "Exchange",
+        "description": "Enruta mensajes a colas"
+      },
+      "queue": {
+        "title": "Queue",
+        "description": "Almacena mensajes",
+        "title": "Propiedades de Queue",
+        "properties": {
+          "durable": "Sobrevive a reinicios del broker",
+          "autoDelete": "Eliminada cuando se desconecta el último consumidor",
+          "exclusive": "Solo accesible por la conexión declarante",
+          "ttl": "Tiempo de vida del mensaje"
+        }
+      },
+      "consumer": {
+        "title": "Consumer",
+        "description": "Recibe y procesa mensajes",
+        "title": "Configuraciones del Consumer",
+        "settings": {
+          "prefetch": "Número de mensajes no confirmados",
+          "autoAck": "Confirmación automática",
+          "manualAck": "Confirmación explícita requerida"
+        }
+      },
+      "binding": {
+        "description": "Los bindings conectan exchanges a colas con routing keys o patrones opcionales",
+        "example": "Ejemplo de bindings",
+        "title": "Reglas de Binding"
+      },
+      "exchangeTypes": {
+        "title": "Tipos de Exchange",
+        "direct": {
+          "name": "Direct",
+          "description": "Coincidencia exacta de routing key",
+          "howItWorks": "Cómo Funciona la Exchange Direct",
+          "messageWith": "Mensaje con routing_key=",
+          "matchesBinding": "coincide con binding key",
+          "queueBound": "Queue vinculada con key=",
+          "exchangeName": "Exchange Direct"
+        },
+        "fanout": {
+          "name": "Fanout",
+          "description": "Transmite a todas las colas",
+          "howItWorks": "Cómo Funciona la Exchange Fanout",
+          "anyMessage": "Cualquier mensaje",
+          "queue": "Cola",
+          "exchangeName": "Exchange Fanout"
+        },
+        "topic": {
+          "name": "Topic",
+          "description": "Coincidencia de patrones",
+          "patternRules": "Reglas de Coincidencia de Patrones",
+          "matchesOneWord": "coincide exactamente con una palabra",
+          "matchesZeroOrMore": "coincide con cero o más palabras",
+          "examples": "Ejemplos",
+          "matches": "coincide"
+        },
+        "headers": {
+          "name": "Headers",
+          "description": "Enrutamiento basado en headers",
+          "matchingTitle": "Coincidencia de Headers",
+          "matchingDescription": "Los mensajes se enrutan basándose en valores de headers en lugar de routing keys.",
+          "messageHeaders": "Headers del mensaje",
+          "queueBinding": "Queue con binding",
+          "exchangeName": "Exchange Headers"
+        }
+      },
+      "trySimulatorPrompt": {
+        "title": "¡Pruébalo en el simulador!",
+        "description": "Carga el ejemplo \"{pattern}\" desde la barra de herramientas para ver este patrón en acción."
+      }
+    },
     "sections": {
       "introduction": {
         "title": "Introducción a RabbitMQ",

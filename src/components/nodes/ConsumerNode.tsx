@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { User } from 'lucide-react';
+import { User, Check } from 'lucide-react';
 import { BaseNode } from './BaseNode';
+import { ConfigBadge } from '../common/ConfigBadge';
+import { useSimulatorStore } from '../../store/simulatorStore';
 import type { ConsumerNode } from '../../types';
 
 interface ConsumerNodeProps {
@@ -9,6 +11,7 @@ interface ConsumerNodeProps {
 
 export function ConsumerNodeComponent({ node }: ConsumerNodeProps) {
   const { t } = useTranslation();
+  const { acknowledgeMessage } = useSimulatorStore();
 
   return (
     <BaseNode
@@ -29,15 +32,30 @@ export function ConsumerNodeComponent({ node }: ConsumerNodeProps) {
         </span>
       </div>
 
-      <div className="mt-1 flex gap-2 text-xs">
-        {node.autoAck && (
-          <span className="text-green-400" title={t('nodes.consumer.autoAck')}>
-            Auto
-          </span>
+      <div className="mt-1 flex gap-1 text-xs flex-wrap items-center">
+        {node.autoAck ? (
+          <ConfigBadge
+            label="Auto-ACK"
+            color="text-yellow-400 bg-yellow-500/20"
+            titleKey="nodes.consumer.config.autoAck.title"
+            descriptionKey="nodes.consumer.config.autoAck.description"
+            icon="⚡"
+          />
+        ) : (
+          <ConfigBadge
+            label="Manual-ACK"
+            color="text-green-400 bg-green-500/20"
+            titleKey="nodes.consumer.config.manualAck.title"
+            descriptionKey="nodes.consumer.config.manualAck.description"
+            icon="✓"
+          />
         )}
-        <span className="text-gray-500">
-          {t('nodes.consumer.prefetch')}: {node.prefetchCount}
-        </span>
+        <ConfigBadge
+          label={`Prefetch: ${node.prefetchCount}`}
+          color="text-gray-400 bg-gray-500/20"
+          titleKey="nodes.consumer.config.prefetch.title"
+          descriptionKey="nodes.consumer.config.prefetch.description"
+        />
       </div>
 
       {/* Processing indicator */}
@@ -48,6 +66,21 @@ export function ConsumerNodeComponent({ node }: ConsumerNodeProps) {
             style={{ width: '100%' }}
           />
         </div>
+      )}
+
+      {/* Manual ACK button */}
+      {!node.autoAck && node.currentMessage && !node.isProcessing && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            acknowledgeMessage(node.id);
+          }}
+          className="mt-2 w-full px-2 py-1 bg-green-500/20 hover:bg-green-500/30 border border-green-500/50 rounded text-green-400 text-xs font-medium flex items-center justify-center gap-1 transition-colors"
+          title={t('nodes.consumer.ackButton') || 'Click to ACK message'}
+        >
+          <Check size={12} />
+          {t('nodes.consumer.ackButton') || 'ACK Message'}
+        </button>
       )}
     </BaseNode>
   );

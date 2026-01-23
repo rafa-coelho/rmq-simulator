@@ -19,6 +19,10 @@
     "import": "Import",
     "examples": "Load Example"
   },
+  "actions": {
+    "undone": "Undone",
+    "redone": "Redone"
+  },
   "nodes": {
     "producer": {
       "title": "Producer",
@@ -49,7 +53,18 @@
       "messages": "messages",
       "empty": "Empty",
       "durable": "Durable",
-      "autoDelete": "Auto Delete"
+      "autoDelete": "Auto Delete",
+      "inFlightTooltip": "Messages waiting for acknowledgment (ACK)",
+      "config": {
+        "durable": {
+          "title": "Durable Queue (D)",
+          "description": "The queue survives broker restarts. Messages are NOT lost if RabbitMQ restarts. Without this, the queue is deleted on restart."
+        },
+        "autoDelete": {
+          "title": "Auto-Delete (AD)",
+          "description": "The queue is automatically deleted when the last consumer disconnects. Useful for temporary queues or service-exclusive queues."
+        }
+      }
     },
     "consumer": {
       "title": "Consumer",
@@ -59,7 +74,22 @@
       "processing": "Processing...",
       "idle": "Idle",
       "autoAck": "Auto Ack",
-      "prefetch": "Prefetch"
+      "prefetch": "Prefetch",
+      "ackButton": "Acknowledge (ACK)",
+      "config": {
+        "autoAck": {
+          "title": "Auto-ACK Enabled",
+          "description": "Messages are AUTOMATICALLY acknowledged upon delivery. Faster, but RISKY: if the consumer fails during processing, the message is lost!"
+        },
+        "manualAck": {
+          "title": "Manual ACK",
+          "description": "The consumer manually acknowledges after processing. SAFE: if the consumer fails, the message returns to the queue and is redelivered to another consumer."
+        },
+        "prefetch": {
+          "title": "Prefetch Count",
+          "description": "How many unacknowledged messages the consumer can receive simultaneously. Prefetch=1 means: only send the next message after I acknowledge the previous one. Enables fair load distribution."
+        }
+      }
     }
   },
   "binding": {
@@ -67,7 +97,8 @@
     "routingKey": "Routing Key",
     "routingKeyPlaceholder": "Enter routing key",
     "pattern": "Pattern",
-    "patternHelp": "Use * for one word, # for zero or more words"
+    "patternHelp": "Use * for one word, # for zero or more words",
+    "headersHelp": "Messages must match these headers to be routed"
   },
   "messages": {
     "title": "Messages",
@@ -103,9 +134,14 @@
     "title": "Properties",
     "name": "Name",
     "type": "Type",
+    "exchangeType": "Exchange Type",
+    "processingTime": "Processing Time (ms)",
+    "from": "From",
+    "to": "To",
     "delete": "Delete",
     "duplicate": "Duplicate",
-    "noSelection": "Select a node to view properties"
+    "noSelection": "Select a node to view properties",
+    "hasHeaders": "Has messages with headers"
   },
   "examples": {
     "simpleQueue": {
@@ -134,6 +170,91 @@
     "subtitle": "Comprehensive, in-depth guide to message queuing with RabbitMQ",
     "toc": "Table of Contents",
     "trySimulator": "Try it in the simulator!",
+    "components": {
+      "producer": {
+        "title": "Producer",
+        "description": "Sends messages to exchanges",
+        "characteristicsTitle": "Key Characteristics",
+        "characteristics": [
+          "Producers publish messages to exchanges, not directly to queues",
+          "Each message includes a routing key and optional headers",
+          "Producers can request confirmations for published messages",
+          "Messages can be marked as persistent for durability"
+        ]
+      },
+      "exchange": {
+        "title": "Exchange",
+        "description": "Routes messages to queues"
+      },
+      "queue": {
+        "title": "Queue",
+        "description": "Stores messages",
+        "title": "Queue Properties",
+        "properties": {
+          "durable": "Survives broker restarts",
+          "autoDelete": "Deleted when last consumer disconnects",
+          "exclusive": "Only accessible by declaring connection",
+          "ttl": "Message time-to-live"
+        }
+      },
+      "consumer": {
+        "title": "Consumer",
+        "description": "Receives and processes messages",
+        "title": "Consumer Settings",
+        "settings": {
+          "prefetch": "Number of unacknowledged messages",
+          "autoAck": "Automatic acknowledgment",
+          "manualAck": "Explicit acknowledgment required"
+        }
+      },
+      "binding": {
+        "description": "Bindings connect exchanges to queues with optional routing keys or patterns",
+        "example": "Example bindings",
+        "title": "Binding Rules"
+      },
+      "exchangeTypes": {
+        "title": "Exchange Types",
+        "direct": {
+          "name": "Direct",
+          "description": "Exact routing key match",
+          "howItWorks": "How Direct Exchange Works",
+          "messageWith": "Message with routing_key=",
+          "matchesBinding": "matches binding key",
+          "queueBound": "Queue bound with key=",
+          "exchangeName": "Direct Exchange"
+        },
+        "fanout": {
+          "name": "Fanout",
+          "description": "Broadcast to all queues",
+          "howItWorks": "How Fanout Exchange Works",
+          "anyMessage": "Any message",
+          "queue": "Queue",
+          "exchangeName": "Fanout Exchange"
+        },
+        "topic": {
+          "name": "Topic",
+          "description": "Pattern matching",
+          "patternRules": "Pattern Matching Rules",
+          "matchesOneWord": "matches exactly one word",
+          "matchesZeroOrMore": "matches zero or more words",
+          "examples": "Examples",
+          "matches": "matches"
+        },
+        "headers": {
+          "name": "Headers",
+          "description": "Header-based routing",
+          "matchingTitle": "Header Matching",
+          "matchingDescription": "Messages are routed based on header values instead of routing keys.",
+          "messageHeaders": "Message headers",
+          "queueBinding": "Queue with binding",
+          "exchangeName": "Headers Exchange"
+        }
+      },
+      "trySimulatorPrompt": {
+        "title": "Try it in the simulator!",
+        "description": "Load the \"{pattern}\" example from the toolbar to see this pattern in action."
+      }
+    },
     "sections": {
       "introduction": {
         "title": "Introduction to RabbitMQ",

@@ -69,6 +69,7 @@ interface SimulatorStore {
   sendMessage: (producerId: string, content: string, routingKey: string, headers?: Record<string, string>) => void;
   addMessageToQueue: (queueId: string, message: Message) => void;
   consumeMessage: (consumerId: string) => void;
+  acknowledgeMessage: (consumerId: string) => void;
   addTravelingMessage: (message: TravelingMessage) => void;
   removeTravelingMessage: (id: string) => void;
   updateTravelingMessage: (id: string, updates: Partial<TravelingMessage>) => void;
@@ -177,12 +178,18 @@ export const useSimulatorStore = create<SimulatorStore>((set, get) => ({
       processingTime: 1000,
       consumedCount: 0,
       isProcessing: false,
+      unackedCount: 0,
     };
     set(state => ({ nodes: [...state.nodes, consumer] }));
     return id;
   },
 
   updateNode: (id, updates) => {
+    // Don't save to history for position-only updates (handled by moveNode)
+    const isPositionOnlyUpdate = Object.keys(updates).length === 1 && 'position' in updates;
+    if (!isPositionOnlyUpdate) {
+      get().saveToHistory();
+    }
     set(state => ({
       nodes: state.nodes.map(node =>
         node.id === id ? { ...node, ...updates } as SimulatorNode : node
@@ -218,6 +225,8 @@ export const useSimulatorStore = create<SimulatorStore>((set, get) => ({
   },
 
   moveNode: (id, position) => {
+    // Note: moveNode doesn't save to history because it's called continuously during dragging
+    // History is saved when drag ends (in BaseNode onDragEnd)
     set(state => ({
       nodes: state.nodes.map(node =>
         node.id === id ? { ...node, position } : node
@@ -325,6 +334,7 @@ export const useSimulatorStore = create<SimulatorStore>((set, get) => ({
   },
 
   updateConnection: (id, updates) => {
+    get().saveToHistory();
     set(state => ({
       connections: state.connections.map(conn =>
         conn.id === id ? { ...conn, ...updates } : conn
@@ -442,6 +452,11 @@ export const useSimulatorStore = create<SimulatorStore>((set, get) => ({
     const consumer = nodes.find(n => n.id === consumerId) as ConsumerNode | undefined;
     if (!consumer || consumer.isProcessing) return;
 
+    // Check prefetch limit for Manual-ACK
+    if (!consumer.autoAck && consumer.unackedCount >= consumer.prefetchCount) {
+      return; // Cannot consume more messages until some are ACKed
+    }
+
     // Find connected queue
     const queueConnection = connections.find(c => c.targetId === consumerId);
     if (!queueConnection) return;
@@ -449,26 +464,62 @@ export const useSimulatorStore = create<SimulatorStore>((set, get) => ({
     const queue = nodes.find(n => n.id === queueConnection.sourceId) as QueueNode | undefined;
     if (!queue || queue.messages.length === 0) return;
 
-    const message = queue.messages[0];
+    // Count available messages (not in-flight)
+    const availableMessages = queue.messages.filter(m => !m.inFlight);
+    if (availableMessages.length === 0) return;
 
-    // Remove message from queue and mark consumer as processing
-    set(state => {
-      const updatedNodes = state.nodes.map(node => {
-        if (node.id === queue.id && node.type === 'queue') {
-          return { ...node, messages: (node as QueueNode).messages.slice(1) };
-        }
-        if (node.id === consumerId && node.type === 'consumer') {
-          return { ...node, isProcessing: true };
-        }
-        return node;
+    const message = availableMessages[0];
+
+    if (consumer.autoAck) {
+      // AUTO-ACK: Remove message from queue immediately (RISKY!)
+      set(state => {
+        const updatedNodes = state.nodes.map(node => {
+          if (node.id === queue.id && node.type === 'queue') {
+            return {
+              ...node,
+              messages: (node as QueueNode).messages.filter(m => m.id !== message.id)
+            };
+          }
+          if (node.id === consumerId && node.type === 'consumer') {
+            return { ...node, isProcessing: true };
+          }
+          return node;
+        });
+
+        const messagesInQueues = updatedNodes
+          .filter((n): n is QueueNode => n.type === 'queue')
+          .reduce((sum, q) => sum + q.messages.length, 0);
+
+        return { nodes: updatedNodes, stats: { ...state.stats, messagesInQueues } };
       });
+    } else {
+      // MANUAL-ACK: Mark message as in-flight (SAFE!)
+      set(state => {
+        const updatedNodes = state.nodes.map(node => {
+          if (node.id === queue.id && node.type === 'queue') {
+            return {
+              ...node,
+              messages: (node as QueueNode).messages.map(m =>
+                m.id === message.id
+                  ? { ...m, inFlight: true, consumerId }
+                  : m
+              )
+            };
+          }
+          if (node.id === consumerId && node.type === 'consumer') {
+            return {
+              ...node,
+              isProcessing: true,
+              currentMessage: message,
+              unackedCount: (node as ConsumerNode).unackedCount + 1,
+            };
+          }
+          return node;
+        });
 
-      const messagesInQueues = updatedNodes
-        .filter((n): n is QueueNode => n.type === 'queue')
-        .reduce((sum, q) => sum + q.messages.length, 0);
-
-      return { nodes: updatedNodes, stats: { ...state.stats, messagesInQueues } };
-    });
+        return { nodes: updatedNodes };
+      });
+    }
 
     // Create traveling message from queue to consumer
     const travelingMessage: TravelingMessage = {
@@ -481,6 +532,47 @@ export const useSimulatorStore = create<SimulatorStore>((set, get) => ({
     };
 
     get().addTravelingMessage(travelingMessage);
+  },
+
+  acknowledgeMessage: (consumerId) => {
+    const { nodes, connections } = get();
+    const consumer = nodes.find(n => n.id === consumerId) as ConsumerNode | undefined;
+    if (!consumer || !consumer.currentMessage) return;
+
+    // Find connected queue
+    const queueConnection = connections.find(c => c.targetId === consumerId);
+    if (!queueConnection) return;
+
+    const queue = nodes.find(n => n.id === queueConnection.sourceId) as QueueNode | undefined;
+    if (!queue) return;
+
+    const messageId = consumer.currentMessage.id;
+
+    // Remove in-flight message from queue and reset consumer state
+    set(state => {
+      const updatedNodes = state.nodes.map(node => {
+        if (node.id === queue.id && node.type === 'queue') {
+          return {
+            ...node,
+            messages: (node as QueueNode).messages.filter(m => m.id !== messageId)
+          };
+        }
+        if (node.id === consumerId && node.type === 'consumer') {
+          return {
+            ...node,
+            currentMessage: undefined,
+            unackedCount: Math.max(0, (node as ConsumerNode).unackedCount - 1),
+          };
+        }
+        return node;
+      });
+
+      const messagesInQueues = updatedNodes
+        .filter((n): n is QueueNode => n.type === 'queue')
+        .reduce((sum, q) => sum + q.messages.length, 0);
+
+      return { nodes: updatedNodes, stats: { ...state.stats, messagesInQueues } };
+    });
   },
 
   addTravelingMessage: (message) => {

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Settings, Trash2, X } from 'lucide-react';
+import { Settings, Trash2, X, Plus } from 'lucide-react';
 import { useSimulatorStore } from '../../store/simulatorStore';
 import type { ExchangeNode, QueueNode, ConsumerNode, ExchangeType } from '../../types';
 
@@ -57,31 +57,95 @@ export function PropertiesPanel() {
 
         <div className="space-y-4">
           <div>
-            <label className="block text-gray-400 text-xs mb-1">From</label>
+            <label className="block text-gray-400 text-xs mb-1">{t('properties.from')}</label>
             <div className="text-white text-sm">{sourceNode?.name || 'Unknown'}</div>
           </div>
 
           <div>
-            <label className="block text-gray-400 text-xs mb-1">To</label>
+            <label className="block text-gray-400 text-xs mb-1">{t('properties.to')}</label>
             <div className="text-white text-sm">{targetNode?.name || 'Unknown'}</div>
           </div>
 
           {isExchangeToQueue && (
-            <div>
-              <label className="block text-gray-400 text-xs mb-1">
-                {t('binding.routingKey')}
-              </label>
-              <input
-                type="text"
-                value={selectedConnection.routingKey}
-                onChange={(e) => updateConnection(selectedConnection.id, { routingKey: e.target.value })}
-                placeholder={t('binding.routingKeyPlaceholder')}
-                className="input text-sm font-mono"
-              />
-              <div className="text-gray-500 text-xs mt-1">
-                {t('binding.patternHelp')}
+            <>
+              <div>
+                <label className="block text-gray-400 text-xs mb-1">
+                  {t('binding.routingKey')}
+                </label>
+                <input
+                  type="text"
+                  value={selectedConnection.routingKey}
+                  onChange={(e) => updateConnection(selectedConnection.id, { routingKey: e.target.value })}
+                  placeholder={t('binding.routingKeyPlaceholder')}
+                  className="input text-sm font-mono"
+                />
+                <div className="text-gray-500 text-xs mt-1">
+                  {t('binding.patternHelp')}
+                </div>
               </div>
-            </div>
+
+              {/* Headers for binding (only for headers exchange) */}
+              {sourceNode?.type === 'exchange' && (sourceNode as ExchangeNode).exchangeType === 'headers' && (
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-gray-400 text-xs">{t('messages.headers')}</label>
+                    <button
+                      onClick={() => {
+                        const currentHeaders = selectedConnection.headers || {};
+                        const newKey = `header${Object.keys(currentHeaders).length + 1}`;
+                        updateConnection(selectedConnection.id, {
+                          headers: { ...currentHeaders, [newKey]: '' }
+                        });
+                      }}
+                      className="text-rmq-accent hover:text-white text-xs flex items-center gap-1"
+                    >
+                      <Plus size={12} />
+                      {t('messages.addHeader')}
+                    </button>
+                  </div>
+                  {selectedConnection.headers && Object.entries(selectedConnection.headers).map(([key, value]) => (
+                    <div key={key} className="flex gap-1 mb-1">
+                      <input
+                        type="text"
+                        value={key}
+                        onChange={(e) => {
+                          const newHeaders = { ...selectedConnection.headers };
+                          delete newHeaders[key];
+                          newHeaders[e.target.value] = value;
+                          updateConnection(selectedConnection.id, { headers: newHeaders });
+                        }}
+                        placeholder="Key"
+                        className="input text-xs flex-1 font-mono"
+                      />
+                      <input
+                        type="text"
+                        value={value}
+                        onChange={(e) => {
+                          updateConnection(selectedConnection.id, {
+                            headers: { ...selectedConnection.headers, [key]: e.target.value }
+                          });
+                        }}
+                        placeholder="Value"
+                        className="input text-xs flex-1 font-mono"
+                      />
+                      <button
+                        onClick={() => {
+                          const newHeaders = { ...selectedConnection.headers };
+                          delete newHeaders[key];
+                          updateConnection(selectedConnection.id, { headers: newHeaders });
+                        }}
+                        className="text-red-400 hover:text-red-300 p-1"
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+                  ))}
+                  <div className="text-gray-500 text-xs mt-1">
+                    {t('binding.headersHelp')}
+                  </div>
+                </div>
+              )}
+            </>
           )}
 
           <button
@@ -147,7 +211,7 @@ export function PropertiesPanel() {
         {/* Exchange-specific */}
         {selectedNode.type === 'exchange' && (
           <div>
-            <label className="block text-gray-400 text-xs mb-1">Exchange Type</label>
+            <label className="block text-gray-400 text-xs mb-1">{t('properties.exchangeType')}</label>
             <select
               value={(selectedNode as ExchangeNode).exchangeType}
               onChange={(e) => updateNode(selectedNode.id, {
@@ -190,6 +254,35 @@ export function PropertiesPanel() {
                 {t('nodes.queue.autoDelete')}
               </label>
             </div>
+
+            {/* Show messages in queue with headers */}
+            {(selectedNode as QueueNode).messages.length > 0 && (
+              <div className="mt-4">
+                <label className="block text-gray-400 text-xs mb-2">
+                  {t('nodes.queue.messages')} ({(selectedNode as QueueNode).messages.length})
+                </label>
+                <div className="space-y-2 max-h-48 overflow-y-auto">
+                  {(selectedNode as QueueNode).messages.slice(0, 5).map((msg, idx) => (
+                    <div key={idx} className="bg-rmq-darker p-2 rounded border border-rmq-light text-xs">
+                      <div className="text-white truncate">{msg.content}</div>
+                      {msg.routingKey && (
+                        <div className="text-gray-400 font-mono mt-1">Key: {msg.routingKey}</div>
+                      )}
+                      {msg.headers && Object.keys(msg.headers).length > 0 && (
+                        <div className="text-orange-400 font-mono mt-1">
+                          Headers: {JSON.stringify(msg.headers)}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {(selectedNode as QueueNode).messages.length > 5 && (
+                    <div className="text-gray-500 text-xs text-center">
+                      +{(selectedNode as QueueNode).messages.length - 5} more
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </>
         )}
 
@@ -225,7 +318,7 @@ export function PropertiesPanel() {
             </div>
             <div>
               <label className="block text-gray-400 text-xs mb-1">
-                Processing Time (ms)
+                {t('properties.processingTime')}
               </label>
               <input
                 type="number"

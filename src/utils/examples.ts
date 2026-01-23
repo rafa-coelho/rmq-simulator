@@ -36,6 +36,7 @@ export const examples: ExampleConfig[] = [
         processingTime: 1000,
         consumedCount: 0,
         isProcessing: false,
+        unackedCount: 0,
       },
     ],
     connections: [
@@ -79,6 +80,7 @@ export const examples: ExampleConfig[] = [
         processingTime: 2000,
         consumedCount: 0,
         isProcessing: false,
+        unackedCount: 0,
       },
       {
         type: 'consumer',
@@ -89,6 +91,7 @@ export const examples: ExampleConfig[] = [
         processingTime: 1500,
         consumedCount: 0,
         isProcessing: false,
+        unackedCount: 0,
       },
     ],
     connections: [
@@ -141,6 +144,7 @@ export const examples: ExampleConfig[] = [
         processingTime: 500,
         consumedCount: 0,
         isProcessing: false,
+        unackedCount: 0,
       },
       {
         type: 'consumer',
@@ -151,6 +155,7 @@ export const examples: ExampleConfig[] = [
         processingTime: 500,
         consumedCount: 0,
         isProcessing: false,
+        unackedCount: 0,
       },
     ],
     connections: [
@@ -204,6 +209,7 @@ export const examples: ExampleConfig[] = [
         processingTime: 1000,
         consumedCount: 0,
         isProcessing: false,
+        unackedCount: 0,
       },
       {
         type: 'consumer',
@@ -214,6 +220,7 @@ export const examples: ExampleConfig[] = [
         processingTime: 200,
         consumedCount: 0,
         isProcessing: false,
+        unackedCount: 0,
       },
     ],
     connections: [
@@ -275,6 +282,7 @@ export const examples: ExampleConfig[] = [
         processingTime: 500,
         consumedCount: 0,
         isProcessing: false,
+        unackedCount: 0,
       },
       {
         type: 'consumer',
@@ -285,6 +293,7 @@ export const examples: ExampleConfig[] = [
         processingTime: 500,
         consumedCount: 0,
         isProcessing: false,
+        unackedCount: 0,
       },
       {
         type: 'consumer',
@@ -295,6 +304,7 @@ export const examples: ExampleConfig[] = [
         processingTime: 100,
         consumedCount: 0,
         isProcessing: false,
+        unackedCount: 0,
       },
     ],
     connections: [

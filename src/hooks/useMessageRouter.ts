@@ -170,6 +170,18 @@ export function useMessageRouter() {
         useSimulatorStore.setState(state => ({
           stats: { ...state.stats, totalConsumed: state.stats.totalConsumed + 1 },
         }));
+
+        // Auto-ACK automatically acknowledges the message
+        if (consumer.autoAck) {
+          // Message already removed from queue in consumeMessage
+          // Nothing else to do
+        } else {
+          // Manual-ACK: Message is still in-flight, waiting for user to ACK
+          // Auto-acknowledge after processing for demo purposes
+          setTimeout(() => {
+            useSimulatorStore.getState().acknowledgeMessage(consumer.id);
+          }, 500);
+        }
       }, consumer.processingTime);
     }
   }, [nodes, routeMessageThroughExchange, addMessageToQueue, addTravelingMessage, updateNode]);

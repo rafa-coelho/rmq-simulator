@@ -10,6 +10,7 @@ import { PropertiesPanel } from '../components/panels/PropertiesPanel';
 import { StatsPanel } from '../components/panels/StatsPanel';
 import { ShortcutsPanel } from '../components/panels/ShortcutsPanel';
 import { MobileWarning } from '../components/ui/MobileWarning';
+import { UndoRedoIndicator } from '../components/common/UndoRedoIndicator';
 import { useSimulatorStore } from '../store/simulatorStore';
 import { useMessageRouter } from '../hooks/useMessageRouter';
 import { useKeyboardShortcuts } from '../hooks/useKeyboardShortcuts';
@@ -127,6 +128,9 @@ export function HomePage() {
                 <StatsPanel />
               </div>
             </div>
+
+            {/* Undo/Redo indicator */}
+            <UndoRedoIndicator />
           </div>
 
           {/* Left panel - Properties */}

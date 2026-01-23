@@ -32,6 +32,7 @@ export function BaseNode({
     isConnecting,
     startConnecting,
     finishConnecting,
+    saveToHistory,
   } = useSimulatorStore();
 
   const nodeRef = useRef<HTMLDivElement>(null);
@@ -39,6 +40,7 @@ export function BaseNode({
   const [dragStart, setDragStart] = useState<Position>({ x: 0, y: 0 });
   const [nodeStartPos, setNodeStartPos] = useState<Position>({ x: 0, y: 0 });
   const [contextMenu, setContextMenu] = useState<{ x: number; y: number } | null>(null);
+  const draggedRef = useRef(false);
 
   const isSelected = selectedNodeId === node.id || selectedNodeIds.includes(node.id);
 
@@ -63,6 +65,7 @@ export function BaseNode({
     setDragStart({ x: e.clientX, y: e.clientY });
     setNodeStartPos({ x: node.position.x, y: node.position.y });
     lastDragPos.current = { x: e.clientX, y: e.clientY };
+    draggedRef.current = false;
     setIsDragging(true);
   }, [isConnecting, finishConnecting, selectNode, addToSelection, node.id, node.position, isSelected]);
 
@@ -70,6 +73,8 @@ export function BaseNode({
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging || !nodeRef.current) return;
+
+    draggedRef.current = true;
 
     const parent = nodeRef.current.parentElement;
     if (!parent) return;
@@ -107,8 +112,12 @@ export function BaseNode({
   }, [isDragging, dragStart, nodeStartPos, moveNode, moveSelectedNodes, node.id, selectedNodeIds]);
 
   const handleMouseUp = useCallback(() => {
+    if (isDragging && draggedRef.current) {
+      // Save to history when drag finishes and node actually moved
+      saveToHistory();
+    }
     setIsDragging(false);
-  }, []);
+  }, [isDragging, saveToHistory]);
 
   React.useEffect(() => {
     if (isDragging) {

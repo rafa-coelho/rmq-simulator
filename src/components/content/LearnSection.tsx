@@ -92,7 +92,7 @@ export function LearnSection() {
   const { trackLearningSectionViewed } = useAnalytics();
   const isMobile = useIsMobile();
   const [activeSection, setActiveSection] = useState('introduction');
-  const [expandedSections, setExpandedSections] = useState<string[]>(['concepts']);
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
 
   const toggleSection = (sectionId: string) => {
@@ -127,40 +127,27 @@ export function LearnSection() {
           </p>
 
           <div className="bg-rmq-light/30 rounded-xl p-6 my-8">
-            <h3 className="text-xl font-semibold text-white mb-4">What is a Message Broker?</h3>
+            <h3 className="text-xl font-semibold text-white mb-4">{t('learn.sections.introduction.whatIs.title')}</h3>
             <p className="text-gray-300">
-              A message broker is an intermediary software that enables applications to communicate
-              by translating messages between formal messaging protocols. It validates, stores, routes,
-              and delivers messages to appropriate destinations.
+              {t('learn.sections.introduction.whatIs.content')}
             </p>
           </div>
 
-          <h2 className="text-2xl font-bold text-white mt-8 mb-4">Why Use RabbitMQ?</h2>
+          <h2 className="text-2xl font-bold text-white mt-8 mb-4">{t('learn.sections.introduction.whyUse.title')}</h2>
+          <p className="text-gray-300 mb-4">{t('learn.sections.introduction.whyUse.intro')}</p>
           <ul className="space-y-3 text-gray-300">
-            <li className="flex items-start gap-3">
-              <span className="text-rmq-orange mt-1">•</span>
-              <span><strong className="text-white">Decoupling:</strong> Producers and consumers don't need to know about each other</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-rmq-orange mt-1">•</span>
-              <span><strong className="text-white">Scalability:</strong> Add more consumers to handle increased load</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-rmq-orange mt-1">•</span>
-              <span><strong className="text-white">Reliability:</strong> Messages are persisted and acknowledged</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-rmq-orange mt-1">•</span>
-              <span><strong className="text-white">Flexibility:</strong> Multiple exchange types for different routing patterns</span>
-            </li>
+            {(t('learn.sections.introduction.whyUse.items', { returnObjects: true }) as string[]).slice(0, 4).map((item, idx) => (
+              <li key={idx} className="flex items-start gap-3">
+                <span className="text-rmq-orange mt-1">•</span>
+                <span dangerouslySetInnerHTML={{ __html: item.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>') }} />
+              </li>
+            ))}
           </ul>
 
           <div className="bg-gradient-to-r from-rmq-orange/20 to-rmq-accent/20 rounded-xl p-6 mt-8">
-            <h3 className="text-xl font-semibold text-white mb-2">Getting Started</h3>
+            <h3 className="text-xl font-semibold text-white mb-2">{t('learn.sections.introduction.gettingStarted.title')}</h3>
             <p className="text-gray-300">
-              Use the simulator on this page to experiment with different RabbitMQ configurations.
-              Try adding producers, exchanges, queues, and consumers, then send messages to see
-              how they flow through the system!
+              {t('learn.sections.introduction.gettingStarted.content')}
             </p>
           </div>
         </article>
@@ -182,17 +169,16 @@ export function LearnSection() {
               <div className="flex items-center gap-4 my-6 p-4 bg-rmq-orange/10 rounded-xl border border-rmq-orange/30">
                 <Send className="text-rmq-orange" size={32} />
                 <div>
-                  <h4 className="text-white font-semibold">Producer</h4>
-                  <p className="text-gray-400 text-sm">Sends messages to exchanges</p>
+                  <h4 className="text-white font-semibold">{t('learn.components.producer.title')}</h4>
+                  <p className="text-gray-400 text-sm">{t('learn.components.producer.description')}</p>
                 </div>
               </div>
 
-              <h3 className="text-xl font-semibold text-white mt-6 mb-3">Key Characteristics</h3>
+              <h3 className="text-xl font-semibold text-white mt-6 mb-3">{t('learn.components.producer.characteristicsTitle')}</h3>
               <ul className="space-y-2 text-gray-300">
-                <li>• Producers publish messages to exchanges, not directly to queues</li>
-                <li>• Each message includes a routing key and optional headers</li>
-                <li>• Producers can request confirmations for published messages</li>
-                <li>• Messages can be marked as persistent for durability</li>
+                {(t('learn.components.producer.characteristics', { returnObjects: true }) as string[]).map((item, idx) => (
+                  <li key={idx}>• {item}</li>
+                ))}
               </ul>
             </>
           )}
@@ -202,28 +188,28 @@ export function LearnSection() {
               <div className="flex items-center gap-4 my-6 p-4 bg-rmq-accent/10 rounded-xl border border-rmq-accent/30">
                 <ArrowRightLeft className="text-rmq-accent" size={32} />
                 <div>
-                  <h4 className="text-white font-semibold">Exchange</h4>
-                  <p className="text-gray-400 text-sm">Routes messages to queues</p>
+                  <h4 className="text-white font-semibold">{t('learn.components.exchange.title')}</h4>
+                  <p className="text-gray-400 text-sm">{t('learn.components.exchange.description')}</p>
                 </div>
               </div>
 
-              <h3 className="text-xl font-semibold text-white mt-6 mb-3">Exchange Types</h3>
+              <h3 className="text-xl font-semibold text-white mt-6 mb-3">{t('learn.components.exchangeTypes.title')}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
                 <div className="bg-rmq-darker p-4 rounded-lg border border-rmq-light">
-                  <h4 className="text-blue-400 font-semibold">Direct</h4>
-                  <p className="text-gray-400 text-sm">Exact routing key match</p>
+                  <h4 className="text-blue-400 font-semibold">{t('learn.components.exchangeTypes.direct.name')}</h4>
+                  <p className="text-gray-400 text-sm">{t('learn.components.exchangeTypes.direct.description')}</p>
                 </div>
                 <div className="bg-rmq-darker p-4 rounded-lg border border-rmq-light">
-                  <h4 className="text-purple-400 font-semibold">Fanout</h4>
-                  <p className="text-gray-400 text-sm">Broadcast to all queues</p>
+                  <h4 className="text-purple-400 font-semibold">{t('learn.components.exchangeTypes.fanout.name')}</h4>
+                  <p className="text-gray-400 text-sm">{t('learn.components.exchangeTypes.fanout.description')}</p>
                 </div>
                 <div className="bg-rmq-darker p-4 rounded-lg border border-rmq-light">
-                  <h4 className="text-green-400 font-semibold">Topic</h4>
-                  <p className="text-gray-400 text-sm">Pattern matching</p>
+                  <h4 className="text-green-400 font-semibold">{t('learn.components.exchangeTypes.topic.name')}</h4>
+                  <p className="text-gray-400 text-sm">{t('learn.components.exchangeTypes.topic.description')}</p>
                 </div>
                 <div className="bg-rmq-darker p-4 rounded-lg border border-rmq-light">
-                  <h4 className="text-orange-400 font-semibold">Headers</h4>
-                  <p className="text-gray-400 text-sm">Header-based routing</p>
+                  <h4 className="text-orange-400 font-semibold">{t('learn.components.exchangeTypes.headers.name')}</h4>
+                  <p className="text-gray-400 text-sm">{t('learn.components.exchangeTypes.headers.description')}</p>
                 </div>
               </div>
             </>
@@ -234,30 +220,30 @@ export function LearnSection() {
               <div className="flex items-center gap-4 my-6 p-4 bg-rmq-accent/10 rounded-xl border border-rmq-accent/30">
                 <Inbox className="text-rmq-accent" size={32} />
                 <div>
-                  <h4 className="text-white font-semibold">Queue</h4>
-                  <p className="text-gray-400 text-sm">Stores messages</p>
+                  <h4 className="text-white font-semibold">{t('learn.components.queue.title')}</h4>
+                  <p className="text-gray-400 text-sm">{t('learn.components.queue.description')}</p>
                 </div>
               </div>
 
-              <h3 className="text-xl font-semibold text-white mt-6 mb-3">Queue Properties</h3>
+              <h3 className="text-xl font-semibold text-white mt-6 mb-3">{t('learn.components.queue.title')}</h3>
               <ul className="space-y-2 text-gray-300">
-                <li>• <strong className="text-white">Durable:</strong> Survives broker restarts</li>
-                <li>• <strong className="text-white">Auto-delete:</strong> Deleted when last consumer disconnects</li>
-                <li>• <strong className="text-white">Exclusive:</strong> Only accessible by declaring connection</li>
-                <li>• <strong className="text-white">TTL:</strong> Message time-to-live</li>
+                <li>• <strong className="text-white">Durable:</strong> {t('learn.components.queue.properties.durable')}</li>
+                <li>• <strong className="text-white">Auto-delete:</strong> {t('learn.components.queue.properties.autoDelete')}</li>
+                <li>• <strong className="text-white">Exclusive:</strong> {t('learn.components.queue.properties.exclusive')}</li>
+                <li>• <strong className="text-white">TTL:</strong> {t('learn.components.queue.properties.ttl')}</li>
               </ul>
             </>
           )}
 
           {subsection === 'binding' && (
             <>
-              <h3 className="text-xl font-semibold text-white mt-6 mb-3">Binding Rules</h3>
+              <h3 className="text-xl font-semibold text-white mt-6 mb-3">{t('learn.components.binding.title')}</h3>
               <p className="text-gray-300 mb-4">
-                Bindings connect exchanges to queues with optional routing keys or patterns.
+                {t('learn.components.binding.description')}
               </p>
 
               <div className="bg-rmq-darker p-4 rounded-lg border border-rmq-light font-mono text-sm">
-                <span className="text-gray-500"># Example bindings</span><br/>
+                <span className="text-gray-500"># {t('learn.components.binding.example')}</span><br/>
                 <span className="text-rmq-orange">direct_exchange</span> → <span className="text-rmq-accent">queue_1</span> [key: "info"]<br/>
                 <span className="text-purple-400">fanout_exchange</span> → <span className="text-rmq-accent">queue_*</span> [no key needed]<br/>
                 <span className="text-green-400">topic_exchange</span> → <span className="text-rmq-accent">queue_2</span> [pattern: "*.order.*"]
@@ -270,16 +256,16 @@ export function LearnSection() {
               <div className="flex items-center gap-4 my-6 p-4 bg-rmq-success/10 rounded-xl border border-rmq-success/30">
                 <User className="text-rmq-success" size={32} />
                 <div>
-                  <h4 className="text-white font-semibold">Consumer</h4>
-                  <p className="text-gray-400 text-sm">Receives and processes messages</p>
+                  <h4 className="text-white font-semibold">{t('learn.components.consumer.title')}</h4>
+                  <p className="text-gray-400 text-sm">{t('learn.components.consumer.description')}</p>
                 </div>
               </div>
 
-              <h3 className="text-xl font-semibold text-white mt-6 mb-3">Consumer Settings</h3>
+              <h3 className="text-xl font-semibold text-white mt-6 mb-3">{t('learn.components.consumer.title')}</h3>
               <ul className="space-y-2 text-gray-300">
-                <li>• <strong className="text-white">Prefetch:</strong> Number of unacknowledged messages</li>
-                <li>• <strong className="text-white">Auto-ack:</strong> Automatic acknowledgment</li>
-                <li>• <strong className="text-white">Manual-ack:</strong> Explicit acknowledgment required</li>
+                <li>• <strong className="text-white">Prefetch:</strong> {t('learn.components.consumer.settings.prefetch')}</li>
+                <li>• <strong className="text-white">Auto-ack:</strong> {t('learn.components.consumer.settings.autoAck')}</li>
+                <li>• <strong className="text-white">Manual-ack:</strong> {t('learn.components.consumer.settings.manualAck')}</li>
               </ul>
             </>
           )}
@@ -299,36 +285,36 @@ export function LearnSection() {
 
           {subsection === 'direct' && (
             <div className="bg-rmq-darker p-6 rounded-xl border border-rmq-light mt-6">
-              <h4 className="text-white font-semibold mb-3">How Direct Exchange Works</h4>
+              <h4 className="text-white font-semibold mb-3">{t('learn.components.exchangeTypes.direct.howItWorks')}</h4>
               <div className="font-mono text-sm space-y-2">
-                <div className="text-gray-400">Message with routing_key="info"</div>
+                <div className="text-gray-400">{t('learn.components.exchangeTypes.direct.messageWith')}"info"</div>
                 <div className="text-blue-400">↓</div>
-                <div className="text-blue-400">Direct Exchange</div>
-                <div className="text-blue-400">↓ (matches binding key "info")</div>
-                <div className="text-rmq-accent">Queue bound with key="info"</div>
+                <div className="text-blue-400">{t('learn.components.exchangeTypes.direct.exchangeName')}</div>
+                <div className="text-blue-400">↓ ({t('learn.components.exchangeTypes.direct.matchesBinding')} "info")</div>
+                <div className="text-rmq-accent">{t('learn.components.exchangeTypes.direct.queueBound')}"info"</div>
               </div>
             </div>
           )}
 
           {subsection === 'fanout' && (
             <div className="bg-rmq-darker p-6 rounded-xl border border-rmq-light mt-6">
-              <h4 className="text-white font-semibold mb-3">How Fanout Exchange Works</h4>
+              <h4 className="text-white font-semibold mb-3">{t('learn.components.exchangeTypes.fanout.howItWorks')}</h4>
               <div className="font-mono text-sm">
-                <div className="text-gray-400">Any message</div>
+                <div className="text-gray-400">{t('learn.components.exchangeTypes.fanout.anyMessage')}</div>
                 <div className="text-purple-400">↓</div>
-                <div className="text-purple-400">Fanout Exchange</div>
+                <div className="text-purple-400">{t('learn.components.exchangeTypes.fanout.exchangeName')}</div>
                 <div className="flex gap-8 mt-2">
                   <div className="text-center">
                     <div className="text-purple-400">↓</div>
-                    <div className="text-rmq-accent">Queue 1</div>
+                    <div className="text-rmq-accent">{t('learn.components.exchangeTypes.fanout.queue')} 1</div>
                   </div>
                   <div className="text-center">
                     <div className="text-purple-400">↓</div>
-                    <div className="text-rmq-accent">Queue 2</div>
+                    <div className="text-rmq-accent">{t('learn.components.exchangeTypes.fanout.queue')} 2</div>
                   </div>
                   <div className="text-center">
                     <div className="text-purple-400">↓</div>
-                    <div className="text-rmq-accent">Queue 3</div>
+                    <div className="text-rmq-accent">{t('learn.components.exchangeTypes.fanout.queue')} 3</div>
                   </div>
                 </div>
               </div>
@@ -338,19 +324,19 @@ export function LearnSection() {
           {subsection === 'topic' && (
             <>
               <div className="bg-rmq-darker p-6 rounded-xl border border-rmq-light mt-6">
-                <h4 className="text-white font-semibold mb-3">Pattern Matching Rules</h4>
+                <h4 className="text-white font-semibold mb-3">{t('learn.components.exchangeTypes.topic.patternRules')}</h4>
                 <ul className="space-y-2 text-gray-300">
-                  <li><code className="text-green-400">*</code> - matches exactly one word</li>
-                  <li><code className="text-green-400">#</code> - matches zero or more words</li>
+                  <li><code className="text-green-400">*</code> - {t('learn.components.exchangeTypes.topic.matchesOneWord')}</li>
+                  <li><code className="text-green-400">#</code> - {t('learn.components.exchangeTypes.topic.matchesZeroOrMore')}</li>
                 </ul>
               </div>
 
               <div className="bg-rmq-darker p-6 rounded-xl border border-rmq-light mt-4">
-                <h4 className="text-white font-semibold mb-3">Examples</h4>
+                <h4 className="text-white font-semibold mb-3">{t('learn.components.exchangeTypes.topic.examples')}</h4>
                 <div className="font-mono text-sm space-y-2">
-                  <div><span className="text-green-400">*.order.*</span> matches <span className="text-gray-400">us.order.created</span></div>
-                  <div><span className="text-green-400">us.#</span> matches <span className="text-gray-400">us.order.created.v2</span></div>
-                  <div><span className="text-green-400">#.critical</span> matches <span className="text-gray-400">system.alert.critical</span></div>
+                  <div><span className="text-green-400">*.order.*</span> {t('learn.components.exchangeTypes.topic.matches')} <span className="text-gray-400">us.order.created</span></div>
+                  <div><span className="text-green-400">us.#</span> {t('learn.components.exchangeTypes.topic.matches')} <span className="text-gray-400">us.order.created.v2</span></div>
+                  <div><span className="text-green-400">#.critical</span> {t('learn.components.exchangeTypes.topic.matches')} <span className="text-gray-400">system.alert.critical</span></div>
                 </div>
               </div>
             </>
@@ -358,16 +344,16 @@ export function LearnSection() {
 
           {subsection === 'headers' && (
             <div className="bg-rmq-darker p-6 rounded-xl border border-rmq-light mt-6">
-              <h4 className="text-white font-semibold mb-3">Header Matching</h4>
+              <h4 className="text-white font-semibold mb-3">{t('learn.components.exchangeTypes.headers.matchingTitle')}</h4>
               <p className="text-gray-300 mb-4">
-                Messages are routed based on header values instead of routing keys.
+                {t('learn.components.exchangeTypes.headers.matchingDescription')}
               </p>
               <div className="font-mono text-sm">
-                <div className="text-gray-400">Message headers: {`{ format: "pdf", type: "report" }`}</div>
+                <div className="text-gray-400">{t('learn.components.exchangeTypes.headers.messageHeaders')}: {`{ format: "pdf", type: "report" }`}</div>
                 <div className="text-orange-400">↓</div>
-                <div className="text-orange-400">Headers Exchange</div>
+                <div className="text-orange-400">{t('learn.components.exchangeTypes.headers.exchangeName')}</div>
                 <div className="text-orange-400">↓ (x-match: all)</div>
-                <div className="text-rmq-accent">Queue with binding: {`{ format: "pdf" }`}</div>
+                <div className="text-rmq-accent">{t('learn.components.exchangeTypes.headers.queueBinding')}: {`{ format: "pdf" }`}</div>
               </div>
             </div>
           )}
@@ -386,9 +372,9 @@ export function LearnSection() {
           </p>
 
           <div className="bg-gradient-to-r from-rmq-orange/10 to-rmq-accent/10 rounded-xl p-6 mt-6">
-            <h4 className="text-white font-semibold mb-2">Try it in the simulator!</h4>
+            <h4 className="text-white font-semibold mb-2">{t('learn.components.trySimulatorPrompt.title')}</h4>
             <p className="text-gray-300 text-sm">
-              Load the "{subsection}" example from the toolbar to see this pattern in action.
+              {t('learn.components.trySimulatorPrompt.description', { pattern: subsection })}
             </p>
           </div>
         </article>

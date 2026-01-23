@@ -43,6 +43,8 @@ export interface ConsumerNode extends BaseNode {
   processingTime: number; // ms to process each message
   consumedCount: number;
   isProcessing: boolean;
+  currentMessage?: Message; // Message being processed (for Manual-ACK)
+  unackedCount: number; // Number of unacked messages (for prefetch)
 }
 
 export type SimulatorNode = ProducerNode | ExchangeNode | QueueNode | ConsumerNode;
@@ -63,6 +65,8 @@ export interface Message {
   timestamp: number;
   status: MessageStatus;
   path: string[]; // IDs of nodes the message passed through
+  inFlight?: boolean; // Message is delivered but not ACKed (Manual-ACK only)
+  consumerId?: string; // ID of the consumer processing this message (for in-flight messages)
 }
 
 export type MessageStatus =
